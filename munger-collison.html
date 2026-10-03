@@ -1,525 +1,743 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Conversation with Charlie Munger — 访谈精译</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>一场关于「弄明白什么管用，然后去做」的对话 | 访谈精译</title>
+<meta name="description" content="Charlie Munger × John Collison 谈投资、企业质量、加密货币、中国，以及「弄明白什么管用，然后去做」。">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231A1A1A'/%3E%3C/svg%3E">
 <style>
-  :root{
-    --bg:#f7f4ef; --card:#fffdfa; --ink:#22262b; --muted:#6b7280;
-    --line:#e7e2d8; --accent:#4f46e5; --accent-soft:#eef0ff;
-    --amber:#b45309; --amber-soft:#fdf3e3; --teal:#0f766e; --teal-soft:#e7f5f2;
-    --radius:14px; --maxw:760px;
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#15171b; --card:#1c1f24; --ink:#e7e6e3; --muted:#9aa1ab;
-      --line:#2c3138; --accent:#a5b4fc; --accent-soft:#232743;
-      --amber:#f0b775; --amber-soft:#2a2117; --teal:#7fd8ce; --teal-soft:#122724;
-    }
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  :root{ --paper:#F4F4F4; --ink:#1A1A1A; --ink2:#6B6B6B; --ink3:#A0A0A0; --ghost:#D0D0D0; --paper2:#E8E8E8; }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html,body{ background:var(--paper); color:var(--ink); overflow-x:hidden; margin:0; }
   body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
-    line-height:1.85; font-size:16.5px; letter-spacing:.01em;
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
   }
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
-
-  /* hero */
-  header.hero{
-    background:
-      radial-gradient(120% 140% at 0% 0%, var(--accent-soft) 0%, transparent 55%),
-      radial-gradient(120% 140% at 100% 0%, var(--teal-soft) 0%, transparent 50%);
-    border-bottom:1px solid var(--line);
-    padding:56px 0 40px;
+  a{ color:inherit; }
+  .ui-sans, .nav, .pill, .eyebrow, .meta-line, .other-card, .cta-h2, .article-h2 .num, .footer-text, .tbl, .lead-num{
+    font-family: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
-  .kicker{font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 14px}
-  h1{font-size:clamp(26px,5vw,40px); line-height:1.25; margin:0 0 10px; letter-spacing:-.01em}
-  h1 .sub{display:block; font-size:.55em; color:var(--muted); font-weight:600; margin-top:10px; letter-spacing:0}
-  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
-  .chip{font-size:13px; padding:5px 11px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--muted)}
-  .chip b{color:var(--ink); font-weight:600}
 
-  /* toc */
-  .toc{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:30px 0 0}
-  .toc a{display:block; text-decoration:none; color:var(--ink); background:var(--card); border:1px solid var(--line);
-    border-radius:10px; padding:12px 14px; font-size:14px; font-weight:600; transition:.15s}
-  .toc a:hover{border-color:var(--accent); transform:translateY(-1px)}
-  .toc a span{display:block; font-weight:400; color:var(--muted); font-size:12px; margin-top:2px}
+  /* ============ 顶部阅读进度 ============ */
+  .progress{ position:fixed; top:0; left:0; height:2px; background:var(--ink); width:0; z-index:60; transition: width .12s linear; }
 
-  /* sections */
-  section{padding:44px 0; border-top:1px solid var(--line)}
-  section:first-of-type{border-top:none}
-  h2{font-size:clamp(20px,3.6vw,26px); margin:0 0 6px; display:flex; align-items:center; gap:12px}
-  h2 .bar{width:6px; height:26px; border-radius:3px; background:var(--accent); display:inline-block; flex:none}
-  h2.amber .bar{background:var(--amber)}
-  h2.teal .bar{background:var(--teal)}
-  .lead{color:var(--muted); margin:0 0 22px; font-size:15px}
-  h3{font-size:17px; margin:30px 0 10px}
-  p{margin:0 0 14px}
-  a{color:var(--accent)}
-
-  /* summary box */
-  .summary{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 26px 14px}
-  .summary p:last-child{margin-bottom:0}
-  .hl{background:linear-gradient(transparent 62%, var(--accent-soft) 62%); padding:0 2px; font-weight:600}
-
-  /* counter-consensus cards */
-  .points{display:flex; flex-direction:column; gap:12px}
-  .pt{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--amber);
-    border-radius:12px; padding:16px 18px; }
-  .pt .n{display:inline-flex; width:24px; height:24px; border-radius:7px; background:var(--amber-soft); color:var(--amber);
-    font-weight:800; font-size:13px; align-items:center; justify-content:center; margin-right:9px; vertical-align:2px}
-  .pt b{font-weight:700}
-  .pt p{margin:6px 0 0 33px; font-size:15px; color:var(--muted)}
-
-  /* table */
-  .tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:18px 0}
-  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
-  th,td{text-align:left; padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top}
-  thead th{background:var(--accent-soft); font-weight:700}
-  tbody tr:last-child td{border-bottom:none}
-  td:first-child{font-weight:600; white-space:nowrap}
-
-  /* case chips */
-  .cases{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-top:8px}
-  .case{background:var(--teal-soft); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:14px}
-  .case b{display:block; color:var(--teal); font-weight:700; margin-bottom:3px; font-size:13.5px}
-
-  /* dialogue */
-  .dlg{margin:0 0 10px}
-  .dlg+.dlg{margin-top:16px}
-  .who{font-size:12.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; margin:0 0 4px; color:var(--muted)}
-  .dlg.p .who{color:var(--accent)}
-  .dlg.n .who{color:var(--teal)}
-  .dlg.p{background:var(--accent-soft); border-radius:0 12px 12px 12px; padding:12px 16px}
-  .dlg.n{background:var(--teal-soft); border-radius:0 12px 12px 12px; padding:12px 16px}
-  .dlg p{margin:0}
-  .dlg p+p{margin-top:10px}
-  .h3sec{font-size:15px; font-weight:800; color:var(--ink); margin:34px 0 14px; padding-top:6px;
-    border-top:1px dashed var(--line)}
-  .h3sec:first-child{margin-top:0; border-top:none}
-
-  .note{font-size:13.5px; color:var(--muted); background:var(--card); border:1px dashed var(--line); border-radius:10px; padding:12px 15px; margin-top:14px}
-
-  footer{padding:40px 0 60px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px; text-align:center}
-  footer a{color:var(--muted)}
-
-  @media (max-width:520px){
-    body{font-size:16px}
-    header.hero{padding:40px 0 30px}
-    section{padding:34px 0}
-    .summary{padding:20px 18px 8px}
+  /* ============ NAV ============ */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(244,244,244,0.85);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(26,26,26,0.06);
   }
-  @media print{
-    :root{
-      --bg:#ffffff; --card:#ffffff; --ink:#1c1f24; --muted:#5b6470;
-      --line:#dcd7cc; --accent:#4338ca; --accent-soft:#eef0ff;
-      --amber:#9a4a08; --amber-soft:#fbf0dc; --teal:#0b5f58; --teal-soft:#e6f4f1;
-    }
-    html,body{background:#fff}
-    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
-    header.hero{background:none; padding:0 0 18px}
-    .toc{display:none}
-    section{page-break-inside:auto; border-top:1px solid #e2ddd3; padding:26px 0}
-    a{color:inherit; text-decoration:none}
-    h2{page-break-after:avoid}
-    .pt,.dlg,.note,.case{page-break-inside:avoid}
-    .h3sec{page-break-after:avoid}
-    footer{padding:24px 0 0}
-    @page{ margin:16mm 14mm; }
+  .nav-inner{ max-width:1100px; margin:0 auto; height:60px; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+  @media (min-width:768px){ .nav-inner{ padding:0 2.5rem; } }
+  .brand{ font-size:16px; font-weight:500; letter-spacing:-0.04em; text-decoration:none; }
+  .brand span{ color:#19B5DC; }
+  .pill{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.6rem 1.1rem; border:1px solid var(--ink); border-radius:999px;
+    font-size:13px; font-weight:500; color:var(--ink); background:transparent;
+    text-decoration:none; transition: background-color .25s ease, color .25s ease; cursor:pointer;
   }
+  .pill:hover{ background:var(--ink); color:var(--paper); }
+
+  main{ padding-top:60px; }
+
+  /* ============ Hero ============ */
+  .hero{ padding:3rem 1.5rem 2rem; }
+  @media (min-width:768px){ .hero{ padding:5rem 1.5rem 3rem; } }
+  .hero-inner{ max-width:680px; margin:0 auto; }
+  .eyebrow{ font-size:12px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink2); }
+  .article-h1{ font-size:48px; font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:1.5rem 0 0; }
+  @media (max-width:640px){ .article-h1{ font-size:32px; } }
+  .article-lead{ font-size:21px; line-height:1.7; color:var(--ink2); margin-top:1.5rem; max-width:640px; font-style:italic; }
+  @media (max-width:640px){ .article-lead{ font-size:17px; } }
+  .meta-line{ display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; font-size:13px; color:var(--ink3); margin-top:1.75rem; }
+  .meta-line .dot{ color:var(--ink3); }
+
+  /* ============ Cover · 排版封面 ============ */
+  .cover-wrap{ max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+  .cover-block{
+    background:var(--paper2);
+    padding:4rem 2rem; text-align:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:280px;
+  }
+  .cover-block .cq{ font-size:26px; line-height:1.5; font-weight:500; max-width:720px; margin:0; }
+  @media (max-width:640px){ .cover-block{ padding:2.5rem 1.25rem; min-height:200px; } .cover-block .cq{ font-size:20px; } }
+  .cover-block .cq cite{ display:block; margin-top:1.25rem; font-size:13px; font-style:normal; color:var(--ink2); letter-spacing:0.05em; }
+
+  /* ============ 正文容器 ============ */
+  .article-shell{ position:relative; padding:5rem 1.5rem; max-width:1100px; margin:0 auto; }
+  @media (max-width:640px){ .article-shell{ padding:3rem 1.25rem; } }
+  .article-body{ max-width:680px; margin:0 auto; position:relative; }
+
+  /* ============ 章节 ============ */
+  .article-section{ position:relative; margin-bottom:4rem; }
+  @media (max-width:640px){ .article-section{ margin-bottom:2.5rem; } }
+
+  .h2-num-display{
+    position:absolute; left:-3rem; top:-2.5rem;
+    font-size:160px; font-weight:500; color:rgba(26,26,26,0.05);
+    letter-spacing:-0.05em; line-height:1;
+    font-variant-numeric: tabular-nums;
+    pointer-events:none; user-select:none;
+    transform:scale(0.85); opacity:0;
+    transition: transform 1s cubic-bezier(.16,1,.3,1), opacity 1s ease;
+    z-index:0;
+  }
+  .article-section.in .h2-num-display{ transform:scale(1); opacity:1; }
+  @media (max-width:900px){ .h2-num-display{ left:-1rem; top:-2rem; font-size:110px; } }
+  @media (max-width:640px){ .h2-num-display{ left:-.5rem; top:-1.5rem; font-size:80px; } }
+
+  .article-h2{ font-size:26px; font-weight:600; letter-spacing:-0.01em; line-height:1.3; margin:0 0 1.5rem; padding-top:1rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-h2{ font-size:22px; } }
+  .article-h2 .num{ display:block; font-size:11px; letter-spacing:0.2em; font-weight:500; color:var(--ink3); margin-bottom:.5rem; text-transform:uppercase; }
+
+  /* ============ 正文段落 ============ */
+  .article-body p{ font-size:18px; line-height:1.95; color:var(--ink); margin:0 0 1.4rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-body p{ font-size:16.5px; line-height:1.85; } }
+  .article-body p.sub{ color:var(--ink2); }
+
+  .article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote,
+  .article-body .item, .article-body .tblwrap, .article-body .qa{
+    opacity:0; transform:translateY(12px); transition: opacity .7s ease, transform .7s ease;
+  }
+  .article-body p.in, .article-body ul.in, .article-body ol.in, .article-body .pull-quote.in, .article-body .inline-quote.in,
+  .article-body .item.in, .article-body .tblwrap.in, .article-body .qa.in{ opacity:1; transform:translateY(0); }
+
+  /* 首字下沉（仅章节第一段）*/
+  .article-body .lead-para::first-letter{
+    float:left; font-size:72px; font-weight:600; line-height:.9; margin:4px 12px 0 0; color:var(--ink);
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", serif;
+  }
+  @media (max-width:640px){ .article-body .lead-para::first-letter{ font-size:54px; margin:2px 8px 0 0; } }
+
+  /* strong 滚动到位下划线 */
+  .article-body strong{
+    position:relative; font-weight:600; color:var(--ink);
+    background-image: linear-gradient(to right, var(--ink) 0, var(--ink) 0);
+    background-position:0 100%; background-size:0% 1.5px; background-repeat:no-repeat;
+    transition: background-size 1s cubic-bezier(.16,1,.3,1); padding-bottom:1px;
+  }
+  .article-body strong.in-strong{ background-size:100% 1.5px; }
+  .article-body em{ color:var(--ink); font-style:italic; }
+
+  /* 列表 */
+  .article-body ul, .article-body ol{ margin:.5rem 0 1.75rem; padding-left:1.4rem; }
+  .article-body li{ font-size:17px; line-height:1.9; color:var(--ink); margin-bottom:.85rem; padding-left:.25rem; }
+  @media (max-width:640px){ .article-body li{ font-size:16px; } }
+  .article-body li::marker{ color:var(--ink3); font-weight:500; }
+
+  /* 反共识观点 · 编号条目 */
+  .item{ position:relative; z-index:1; padding-left:3rem; margin:0 0 1.9rem; }
+  .item .lead-num{
+    position:absolute; left:0; top:.15rem;
+    font-size:13px; font-weight:600; letter-spacing:0.02em; color:var(--ink3);
+    font-variant-numeric: tabular-nums;
+  }
+  .item h3{ font-size:18px; font-weight:600; line-height:1.5; margin:0 0 .6rem; }
+  .item p{ font-size:16.5px; line-height:1.9; color:var(--ink); margin:0 0 .6rem; }
+  .item p.sub{ color:var(--ink2); font-size:15.5px; }
+
+  /* Pull Quote */
+  .pull-quote{
+    position:relative; margin:3rem -2rem; padding:2.5rem 3rem 2.5rem 4rem;
+    font-size:24px; line-height:1.55; color:var(--ink); font-weight:500;
+    border-top:1px solid var(--ink); border-bottom:1px solid var(--ink);
+    transform:scale(0.96); transform-origin:center;
+  }
+  .pull-quote.in{ transform:scale(1); }
+  .pull-quote::before{ content:"\201C"; position:absolute; left:1.25rem; top:1.5rem; font-size:64px; line-height:1; color:var(--ink); opacity:.5; font-family:ui-serif, serif; }
+  .pull-quote .cite{ display:block; margin-top:1rem; font-size:13px; color:var(--ink2); font-weight:400; }
+  @media (max-width:900px){ .pull-quote{ margin:2.5rem -1rem; padding:2rem 1.5rem 2rem 3rem; font-size:21px; } .pull-quote::before{ left:.5rem; top:1rem; font-size:48px; } }
+  @media (max-width:640px){ .pull-quote{ margin:2rem 0; padding:1.75rem 1.25rem 1.75rem 2.5rem; font-size:18px; } .pull-quote::before{ left:.35rem; top:.75rem; font-size:40px; } }
+
+  /* 小引用 */
+  .inline-quote{ padding:.25rem 0 .25rem 1.25rem; border-left:2px solid var(--ink3); color:var(--ink2); margin:1.5rem 0; font-size:16.5px; line-height:1.85; font-style:italic; }
+
+  /* 对话 */
+  .qa{ position:relative; z-index:1; margin:0 0 1.35rem; }
+  .qa .sp{ font-family:system-ui,"Helvetica Neue",Arial,sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:.28rem; }
+  .qa .tx{ font-size:17px; line-height:1.92; }
+  @media (max-width:640px){ .qa .tx{ font-size:16px; } }
+
+  /* 表格 */
+  .tblwrap{ position:relative; z-index:1; overflow-x:auto; margin:0 0 2rem; }
+  .tbl{ width:100%; border-collapse:collapse; font-size:15px; }
+  .tbl th, .tbl td{ text-align:left; vertical-align:top; padding:.85rem .9rem; border-bottom:1px solid rgba(26,26,26,0.10); line-height:1.65; }
+  .tbl th{ font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink2); font-weight:600; border-bottom:1px solid var(--ink); }
+  .tbl td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .tbl td{ color:var(--ink2); }
+
+  /* 文末注 */
+  .footnotes{ margin-top:3.5rem; padding-top:1.75rem; border-top:1px solid rgba(26,26,26,0.08); }
+  .article-body .footnotes p{ font-size:13px; line-height:1.85; color:var(--ink3); margin-bottom:1rem; font-style:italic; }
+
+  /* Reveal */
+  .reveal{ opacity:0; transform:translateY(8px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* 其它文章 */
+  .other-section{ padding:4rem 1.5rem 2rem; max-width:1100px; margin:0 auto; }
+  .other-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem; margin-top:1.5rem; }
+  @media (max-width:768px){ .other-grid{ grid-template-columns:1fr; } }
+  .other-card{ display:block; padding:1.75rem 1.5rem; background:#fff; border:1px solid rgba(26,26,26,0.08); text-decoration:none; color:inherit; transition: border-color .25s ease, transform .25s ease, background-color .25s ease; }
+  .other-card:hover{ border-color:var(--ink); transform:translateY(-3px); background:#fcfcfc; }
+  .other-date{ font-size:11px; letter-spacing:0.15em; color:var(--ink3); text-transform:uppercase; margin-bottom:.65rem; }
+  .other-title{ font-size:17px; font-weight:600; line-height:1.4; }
+
+  /* More Articles CTA */
+  .more-cta{ background:var(--paper2); padding:4rem 1.5rem; }
+  @media (min-width:640px){ .more-cta{ padding:5rem 2rem; } }
+  .more-cta-inner{ max-width:820px; margin:0 auto; }
+  .cta-h2{ font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 .75rem; }
+
+  .footer-text{ padding:3rem 1.5rem; }
+  .footer-inner{ max-width:1100px; margin:0 auto; text-align:center; }
+  .footer-inner .fm{ font-size:16px; font-weight:500; letter-spacing:-0.04em; }
+  .footer-inner .fc{ font-size:12px; color:var(--ink3); padding-top:.5rem; line-height:1.8; }
+
+  /* ============ 案例清单 ============ */
+  .cases{ margin:.5rem 0 1.5rem; }
+  .case{
+    font-size:17px; line-height:1.9; color:var(--ink);
+    padding:.85rem 0 .85rem 1.25rem;
+    border-left:2px solid var(--ink);
+    margin-bottom:.9rem;
+    font-family: var(--font-serif, ui-serif), "Songti SC", serif;
+  }
+  .case strong{ font-weight:600; }
+  .article-body h3{
+    font-size:19px; font-weight:600; letter-spacing:-0.01em;
+    margin:2.25rem 0 1rem;
+  }
+  @media (max-width:640px){ .article-body h3{ font-size:17px; } }
+  .article-body .item{ margin-bottom:2.5rem; }
+  .article-body .item h3{ margin-top:1rem; margin-bottom:.75rem; }
+  .article-body .tblwrap{ overflow-x:auto; margin:1.5rem 0 2rem; }
+  .article-body table{ width:100%; border-collapse:collapse; font-size:15px; }
+  .article-body th, .article-body td{
+    border:1px solid rgba(26,26,26,0.12); padding:.7rem .9rem;
+    text-align:left; vertical-align:top; line-height:1.7;
+  }
+  .article-body th{ font-weight:600; background:var(--paper2); }
 </style>
 </head>
+
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <p class="kicker">Invest Like the Best · EP.355 · Colossus · 中文精译</p>
-    <h1>A Conversation with Charlie Munger
-      <span class="sub">Charlie Munger × John Collison 谈投资、企业质量、加密货币、中国与"弄清什么管用，然后去做"</span>
-    </h1>
-    <div class="meta">
-      <span class="chip">嘉宾 <b>Charlie Munger</b>（伯克希尔·哈撒韦副董事长）</span>
-      <span class="chip">主持 <b>John Collison</b>（Stripe 联合创始人）</span>
-      <span class="chip">2023-12-05 播出 · Munger 逝世后按其意愿发布</span>
-      <span class="chip">约 1.7 万词 · 全文意译</span>
-    </div>
-    <nav class="toc">
-      <a href="#summary">① 摘要<span>30 秒读懂</span></a>
-      <a href="#points">② 反共识观点<span>最值得记住的判断</span></a>
-      <a href="#compare">③ 关键案例与对比<span>公司 / 主题</span></a>
-      <a href="#full">④ 全文翻译<span>完整对谈</span></a>
-    </nav>
+<div class="progress" id="progress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="https://pekxing-0.github.io/share/" class="brand ui-sans">THANK<span>*</span></a>
+    <span class="pill ui-sans">访谈精译 · EP.355</span>
   </div>
 </header>
 
-<div class="wrap">
+<main>
 
-<section id="summary">
-  <h2><span class="bar"></span>摘要</h2>
-  <p class="lead">30 秒读懂 Munger 生前最后一批长篇访谈之一。</p>
-  <div class="summary">
-    <p>这是 Charlie Munger 生前最后一批长篇访谈之一——在<span class="hl">他自己设计、住了 61 年的洛杉矶住宅</span>里，与 Stripe 联合创始人 John Collison 的一场 1 小时 42 分的对谈。话题从投资、企业质量，一路延伸到加密货币、美国政治、建筑、中国与新加坡。</p>
-    <p>Munger 一以贯之的方法论只有两句：<span class="hl">"弄清楚什么管用，然后去做；弄清楚什么不管用，然后避开。"</span> 他把这称为"反愚蠢"（anti-asininity）——在财富管理这种高智商者云集、却蠢事泛滥的领域，<b>只要系统性地避开显而易见的蠢事，就已经赢过大多数人</b>。而做到这一点的前提是<b>知道自己的能力边界</b>："知道自己不知道什么，比聪明更重要。"</p>
-    <p>三个他认为最重要的判断：<br>
-      <b>① 一门生意的真正质量，不在财务报表里</b>（"地图不是疆域"）。要看管理层是否诚实、产品是否对买家真有好处、生意能否长期存续——<b>大多数企业终将消亡</b>，大品牌也不例外。<br>
-      <b>② 最好的生意是"资本高效"的</b>（Costco 几乎零营运资本、NetJets 让别人承担飞机折旧），但<b>提升资本效率要靠"周转"和"信誉"，绝不能靠压榨小供应商</b>——那是"学错了宗教"。<br>
-      <b>③ 要做"双赢"的生意</b>。这不是道德说教，而是因为双赢交易几乎自动发生、能成倍放大，正是文明得以运转的原因。</p>
-    <p>他也毫不留情：<b>加密货币应被当作非法取缔</b>；<b>投资管理业整体腐败</b>（"照顾代理人远好过照顾委托人"），应强制按"每美元每年"披露业绩；<b>现代风投就是伪装的投行</b>；<b>一生只需要 4 个投资</b>，集中远胜分散。最后他把"最像《穷查理宝典》的人"这一称号给了<b>李光耀</b>。</p>
-  </div>
-</section>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner reveal">
+      <div class="eyebrow">Invest Like the Best · 访谈精译</div>
+      <h1 class="article-h1">一场关于「弄明白什么管用，然后去做」的对话</h1>
+      <p class="article-lead">A Conversation with Charlie Munger —— Charlie Munger × John Collison 谈投资、企业质量、加密货币、中国与「弄清什么管用，然后去做」。</p>
+      <div class="meta-line">
+        <span>Charlie Munger × John Collison</span>
+        <span class="dot">·</span>
+        <span>EP.355 · Colossus</span>
+        <span class="dot">·</span>
+        <span id="read-time">阅读 — 分钟</span>
+      </div>
+    </div>
+  </section>
 
-<section id="points">
-  <h2 class="amber"><span class="bar"></span>反共识 · 最值得记住的观点</h2>
-  <p class="lead">与主流叙事相冲突、或被普遍忽视的判断。</p>
-  <div class="points">
+  <!-- Cover · 排版封面 -->
+  <section class="reveal">
+    <div class="cover-wrap">
+      <div class="cover-block">
+        <p class="cq">「我要消灭一切最循规蹈矩的愚蠢。」<cite>Charlie Munger</cite></p>
+      </div>
+    </div>
+  </section>
 
-    <div class="pt"><b><span class="n">1</span>大品牌也会消亡，而且风险在上升。</b>
-      <p>过去 100 年掌控大品牌的人赚得又多又稳，但 Costco 等自有品牌、Aldi 这类折扣店，加上沃尔玛 / Costco / 亚马逊（一侧）与 DTC 互联网品牌（另一侧）的两面夹击，会让大品牌未来比过去 100 年更难过。除非你熟悉经济史、记得那些曾经看似永恒却消亡的品牌，否则不会意识到这个风险。</p></div>
+  <!-- Body -->
+  <article class="article-shell">
+    <div class="article-body" id="body">
 
-    <div class="pt"><b><span class="n">2</span>"知道自己能力的边界"比聪明更重要。</b>
-      <p>"我宁可要一个 IQ 160 却以为自己只有 150 的人，也不要一个 IQ 160 却以为自己是 200 的人——后者会害死你。" 他和 Buffett 不看制药，不是因为它不好，而是因为在这个游戏里别人比他们强得多，没有优势就不下注。"我们不需要无限多的机会。"</p></div>
+      <section class="article-section">
+        <div class="h2-num-display">00</div>
+        <h2 class="article-h2"><span class="num">00</span>摘要</h2>
+        <section id="summary">
 
-    <div class="pt"><b><span class="n">3</span>很多"好行业"其实是烂生意——因为重资产 + 毁灭性竞争。</b>
-      <p>航空公司自莱特兄弟以来基本没为股东赚钱；铁路早期也是烂投资。原因是持续的巨额资本开支逼出了非理性的激烈竞争。而燕麦片不会这样。要看一门生意的资本特性，而不只是利润率。</p></div>
+        <p class="lead-para">30 秒读懂 Munger 生前最后一批长篇访谈之一。</p>
 
-    <div class="pt"><b><span class="n">4</span>提升资本效率绝不能靠压榨供应商。</b>
-      <p>商学院教的是"90 天付款、30 天卖出，白用别人的钱"——然后去欺负小供应商。"那些模式既不安全也不好……那是'学错了宗教'。" Costco 的正确做法是靠高速周转（SKU 少、效率高），而不是转嫁账期。</p></div>
+        <p>这是 Charlie Munger 生前最后一批长篇访谈之一——在<strong>他自己设计、住了 61 年的洛杉矶住宅</strong>里，与 Stripe 联合创始人 John Collison 的一场 1 小时 42 分的对谈。话题从投资、企业质量，一路延伸到加密货币、美国政治、建筑、中国与新加坡。</p>
+        <p>Munger 一以贯之的方法论只有两句：<strong>“弄清楚什么管用，然后去做；弄清楚什么不管用，然后避开。”</strong> 他把这称为“反愚蠢”（anti-asininity）——在财富管理这种高智商者云集、却蠢事泛滥的领域，<strong>只要系统性地避开显而易见的蠢事，就已经赢过大多数人</strong>。而做到这一点的前提是<strong>知道自己的能力边界</strong>：“知道自己不知道什么，比聪明更重要。”</p>
+        <p>三个他认为最重要的判断：<br>
+        <strong>① 一门生意的真正质量，不在财务报表里</strong>（“地图不是疆域”）。要看管理层是否诚实、产品是否对买家真有好处、生意能否长期存续——<strong>大多数企业终将消亡</strong>，大品牌也不例外。<br>
+        <strong>② 最好的生意是“资本高效”的</strong>（Costco 几乎零营运资本、NetJets 让别人承担飞机折旧），但<strong>提升资本效率要靠“周转”和“信誉”，绝不能靠压榨小供应商</strong>——那是“学错了宗教”。<br>
+        <strong>③ 要做“双赢”的生意</strong>。这不是道德说教，而是因为双赢交易几乎自动发生、能成倍放大，正是文明得以运转的原因。</p>
+        <p>他也毫不留情：<strong>加密货币应被当作非法取缔</strong>；<strong>投资管理业整体腐败</strong>（“照顾代理人远好过照顾委托人”），应强制按“每美元每年”披露业绩；<strong>现代风投就是伪装的投行</strong>；<strong>一生只需要 4 个投资</strong>，集中远胜分散。最后他把“最像《穷查理宝典》的人”这一称号给了<strong>李光耀</strong>。</p>
+        </div>
+        </section>
+      </section>
 
-    <div class="pt"><b><span class="n">5</span>加密货币应被当成非法取缔；黄金则可以接受。</b>
-      <p>"买'虚无的一部分'不是好投资。" 对土耳其里拉贬值这类处境，他会买黄金，但绝不买加密。"这就像造假币——你在插手政府的事。" 他还称加密是"错觉的储存"。</p></div>
+      <section class="article-section">
+        <div class="h2-num-display">01</div>
+        <h2 class="article-h2"><span class="num">01</span>反共识观点</h2>
+        <section id="points">
 
-    <div class="pt"><b><span class="n">6</span>整个投资管理业都已腐败。</b>
-      <p>"他们照顾'代理人'远好过照顾'委托人'，对自己撒谎、也对别人撒谎。" 他主张强制所有大资金管理者按"每美元每年"（dollar-year）披露业绩——"简单得要命、显然该做，却没人提过"，因为公开的漂亮记录往往是靠年轻时的小资金刷出来的。</p></div>
+        <p class="lead-para">与主流叙事相冲突、或被普遍忽视的判断。</p>
 
-    <div class="pt"><b><span class="n">7</span>股票回购是好事，反对"回购战争"。</b>
-      <p>回购是把资金从低效公司返还给高效企业的方式。若自家股票低于价值、又有超额现金，"当然该买"。"那些想禁止回购的人是疯子。"</p></div>
 
-    <div class="pt"><b><span class="n">8</span>现代风投是"伪装的投行"，Sequoia 投 Robinhood 是巨大错误。</b>
-      <p>"同样的道德，同样对'快速财富'的痴迷。" 即便 Sequoia 是"狂热的精英制"、靠人物档案网络比别人更早看到机会。</p></div>
+        <div class="item">
+        <span class="lead-num">01</span>
+        <h3>大品牌也会消亡，而且风险在上升。</h3>
+        <p>过去 100 年掌控大品牌的人赚得又多又稳，但 Costco 等自有品牌、Aldi 这类折扣店，加上沃尔玛 / Costco / 亚马逊（一侧）与 DTC 互联网品牌（另一侧）的两面夹击，会让大品牌未来比过去 100 年更难过。除非你熟悉经济史、记得那些曾经看似永恒却消亡的品牌，否则不会意识到这个风险。</p>
+        </div><div class="item">
+        <span class="lead-num">02</span>
+        <h3>“知道自己能力的边界”比聪明更重要。</h3>
+        <p>“我宁可要一个 IQ 160 却以为自己只有 150 的人，也不要一个 IQ 160 却以为自己是 200 的人——后者会害死你。” 他和 Buffett 不看制药，不是因为它不好，而是因为在这个游戏里别人比他们强得多，没有优势就不下注。“我们不需要无限多的机会。”</p>
+        </div><div class="item">
+        <span class="lead-num">03</span>
+        <h3>很多“好行业”其实是烂生意——因为重资产 + 毁灭性竞争。</h3>
+        <p>航空公司自莱特兄弟以来基本没为股东赚钱；铁路早期也是烂投资。原因是持续的巨额资本开支逼出了非理性的激烈竞争。而燕麦片不会这样。要看一门生意的资本特性，而不只是利润率。</p>
+        </div><div class="item">
+        <span class="lead-num">04</span>
+        <h3>提升资本效率绝不能靠压榨供应商。</h3>
+        <p>商学院教的是“90 天付款、30 天卖出，白用别人的钱”——然后去欺负小供应商。“那些模式既不安全也不好……那是‘学错了宗教’。” Costco 的正确做法是靠高速周转（SKU 少、效率高），而不是转嫁账期。</p>
+        </div><div class="item">
+        <span class="lead-num">05</span>
+        <h3>加密货币应被当成非法取缔；黄金则可以接受。</h3>
+        <p>“买‘虚无的一部分’不是好投资。” 对土耳其里拉贬值这类处境，他会买黄金，但绝不买加密。“这就像造假币——你在插手政府的事。” 他还称加密是“错觉的储存”。</p>
+        </div><div class="item">
+        <span class="lead-num">06</span>
+        <h3>整个投资管理业都已腐败。</h3>
+        <p>“他们照顾‘代理人’远好过照顾‘委托人’，对自己撒谎、也对别人撒谎。” 他主张强制所有大资金管理者按“每美元每年”（dollar-year）披露业绩——“简单得要命、显然该做，却没人提过”，因为公开的漂亮记录往往是靠年轻时的小资金刷出来的。</p>
+        </div><div class="item">
+        <span class="lead-num">07</span>
+        <h3>股票回购是好事，反对“回购战争”。</h3>
+        <p>回购是把资金从低效公司返还给高效企业的方式。若自家股票低于价值、又有超额现金，“当然该买”。“那些想禁止回购的人是疯子。”</p>
+        </div><div class="item">
+        <span class="lead-num">08</span>
+        <h3>现代风投是“伪装的投行”，Sequoia 投 Robinhood 是巨大错误。</h3>
+        <p>“同样的道德，同样对‘快速财富’的痴迷。” 即便 Sequoia 是“狂热的精英制”、靠人物档案网络比别人更早看到机会。</p>
+        </div><div class="item">
+        <span class="lead-num">09</span>
+        <h3>一生只需要 4 个投资。</h3>
+        <p>Munger 自陈的核心持仓：Costco、Berkshire、李录的中国基金、几栋公寓。“60 年后我觉得自己已经充分分散了。找到 4 样高于平均的东西，比找 40 样容易。”——这与主流“分散化”叙事正相反。</p>
+        </div><div class="item">
+        <span class="lead-num">10</span>
+        <h3>关于婚姻与生育：早婚、大家庭更幸福。</h3>
+        <p>“人到 35 岁都自我中心、然后才结婚”未必更好。他用“微笑时间 vs 皱眉时间”衡量，断言摩门教徒平均比一般人更幸福——尽管他自己“没兴趣为了更幸福而去相信我不相信的东西”。</p>
+        </div><div class="item">
+        <span class="lead-num">11</span>
+        <h3>建筑领域的“共享错觉”。</h3>
+        <p>他批评建筑师为“怪而怪”，更批评消防规范逼出的“每间卧室必须有窗”这一过时规矩——他用安娜堡的租金数据（无窗房只便宜 10%）和邮轮（天然“窗户不足”）证明常识即可推翻它。“如果你不去看，你就不会找到。”</p>
+        </div><div class="item">
+        <span class="lead-num">12</span>
+        <h3>对美国政治的悲观：初选制选出最极端的人。</h3>
+        <p>“我真希望那些旧时代的城市党魁回来取代初选——他们为控制庇护，反倒提名了老罗斯福这样相当不错的人。” 现代初选制下，“最糟的人常常赢”。</p>
+        </div><div class="item">
+        <span class="lead-num">13</span>
+        <h3>对中国乐观，反对“唠叨的保姆式”外交。</h3>
+        <p>中国的逻辑很清晰：增长更快、能用低得多的价格买到更好更强的公司（代价是政治风险）。他透过李录投资，从见面到财务承诺只用三个小时。</p>
+        </div><div class="item">
+        <span class="lead-num">14</span>
+        <h3>“最像《穷查理宝典》的人”是李光耀。</h3>
+        <p>“弄清楚什么管用就去做、什么不管用就避开，一遍一遍。他起步是个左翼劳工律师，最后创建了现代新加坡。” 他家里只挂两尊半身像：富兰克林与李光耀。</p>
+        </div></div>
+        </section>
+      </section>
 
-    <div class="pt"><b><span class="n">9</span>一生只需要 4 个投资。</b>
-      <p>Munger 自陈的核心持仓：Costco、Berkshire、李录的中国基金、几栋公寓。"60 年后我觉得自己已经充分分散了。找到 4 样高于平均的东西，比找 40 样容易。"——这与主流"分散化"叙事正相反。</p></div>
+      <section class="article-section">
+        <div class="h2-num-display">02</div>
+        <h2 class="article-h2"><span class="num">02</span>关键案例与对比</h2>
+        <section id="compare">
 
-    <div class="pt"><b><span class="n">10</span>关于婚姻与生育：早婚、大家庭更幸福。</b>
-      <p>"人到 35 岁都自我中心、然后才结婚"未必更好。他用"微笑时间 vs 皱眉时间"衡量，断言摩门教徒平均比一般人更幸福——尽管他自己"没兴趣为了更幸福而去相信我不相信的东西"。</p></div>
-
-    <div class="pt"><b><span class="n">11</span>建筑领域的"共享错觉"。</b>
-      <p>他批评建筑师为"怪而怪"，更批评消防规范逼出的"每间卧室必须有窗"这一过时规矩——他用安娜堡的租金数据（无窗房只便宜 10%）和邮轮（天然"窗户不足"）证明常识即可推翻它。"如果你不去看，你就不会找到。"</p></div>
-
-    <div class="pt"><b><span class="n">12</span>对美国政治的悲观：初选制选出最极端的人。</b>
-      <p>"我真希望那些旧时代的城市党魁回来取代初选——他们为控制庇护，反倒提名了老罗斯福这样相当不错的人。" 现代初选制下，"最糟的人常常赢"。</p></div>
-
-    <div class="pt"><b><span class="n">13</span>对中国乐观，反对"唠叨的保姆式"外交。</b>
-      <p>中国的逻辑很清晰：增长更快、能用低得多的价格买到更好更强的公司（代价是政治风险）。他透过李录投资，从见面到财务承诺只用三个小时。</p></div>
-
-    <div class="pt"><b><span class="n">14</span>"最像《穷查理宝典》的人"是李光耀。</b>
-      <p>"弄清楚什么管用就去做、什么不管用就避开，一遍一遍。他起步是个左翼劳工律师，最后创建了现代新加坡。" 他家里只挂两尊半身像：富兰克林与李光耀。</p></div>
-
-  </div>
-</section>
-
-<section id="compare">
-  <h2 class="teal"><span class="bar"></span>关键企业案例与对比</h2>
-  <p class="lead">访谈里 Munger 对具体公司与主题的判断，可作引用。</p>
-  <div class="tblwrap">
-    <table>
-      <thead><tr><th>对象</th><th>Munger 的判断</th></tr></thead>
-      <tbody>
+        <p class="lead-para">访谈里 Munger 对具体公司与主题的判断，可作引用。</p>
+        <div class="tblwrap">
+        <table>
+        <thead><tr><th>对象</th><th>Munger 的判断</th></tr></thead>
+        <tbody>
         <tr><td>Costco</td><td>教科书级好生意：几乎零营运资本（周转快、货卖完才付款）；会员制一举排除三类人（偷窃者、开空头支票者、不花钱却堵满停车场的人）；净盗窃率全球最低（&lt;0.02%）；SKU 少、周转快。他是董事会成员。</td></tr>
-        <tr><td>NetJets</td><td>从亏损 / 打平 10–12 年到"金矿"；文化是"安全第一、客服第二，最后才管股东"；不拥有飞机，把所有权与折旧放到别人身上；至今零乘客死亡（"我们不说，怕它变"）。</td></tr>
-        <tr><td>报纸（Buffalo Evening News）</td><td>曾是绝佳的"收费桥"垄断、金矿；互联网一来，整个行业的财富几乎全部蒸发——"技术变革会让看似坚不可摧的生意失败"。</td></tr>
-        <tr><td>柯达</td><td>曾雇大量化学博士、主导胶片化学、拥有全球最可靠商标之一（"走遍非洲只有可口可乐和柯达"）；因新拍照方式被淘汰，普通股东归零。"你没法责怪管理层为什么不发明自己的毁灭。"</td></tr>
+        <tr><td>NetJets</td><td>从亏损 / 打平 10–12 年到“金矿”；文化是“安全第一、客服第二，最后才管股东”；不拥有飞机，把所有权与折旧放到别人身上；至今零乘客死亡（“我们不说，怕它变”）。</td></tr>
+        <tr><td>报纸（Buffalo Evening News）</td><td>曾是绝佳的“收费桥”垄断、金矿；互联网一来，整个行业的财富几乎全部蒸发——“技术变革会让看似坚不可摧的生意失败”。</td></tr>
+        <tr><td>柯达</td><td>曾雇大量化学博士、主导胶片化学、拥有全球最可靠商标之一（“走遍非洲只有可口可乐和柯达”）；因新拍照方式被淘汰，普通股东归零。“你没法责怪管理层为什么不发明自己的毁灭。”</td></tr>
         <tr><td>航空公司 vs 汽车</td><td>航空自莱特兄弟以来对股东基本不赚钱；有品牌利润的咖啡、燕麦片公司进了航空也一样。原因是持续巨额 CAPEX 逼出毁灭性竞争。</td></tr>
-        <tr><td>铁路（BNSF）</td><td>早期是烂投资（游说、贿赂、惨烈竞争）；整合到只剩两条横贯大陆的大系统后，靠双层集装箱意外把运力翻倍、变得极高效率，"没什么能跟铁路比"。</td></tr>
-        <tr><td>Intel</td><td>曾站在芯片制造"绝对零点"；因执着于"永远报告更多盈利"、不够拼命保持领先，最终彻底失去领导地位。"中国的人比 Intel 狂热得多。"</td></tr>
-        <tr><td>GE / Jack Welch</td><td>好胜、用激励逼所有人更狂热，最终把"让盈利上升"当成职责，不断妥协报告方式——"短期管用，长期毁了国家"。Munger 称之为"我赢（me-win）"体系，对"双赢"的戏仿。</td></tr>
-        <tr><td>Sequoia</td><td>早早入场 + 狂热的精英制 + 巨大的"人物档案"网络，比所有人更早看到机会；但投 Robinhood 是巨大错误——"他们开始像投行那样想问题"。</td></tr>
-        <tr><td>Jim Simons / Renaissance</td><td>用计算机找出有心理学背景的市场模式（如"赢-赢"比"赢-输"更常见），"钱从清算系统里涌出"——但"社会效用几乎为零"，Munger 说若自己这么做"会有点羞愧"。</td></tr>
-        <tr><td>亚马逊</td><td>与 Costco 在"规模经济、低价返还消费者、长期复利"上相似；Munger 解释为何没投——不是判错，而是他的取胜方式是买现成的强势企业而非从零创业。</td></tr>
-        <tr><td>Fidelity 等大型共同基金</td><td>管理数万亿、只刮一点费用，但道德问题是：普通股投资根本不可能跑赢指数，"强迫每个人都当隐形指数投资者"。</td></tr>
+        <tr><td>铁路（BNSF）</td><td>早期是烂投资（游说、贿赂、惨烈竞争）；整合到只剩两条横贯大陆的大系统后，靠双层集装箱意外把运力翻倍、变得极高效率，“没什么能跟铁路比”。</td></tr>
+        <tr><td>Intel</td><td>曾站在芯片制造“绝对零点”；因执着于“永远报告更多盈利”、不够拼命保持领先，最终彻底失去领导地位。“中国的人比 Intel 狂热得多。”</td></tr>
+        <tr><td>GE / Jack Welch</td><td>好胜、用激励逼所有人更狂热，最终把“让盈利上升”当成职责，不断妥协报告方式——“短期管用，长期毁了国家”。Munger 称之为“我赢（me-win）”体系，对“双赢”的戏仿。</td></tr>
+        <tr><td>Sequoia</td><td>早早入场 + 狂热的精英制 + 巨大的“人物档案”网络，比所有人更早看到机会；但投 Robinhood 是巨大错误——“他们开始像投行那样想问题”。</td></tr>
+        <tr><td>Jim Simons / Renaissance</td><td>用计算机找出有心理学背景的市场模式（如“赢-赢”比“赢-输”更常见），“钱从清算系统里涌出”——但“社会效用几乎为零”，Munger 说若自己这么做“会有点羞愧”。</td></tr>
+        <tr><td>亚马逊</td><td>与 Costco 在“规模经济、低价返还消费者、长期复利”上相似；Munger 解释为何没投——不是判错，而是他的取胜方式是买现成的强势企业而非从零创业。</td></tr>
+        <tr><td>Fidelity 等大型共同基金</td><td>管理数万亿、只刮一点费用，但道德问题是：普通股投资根本不可能跑赢指数，“强迫每个人都当隐形指数投资者”。</td></tr>
         <tr><td>中国 / 李录</td><td>增长快 + 公司更好更便宜 + 政治风险；透过李录投资，从见面到财务承诺只花三小时。</td></tr>
-        <tr><td>新加坡 / 李光耀</td><td>最像《穷查理宝典》的人；"什么管用就做什么"。案例：刻意选英语为国语；对毒贩判死刑以根除毒品问题。</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
+        <tr><td>新加坡 / 李光耀</td><td>最像《穷查理宝典》的人；“什么管用就做什么”。案例：刻意选英语为国语；对毒贩判死刑以根除毒品问题。</td></tr>
+        </tbody>
+        </table>
+        </div>
+        </section>
+      </section>
 
-<section id="full">
-  <h2><span class="bar"></span>全文翻译</h2>
-  <p class="lead">说话人以 <b>John</b>（提问方）、<b>Charlie</b>（回答方）、<b>Patrick</b>（主持人，开场与收尾）标注；原逐字稿有口语重复与转写错漏，译文已做可读化处理。</p>
+      <section class="article-section">
+        <div class="h2-num-display">03</div>
+        <h2 class="article-h2"><span class="num">03</span>全文翻译</h2>
+        <section id="full">
 
-  <div class="note"><b>开场（Patrick）：</b>本节目是一场开放探索——关于市场、想法、故事与策略。我们与 Charlie Munger 的这期访谈很早就安排好了，正好赶上 Stripe Press 今天推出《穷查理宝典》的精美再版。上周听到 Charlie 去世的消息，我们都很震惊；但征询了他身边亲近的人，大家一致认为，他会希望我们按原计划发布这期访谈。他是一位如饥似渴的求真者，幽默，睿智；但最令人敬佩的是——<b>他是一位伟大的老师</b>。他在访谈里说："<b>如果你不去看，你就不会找到。</b>" 愿他安息。</div>
+        <p class="lead-para">说话人以 <strong>John</strong>（提问方）、<strong>Charlie</strong>（回答方）、<strong>Patrick</strong>（主持人，开场与收尾）标注；原逐字稿有口语重复与转写错漏，译文已做可读化处理。</p>
 
-  <div class="h3sec">一、什么是"反愚蠢"与跨学科心智模型</div>
+        <p class="sub"><strong>开场（Patrick）：</strong>本节目是一场开放探索——关于市场、想法、故事与策略。我们与 Charlie Munger 的这期访谈很早就安排好了，正好赶上 Stripe Press 今天推出《穷查理宝典》的精美再版。上周听到 Charlie 去世的消息，我们都很震惊；但征询了他身边亲近的人，大家一致认为，他会希望我们按原计划发布这期访谈。他是一位如饥似渴的求真者，幽默，睿智；但最令人敬佩的是——<strong>他是一位伟大的老师</strong>。他在访谈里说：“<strong>如果你不去看，你就不会找到。</strong>” 愿他安息。</p>
 
-  <div class="dlg p"><p class="who">John</p><p>我们正坐在 Charlie 位于洛杉矶的家里，你在这里住了 61 年？我们还知道这栋房子是你自己设计的——所以我们是"在你的作品里讨论你的作品"。我很早读《穷查理宝典》就觉得它是对"独立思考"的颂歌：地图与疆域——职业金融世界大谈企业的数字（地图），而你更执着于追问：这是一门好生意吗？</p></div>
+        <h3>一、什么是“反愚蠢”与跨学科心智模型</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>它能否长期持续？在经营企业和机构这类"混乱"的世界里，传统那套"宗教"是愚蠢的。我从一开始的理论就是：<b>我要消灭一切最循规蹈矩的愚蠢。</b>只要做到这一点，我就能相对大多数人取得优势。你看财富管理业是怎么形成的——<b>你几乎找不到世界上还有哪个地方，有这么多高智商的人在做这么多蠢事</b>。所以对一个能培养出"反愚蠢"能力的人来说，那是一片无人看管的沃土。</p>
-  <p>我很早就想：要学会几乎所有学科里的"大思想"，并通过不断使用把它们变成流畅的本能。这会给我一种优势——别人把这种优势叫作"常识"。可他们说"老 Joe 有常识"，意思其实是"<b>他有过人的见识（uncommon sense）</b>"。在几乎所有事上都明智的人，是罕见的，不是常见的。大多数人都是一堆疯狂的偏见。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>我们正坐在 Charlie 位于洛杉矶的家里，你在这里住了 61 年？我们还知道这栋房子是你自己设计的——所以我们是“在你的作品里讨论你的作品”。我很早读《穷查理宝典》就觉得它是对“独立思考”的颂歌：地图与疆域——职业金融世界大谈企业的数字（地图），而你更执着于追问：这是一门好生意吗？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你学各学科的"大思想"，是因为纯粹智力好奇，还是觉得它们在工作中真有用？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>它能否长期持续？在经营企业和机构这类“混乱”的世界里，传统那套“宗教”是愚蠢的。我从一开始的理论就是：<strong>我要消灭一切最循规蹈矩的愚蠢。</strong>只要做到这一点，我就能相对大多数人取得优势。你看财富管理业是怎么形成的——<strong>你几乎找不到世界上还有哪个地方，有这么多高智商的人在做这么多蠢事</strong>。所以对一个能培养出“反愚蠢”能力的人来说，那是一片无人看管的沃土。</p>
+        <p>我很早就想：要学会几乎所有学科里的“大思想”，并通过不断使用把它们变成流畅的本能。这会给我一种优势——别人把这种优势叫作“常识”。可他们说“老 Joe 有常识”，意思其实是“<strong>他有过人的见识（uncommon sense）</strong>”。在几乎所有事上都明智的人，是罕见的，不是常见的。大多数人都是一堆疯狂的偏见。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>两者都是。比如我一接触 Pascal 的概率数学，就立刻看出它有多重要，并彻底掌握了它。我的数学老师根本不知道他讲到了这门数学对每个人都极为重要的部分。后来我到哈佛商学院，那里早年最引以为豪的是"决策树理论"——而它讲的其实就是：<b>Pascal 概率数学在现实生活里管用</b>。哈佛商学院要给一群研究生补高中数学，而他们没错——因为早期教育太无效了。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你学各学科的“大思想”，是因为纯粹智力好奇，还是觉得它们在工作中真有用？</p></span></div>
 
-  <div class="h3sec">二、卖对别人有好处的东西：从法律到投资</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>两者都是。比如我一接触 Pascal 的概率数学，就立刻看出它有多重要，并彻底掌握了它。我的数学老师根本不知道他讲到了这门数学对每个人都极为重要的部分。后来我到哈佛商学院，那里早年最引以为豪的是“决策树理论”——而它讲的其实就是：<strong>Pascal 概率数学在现实生活里管用</strong>。哈佛商学院要给一群研究生补高中数学，而他们没错——因为早期教育太无效了。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>《穷查理宝典》里你提倡跨学科方法，我特别喜欢来自生物学的"稳定生态系统"：能长期存续的企业，是那些不搞"强盗大亨式"租金抽取的……</p></div>
+        <h3>二、卖对别人有好处的东西：从法律到投资</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>有些强盗大亨确实活得久，也有很多房地产商很卑鄙，甚至认为不做点卑鄙的事生意就不"稳妥"。<b>我的想法正好相反</b>：<b>如果你靠"卖对别人有好处的东西"谋生，平均下来，这比卖对他们有害的东西更安全、也更赚钱。</b>赌博、毒品、疯狂宗教……很多人完全不遵守这条规则。我早下定决心：<b>我只卖我自己愿意在对面买的东西，也只想和我敬佩的人共事。</b></p>
-  <p>如果你年轻时就开始这么做、一生一致地做下去，那是个巨大的优势。<b>高中数学课上保持清醒，与好人而非坏人打交道，卖你自己当买家也愿意买的东西，而不是你能靠忽悠卖掉的东西。</b> 这些道理简单，但对坚持践行简单道理的人来说，它运转得好得惊人。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>《穷查理宝典》里你提倡跨学科方法，我特别喜欢来自生物学的“稳定生态系统”：能长期存续的企业，是那些不搞“强盗大亨式”租金抽取的……</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你提到你父亲教你的那一课——你从法律转向投资，部分就是因为"对手方"存在<b>逆向选择</b>：来找法律代理的人，很多是惹了一堆麻烦、或在危险监管边缘试探的人。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>有些强盗大亨确实活得久，也有很多房地产商很卑鄙，甚至认为不做点卑鄙的事生意就不“稳妥”。<strong>我的想法正好相反</strong>：<strong>如果你靠“卖对别人有好处的东西”谋生，平均下来，这比卖对他们有害的东西更安全、也更赚钱。</strong>赌博、毒品、疯狂宗教……很多人完全不遵守这条规则。我早下定决心：<strong>我只卖我自己愿意在对面买的东西，也只想和我敬佩的人共事。</strong></p>
+        <p>如果你年轻时就开始这么做、一生一致地做下去，那是个巨大的优势。<strong>高中数学课上保持清醒，与好人而非坏人打交道，卖你自己当买家也愿意买的东西，而不是你能靠忽悠卖掉的东西。</strong> 这些道理简单，但对坚持践行简单道理的人来说，它运转得好得惊人。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>这极其危险。你几乎找不到比 <b>Sackler 家族</b>更不道德的赚钱方式了——他们打着"合法止痛"的幌子卖成瘾性药物。你看看一路帮他们的律所、顾问公司、会计师事务所，里面有很多非常体面的名字。<b>我认为接 Sackler 这种客户是愚蠢的</b>——你甚至不想让人知道你的地址。很多大律所只要客户够成功就会接，<b>我不认同那种执业模式。我认为你该对客户相当挑剔。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你提到你父亲教你的那一课——你从法律转向投资，部分就是因为“对手方”存在<strong>逆向选择</strong>：来找法律代理的人，很多是惹了一堆麻烦、或在危险监管边缘试探的人。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>那对制药公司在阿片危机中扮演的角色，社会层面的解法是什么？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>这极其危险。你几乎找不到比 <strong>Sackler 家族</strong>更不道德的赚钱方式了——他们打着“合法止痛”的幌子卖成瘾性药物。你看看一路帮他们的律所、顾问公司、会计师事务所，里面有很多非常体面的名字。<strong>我认为接 Sackler 这种客户是愚蠢的</strong>——你甚至不想让人知道你的地址。很多大律所只要客户够成功就会接，<strong>我不认同那种执业模式。我认为你该对客户相当挑剔。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>很多人把"卖药给别人赚钱"合理化了。回到罗斯福（FDR）——他的钱主要来自他祖父向中国卖鸦片，还卖给中国土匪；他回美国住进大房子时非常体面。<b>但我不想靠向中国卖鸦片赚钱，那是极其令人作呕的方式。</b> 哈佛、耶鲁、普林斯顿早期得到的很多钱也来自此。很多人把世界历史上一切可怕行为都合理化了。<b>而我认为更安全、更稳妥、也更好的做法是：把那一整套东西从你的"曲目表"里彻底删除。</b>把坏人、坏活动从你生活里清理出去，直接排除它们。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>那对制药公司在阿片危机中扮演的角色，社会层面的解法是什么？</p></span></div>
 
-  <div class="h3sec">三、地图不是疆域：生意的质量与可持续性</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>很多人把“卖药给别人赚钱”合理化了。回到罗斯福（FDR）——他的钱主要来自他祖父向中国卖鸦片，还卖给中国土匪；他回美国住进大房子时非常体面。<strong>但我不想靠向中国卖鸦片赚钱，那是极其令人作呕的方式。</strong> 哈佛、耶鲁、普林斯顿早期得到的很多钱也来自此。很多人把世界历史上一切可怕行为都合理化了。<strong>而我认为更安全、更稳妥、也更好的做法是：把那一整套东西从你的“曲目表”里彻底删除。</strong>把坏人、坏活动从你生活里清理出去，直接排除它们。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>这是我从书里最大的收获之一：<b>地图不是疆域</b>。一家企业不等于它的利润表和资产负债表。你可能有一门数字上很稳健的生意，但问题是：管理层诚实吗？产品对买它的人真有好处吗？投资难就难在——<b>大多数企业终将消亡</b>。所有伟大的零售商，90% 在过去 100 年里消亡了。所以成功的投资，你要预判那些会摧毁企业的东西。</p></div>
+        <h3>三、地图不是疆域：生意的质量与可持续性</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>过去 100 年里，掌控大品牌的人以更少的风险比别人更轻松稳定地赚了更多钱。但我记得当年 <b>Ipana</b> 是很畅销的牙膏，然后它就没了，彻底没了。<b>我认为现在有一些力量会让掌控大品牌的人更难过</b>：像 Costco 那样的自有品牌，还有 Aldi 这类店的成功。作为投资者，即便你还没看到，也该意识到：<b>除非你熟悉经济史、记得那些曾经看似永恒却消亡的东西，否则你不会意识到现代大品牌也有消亡风险。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>这是我从书里最大的收获之一：<strong>地图不是疆域</strong>。一家企业不等于它的利润表和资产负债表。你可能有一门数字上很稳健的生意，但问题是：管理层诚实吗？产品对买它的人真有好处吗？投资难就难在——<strong>大多数企业终将消亡</strong>。所有伟大的零售商，90% 在过去 100 年里消亡了。所以成功的投资，你要预判那些会摧毁企业的东西。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>而且它们正被两面夹击：一边是沃尔玛、Costco、亚马逊这样的超大型零售商，另一边是 DTC 公司——它们在网上卖，不需要零售分销渠道。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>过去 100 年里，掌控大品牌的人以更少的风险比别人更轻松稳定地赚了更多钱。但我记得当年 <strong>Ipana</strong> 是很畅销的牙膏，然后它就没了，彻底没了。<strong>我认为现在有一些力量会让掌控大品牌的人更难过</strong>：像 Costco 那样的自有品牌，还有 Aldi 这类店的成功。作为投资者，即便你还没看到，也该意识到：<strong>除非你熟悉经济史、记得那些曾经看似永恒却消亡的东西，否则你不会意识到现代大品牌也有消亡风险。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>确实。<b>我认为一切投资本质上都难如登天</b>，因为好想法会被抬到过高的价格而变得危险——没有什么投资想法好到"你怎么抬高价格都毁不掉它"。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>而且它们正被两面夹击：一边是沃尔玛、Costco、亚马逊这样的超大型零售商，另一边是 DTC 公司——它们在网上卖，不需要零售分销渠道。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你和 Warren 说，把投资分成"是""否"和"太难、无法判断"三类。但你不能因为觉得科技"太难"就不去推理——想想 <b>Buffalo Evening News</b>：报纸在互联网出现前是绝佳的"收费桥"，然后突然之间，经济特性就完全不同了。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>确实。<strong>我认为一切投资本质上都难如登天</strong>，因为好想法会被抬到过高的价格而变得危险——没有什么投资想法好到“你怎么抬高价格都毁不掉它”。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>基本上，报纸行业的财富，除了少数例外，整体烟消云散。<b>它们曾是刀枪不入的垄断、金矿，让主人稳稳富了 200 年，然后几乎全都消失了。</b>所以你必须认识到：<b>技术变革会让一些新生意兴起，也会让一些看起来坚不可摧的生意失败。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你和 Warren 说，把投资分成“是”“否”和“太难、无法判断”三类。但你不能因为觉得科技“太难”就不去推理——想想 <strong>Buffalo Evening News</strong>：报纸在互联网出现前是绝佳的“收费桥”，然后突然之间，经济特性就完全不同了。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>所以其实你暗中是个科技投资者，因为你在推理技术对 Costco 或对报纸的影响。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>基本上，报纸行业的财富，除了少数例外，整体烟消云散。<strong>它们曾是刀枪不入的垄断、金矿，让主人稳稳富了 200 年，然后几乎全都消失了。</strong>所以你必须认识到：<strong>技术变革会让一些新生意兴起，也会让一些看起来坚不可摧的生意失败。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>是的。就拿制药来说——<b>美国制药业比全世界任何制药业都好，第二名差得远。</b>但与此同时，药品分销方式上有相当多猫腻。总的来说，<b>我们没有投资制药，因为我们没有优势。</b>我对生物学、医学、化学的了解，不足以让我有优势去猜哪个新药会成功——而懂这些的人比我强得多。<b>我为什么要在别人比我强得多的游戏里，拿对我极其重要的东西（比如我养活家人的方式）去对赌？</b></p>
-  <p>在实际生活中想成功，你必须做两件事：一是要有一定的能力；二是要<b>知道自己知道什么、什么时候不知道</b>。你必须知道自己的能力边界。<b>我宁可要一个 IQ 160 却以为自己只有 150 的人，也不要一个 IQ 160 却以为自己是 200 的人——后者会害死你，因为他不知道自己的能力边界。</b>我们不擅长猜哪个新药会成功，所以我们连看都不看。<b>我们不需要无限多的机会。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>所以其实你暗中是个科技投资者，因为你在推理技术对 Costco 或对报纸的影响。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你为什么从不投亚马逊？它看起来和 Costco 非常像：规模经济，以更低价格返还消费者，长期复利。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>是的。就拿制药来说——<strong>美国制药业比全世界任何制药业都好，第二名差得远。</strong>但与此同时，药品分销方式上有相当多猫腻。总的来说，<strong>我们没有投资制药，因为我们没有优势。</strong>我对生物学、医学、化学的了解，不足以让我有优势去猜哪个新药会成功——而懂这些的人比我强得多。<strong>我为什么要在别人比我强得多的游戏里，拿对我极其重要的东西（比如我养活家人的方式）去对赌？</strong></p>
+        <p>在实际生活中想成功，你必须做两件事：一是要有一定的能力；二是要<strong>知道自己知道什么、什么时候不知道</strong>。你必须知道自己的能力边界。<strong>我宁可要一个 IQ 160 却以为自己只有 150 的人，也不要一个 IQ 160 却以为自己是 200 的人——后者会害死你，因为他不知道自己的能力边界。</strong>我们不擅长猜哪个新药会成功，所以我们连看都不看。<strong>我们不需要无限多的机会。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我们平均下来，是<b>买那些已经有很大势能、也有人才的现成企业，然后骑着它们跑</b>。我们靠"找到一门已经在运转的生意并买下它"赚的钱，远多于从零创办新企业。<b>NetJets</b> 就是一门有意思的生意，我们亏了钱或勉强打平了 10 到 12 年——<b>现在它是一台金矿般的生意。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你为什么从不投亚马逊？它看起来和 Costco 非常像：规模经济，以更低价格返还消费者，长期复利。</p></span></div>
 
-  <div class="h3sec">四、资本效率、Costco 与"别学错宗教"</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我们平均下来，是<strong>买那些已经有很大势能、也有人才的现成企业，然后骑着它们跑</strong>。我们靠“找到一门已经在运转的生意并买下它”赚的钱，远多于从零创办新企业。<strong>NetJets</strong> 就是一门有意思的生意，我们亏了钱或勉强打平了 10 到 12 年——<strong>现在它是一台金矿般的生意。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>很多你执迷的非常成功的企业，似乎都特别"<b>资本高效</b>"。可口可乐把资本密集的装瓶工作交给承担那笔 CAPEX 的伙伴；NetJets 把飞机所有权和折旧放到别人身上。</p></div>
+        <h3>四、资本效率、Costco 与“别学错宗教”</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>你说得完全正确。<b>当然，一门"赚大钱却几乎不需要资本"的生意，好过一门"要投入大量资本才能赚钱"的生意。</b><b>Costco 不需要营运资本</b>——因为周转太快：他们在需要付钱给供应商之前，就已经从顾客那里收到钱、货物也卖掉了，等于别人在为他们的库存融资。可惜这样的生意不多。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>很多你执迷的非常成功的企业，似乎都特别“<strong>资本高效</strong>”。可口可乐把资本密集的装瓶工作交给承担那笔 CAPEX 的伙伴；NetJets 把飞机所有权和折旧放到别人身上。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>人们痴迷于"百分比利润率"，但一门生意的资本效率是"利润率"和"库存账期"共同决定的，两者都能贡献资本效率。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>你说得完全正确。<strong>当然，一门“赚大钱却几乎不需要资本”的生意，好过一门“要投入大量资本才能赚钱”的生意。</strong><strong>Costco 不需要营运资本</strong>——因为周转太快：他们在需要付钱给供应商之前，就已经从顾客那里收到钱、货物也卖掉了，等于别人在为他们的库存融资。可惜这样的生意不多。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>每个上过现代商学院的人都懂这个。<b>但他们学到的文化是错的。</b>他们学到：只要 90 天付供应商、30 天就卖出，就能白用别人的营运资金，于是去欺负小供应商。<b>我认为那些模式既不安全也不好，那样对待小供应商很蠢。人们学错了"宗教"</b>——嘴上说"我们想降低资本占用"，然后把一群我们本希望信任我们、喜欢我们、好好服务我们的小人物，用非常不当的方式对待。<b>这非常愚蠢。</b>Costco 就赢了——靠快速周转库存，因为它 SKU 更少、效率高得多。</p>
-  <p><b>用很少的 SKU 高速流转，是聪明的；搞会员制，也是对的。</b>有三样东西 Costco 不想要：不想遭偷窃商品的人；不想收空头支票的人；不想让人没花什么钱就把停车场堵满。所以搞会员制，只接受某一类会员。突然之间，来的人全都是"每次消费很多"的人。<b>Costco 的净盗窃率一直是全世界最低的——长期低于千分之二（0.02%），闻所未闻。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>人们痴迷于“百分比利润率”，但一门生意的资本效率是“利润率”和“库存账期”共同决定的，两者都能贡献资本效率。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>我没想过会员制连"停车场效率"都管。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>每个上过现代商学院的人都懂这个。<strong>但他们学到的文化是错的。</strong>他们学到：只要 90 天付供应商、30 天就卖出，就能白用别人的营运资金，于是去欺负小供应商。<strong>我认为那些模式既不安全也不好，那样对待小供应商很蠢。人们学错了“宗教”</strong>——嘴上说“我们想降低资本占用”，然后把一群我们本希望信任我们、喜欢我们、好好服务我们的小人物，用非常不当的方式对待。<strong>这非常愚蠢。</strong>Costco 就赢了——靠快速周转库存，因为它 SKU 更少、效率高得多。</p>
+        <p><strong>用很少的 SKU 高速流转，是聪明的；搞会员制，也是对的。</strong>有三样东西 Costco 不想要：不想遭偷窃商品的人；不想收空头支票的人；不想让人没花什么钱就把停车场堵满。所以搞会员制，只接受某一类会员。突然之间，来的人全都是“每次消费很多”的人。<strong>Costco 的净盗窃率一直是全世界最低的——长期低于千分之二（0.02%），闻所未闻。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>你不能只是去 Costco 买瓶碘酒、随便进去。你得是会员，而且得付够钱——对一个普通人来说，"我要多付 100 美元去买瓶碘酒"就把零买小客挡在外面了。<b>Sol Price</b> 曾说：一门生意应当审慎对待它"刻意不做"的业务。<b>先弄清楚你想避开什么</b>——他们想避开盗窃损失、贪污、空头支票，以及"不花什么钱就堵满停车场"，而他们的系统一次性解决了这所有问题。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>我没想过会员制连“停车场效率”都管。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>还有别的吗？不压榨供应商、又提升资本效率的生意？你看过 TransDigm 吗？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>你不能只是去 Costco 买瓶碘酒、随便进去。你得是会员，而且得付够钱——对一个普通人来说，“我要多付 100 美元去买瓶碘酒”就把零买小客挡在外面了。<strong>Sol Price</strong> 曾说：一门生意应当审慎对待它“刻意不做”的业务。<strong>先弄清楚你想避开什么</strong>——他们想避开盗窃损失、贪污、空头支票，以及“不花什么钱就堵满停车场”，而他们的系统一次性解决了这所有问题。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>我不喜欢那种赚钱方式，因为涨价太狠、太残酷。</b>他们找出某个因国防部法规而有小垄断的东西，然后把价格提高 10 倍，还以此闻名。<b>我认为这不道德。</b>所有航空航天企业都学会了赚取非常高的资本回报——专注自己擅长的，并与作为主要客户的政府打交道。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>还有别的吗？不压榨供应商、又提升资本效率的生意？你看过 TransDigm 吗？</p></span></div>
 
-  <div class="h3sec">五、航空 vs 汽车：什么生意天生难赚钱</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>我不喜欢那种赚钱方式，因为涨价太狠、太残酷。</strong>他们找出某个因国防部法规而有小垄断的东西，然后把价格提高 10 倍，还以此闻名。<strong>我认为这不道德。</strong>所有航空航天企业都学会了赚取非常高的资本回报——专注自己擅长的，并与作为主要客户的政府打交道。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>当行业最终只有两三家玩家时，要预测谁会赚好利润并不总是容易。航空公司自莱特兄弟以来一直在亏钱，而汽车厂商却极其持久地盈利。如果今天看一门生意、知道行业最终只剩两三家，你怎么预测它们会不会赚钱？</p></div>
+        <h3>五、航空 vs 汽车：什么生意天生难赚钱</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我认为不可能 100% 准确，但回头看当然能看明白。咖啡、燕麦片这种有品牌利润的东西，人们以为在航空业也能赚钱，结果航空业对股东基本上一点利润都没赚。<b>航空公司也是"品牌商品"，只是每个人都背着重资产设备，不用也浪费</b>，于是几乎每个人都被各自处境的逻辑逼进一场毁灭性竞争。要开餐厅，大多数人会失败。<b>如果我想理解一门生意会是"航空公司型"还是"汽车型"——是不是有持续的资本开支要求？</b>航空本质上就像一个人盖了家大酒店，只能从"填满房间"里赚点增量利润，几乎逼出非理性的激烈竞争。而燕麦片不会这样。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>当行业最终只有两三家玩家时，要预测谁会赚好利润并不总是容易。航空公司自莱特兄弟以来一直在亏钱，而汽车厂商却极其持久地盈利。如果今天看一门生意、知道行业最终只剩两三家，你怎么预测它们会不会赚钱？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>BNSF 是你们最大的收购之一，从外面看，它可能比你们预期的还成功。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我认为不可能 100% 准确，但回头看当然能看明白。咖啡、燕麦片这种有品牌利润的东西，人们以为在航空业也能赚钱，结果航空业对股东基本上一点利润都没赚。<strong>航空公司也是“品牌商品”，只是每个人都背着重资产设备，不用也浪费</strong>，于是几乎每个人都被各自处境的逻辑逼进一场毁灭性竞争。要开餐厅，大多数人会失败。<strong>如果我想理解一门生意会是“航空公司型”还是“汽车型”——是不是有持续的资本开支要求？</strong>航空本质上就像一个人盖了家大酒店，只能从“填满房间”里赚点增量利润，几乎逼出非理性的激烈竞争。而燕麦片不会这样。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>铁路本来是很烂的投资。</b>最初创建时有少数人靠游说政府、贿赂议员偷了很多钱；但总的来说，大多数铁路在很长时间里像航空公司一样是烂投资。后来整合到只剩两家横贯大陆的大系统，我们有一家。一旦铁路能用双层集装箱，它就是最高效的跨洲运货方式之一——这系统是偶然出现的，没人预想到只要两个集装箱叠放就能把运力翻倍。<b>没什么能在效率和运货成本、能耗上跟铁路竞争。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>BNSF 是你们最大的收购之一，从外面看，它可能比你们预期的还成功。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你有没有想过投资其他交通基础设施——港口、航运？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>铁路本来是很烂的投资。</strong>最初创建时有少数人靠游说政府、贿赂议员偷了很多钱；但总的来说，大多数铁路在很长时间里像航空公司一样是烂投资。后来整合到只剩两家横贯大陆的大系统，我们有一家。一旦铁路能用双层集装箱，它就是最高效的跨洲运货方式之一——这系统是偶然出现的，没人预想到只要两个集装箱叠放就能把运力翻倍。<strong>没什么能在效率和运货成本、能耗上跟铁路竞争。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我们曾买过一座桥——<b>字面意义上的收费桥生意</b>。然后决定不想看起来像个该死的垄断者，就卖掉了，转向没那么"垄断"的东西。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你有没有想过投资其他交通基础设施——港口、航运？</p></span></div>
 
-  <div class="h3sec">六、投资为什么变难了</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我们曾买过一座桥——<strong>字面意义上的收费桥生意</strong>。然后决定不想看起来像个该死的垄断者，就卖掉了，转向没那么“垄断”的东西。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>投资是不是变难了？</p></div>
+        <h3>六、投资为什么变难了</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>难多了。难到大多数财富管理从业者跑赢标普这样的指数几乎零可能。</b>第一，财富和可投资证券多得多，需要管理的大资金规模大得多，买入卖出都要很久、成本更高。第二，更多聪明脑子涌入这门生意，竞争极其残酷，还有各种狂热。<b>在我有生之年，一个只买最好的普通股然后"坐着不动"的人，通胀前大约年化 10%、通胀后约 8%。这不是人类能指望的标准回报，那是一个非常特殊的地方、非常特殊的时期。</b></p>
-  <p>大萧条把所有人打得士气全无，投资被彻底鄙视，然后经济体系大幅改善，投资环境和经济状况一起演化，结果就格外好。如果你回到 1900 年左右的英国富人，他们买 2.5% 的债券（consols），2.5% 就被认为要知足、算安全。<b>回到 1880 年，英国富人中没人认为存在"安全地赚 8%"的方式。而现在每个做投资管理的人都在教所有人："跟我们打交道，你能获得通胀后 8%，因为过去 100 年就是这样。"——"过去 100 年管用"不代表"未来 100 年管用"。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>投资是不是变难了？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>假设有个 25 岁的投资者，考虑未来 50 年投资。如果他从书里学到：避开可避免的错误；把投资看作底层企业及其质量与可持续性；采用"打孔卡"式投资法——做少量投资。你认为这种方法在未来 50 年仍是成功的配方吗？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>难多了。难到大多数财富管理从业者跑赢标普这样的指数几乎零可能。</strong>第一，财富和可投资证券多得多，需要管理的大资金规模大得多，买入卖出都要很久、成本更高。第二，更多聪明脑子涌入这门生意，竞争极其残酷，还有各种狂热。<strong>在我有生之年，一个只买最好的普通股然后“坐着不动”的人，通胀前大约年化 10%、通胀后约 8%。这不是人类能指望的标准回报，那是一个非常特殊的地方、非常特殊的时期。</strong></p>
+        <p>大萧条把所有人打得士气全无，投资被彻底鄙视，然后经济体系大幅改善，投资环境和经济状况一起演化，结果就格外好。如果你回到 1900 年左右的英国富人，他们买 2.5% 的债券（consols），2.5% 就被认为要知足、算安全。<strong>回到 1880 年，英国富人中没人认为存在“安全地赚 8%”的方式。而现在每个做投资管理的人都在教所有人：“跟我们打交道，你能获得通胀后 8%，因为过去 100 年就是这样。”——“过去 100 年管用”不代表“未来 100 年管用”。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>是，但它需要相当的自律和相当的技巧。而大多数人会缺乏那份自律和技巧。</b>他们会被当时别人的行为裹挟太多，会对不当的激励反应过度——换句话说，<b>他们会开始为了拿费用而去买一些愚蠢的东西。</b></p>
-  <p>老天并没有规定每个人都有自动赚到税后 8% 的办法。普通客户或普通股票经纪人大概只能赚 2% 左右，而不是 8%。<b>所以普通券商对人类简直是彻头彻尾的祸害。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>假设有个 25 岁的投资者，考虑未来 50 年投资。如果他从书里学到：避开可避免的错误；把投资看作底层企业及其质量与可持续性；采用“打孔卡”式投资法——做少量投资。你认为这种方法在未来 50 年仍是成功的配方吗？</p></span></div>
 
-  <div class="h3sec">七、黄金与加密货币</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>是，但它需要相当的自律和相当的技巧。而大多数人会缺乏那份自律和技巧。</strong>他们会被当时别人的行为裹挟太多，会对不当的激励反应过度——换句话说，<strong>他们会开始为了拿费用而去买一些愚蠢的东西。</strong></p>
+        <p>老天并没有规定每个人都有自动赚到税后 8% 的办法。普通客户或普通股票经纪人大概只能赚 2% 左右，而不是 8%。<strong>所以普通券商对人类简直是彻头彻尾的祸害。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你早年批评黄金、现在批评加密货币。让我为加密货币辩护一下：你的视角——"投资有生产力的企业"——是不是相当以美国为中心？如果你在土耳其，产权没那么强、货币一年贬值 80%，那"转移财富的能力"……</p></div>
+        <h3>七、黄金与加密货币</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>哦，如果我住在土耳其，我可能会买黄金。<b>但如果我在土耳其，我也绝不会买加密货币。</b><b>我认为买"零的一部分"不是好投资。</b>黄金作为"约定的价值储存"已经确立了太久，考虑到我们的历史、对货币的需要，<b>黄金作为货币是完全合理的，它帮助文明发展。但加密货币是流氓活动，而且我认为推销它的人大多是骗子或妄想者。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你早年批评黄金、现在批评加密货币。让我为加密货币辩护一下：你的视角——“投资有生产力的企业”——是不是相当以美国为中心？如果你在土耳其，产权没那么强、货币一年贬值 80%，那“转移财富的能力”……</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>但我们讨论的会不会是程度问题——它们都是社会约定的价值储存，而且以溢价交易？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>哦，如果我住在土耳其，我可能会买黄金。<strong>但如果我在土耳其，我也绝不会买加密货币。</strong><strong>我认为买“零的一部分”不是好投资。</strong>黄金作为“约定的价值储存”已经确立了太久，考虑到我们的历史、对货币的需要，<strong>黄金作为货币是完全合理的，它帮助文明发展。但加密货币是流氓活动，而且我认为推销它的人大多是骗子或妄想者。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>如果我们没有黄金，也许会发明出类似加密货币的东西作为替代。<b>但既然我们已经有了黄金和早已确立的法定货币，我们就不需要那该死的加密货币了。</b>一种被广泛使用的第二交换媒介，<b>对毒贩、骗子、各种罪犯都最理想，用于敲诈、绑架也极好用</b>。我们为什么要一种"方便犯罪"的新交换媒介？<b>如果我是一个国家、有自己的货币，我不想要一种新货币被建立起来。</b>这正是反伪钞法该管的事。我叫它"<b>错觉的储存</b>"——我认为参与错觉不好，哪怕它变得很普遍。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>但我们讨论的会不会是程度问题——它们都是社会约定的价值储存，而且以溢价交易？</p></span></div>
 
-  <div class="h3sec">八、衰退、社会与制度僵化</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>如果我们没有黄金，也许会发明出类似加密货币的东西作为替代。<strong>但既然我们已经有了黄金和早已确立的法定货币，我们就不需要那该死的加密货币了。</strong>一种被广泛使用的第二交换媒介，<strong>对毒贩、骗子、各种罪犯都最理想，用于敲诈、绑架也极好用</strong>。我们为什么要一种“方便犯罪”的新交换媒介？<strong>如果我是一个国家、有自己的货币，我不想要一种新货币被建立起来。</strong>这正是反伪钞法该管的事。我叫它“<strong>错觉的储存</strong>”——我认为参与错觉不好，哪怕它变得很普遍。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>我们正面对衰退、可能的滞胀。你对人们如何渡过难关有什么建议？</p></div>
+        <h3>八、衰退、社会与制度僵化</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>我对所有困难只有一套标准建议：咽下去，扛过去（suck it in and cope）。</b>这是任何人唯一能做的。部分上你得精明——尽可能精明。但这就是我的配方，它对我很管用。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>我们正面对衰退、可能的滞胀。你对人们如何渡过难关有什么建议？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你怎么看未来几十年的美国社会？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>我对所有困难只有一套标准建议：咽下去，扛过去（suck it in and cope）。</strong>这是任何人唯一能做的。部分上你得精明——尽可能精明。但这就是我的配方，它对我很管用。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>老年人总倾向于认为新一代要完蛋。但总体来说，世道并没有真的变坏。<b>但我确实不喜欢政治在我有生之年在美国演变的方式。</b>我不喜欢民主演变成现在这样：有了初选、两党主导，每个党里最极端的人拥有很大拉力，于是控制提名人。<b>我真希望那些老城市党魁回来，取代现在的初选</b>——他们要控制庇护，反而提名了老罗斯福这样相当不错的人。而现代初选系统里，<b>最糟的人常常赢</b>。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你怎么看未来几十年的美国社会？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你怎么看生育率下降？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>老年人总倾向于认为新一代要完蛋。但总体来说，世道并没有真的变坏。<strong>但我确实不喜欢政治在我有生之年在美国演变的方式。</strong>我不喜欢民主演变成现在这样：有了初选、两党主导，每个党里最极端的人拥有很大拉力，于是控制提名人。<strong>我真希望那些老城市党魁回来，取代现在的初选</strong>——他们要控制庇护，反而提名了老罗斯福这样相当不错的人。而现代初选系统里，<strong>最糟的人常常赢</strong>。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我认为"人到 35 岁都很自我中心、然后才结婚"未必更好。21、22 岁结婚、因为有了小孩而被迫快速成熟的那一代人，某种意义上比晚婚、只生一两个孩子的人<b>更幸运</b>。如果你用某种客观方式衡量人类幸福——比如统计微笑时间 vs 皱眉时间——<b>摩门教徒平均会远比一般人幸福</b>。我没有兴趣为了更幸福而去相信我不相信的东西，我在这点上是个怪人。但我毫不怀疑摩门教徒平均比我们其他人更幸福。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你怎么看生育率下降？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>我们该多担心"制度僵化"？比如你为加州大学圣塔芭芭拉分校开发的那块临水地产，现在没法用 40 年前能做的方式开发了。年轻人获得好住房越来越难。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我认为“人到 35 岁都很自我中心、然后才结婚”未必更好。21、22 岁结婚、因为有了小孩而被迫快速成熟的那一代人，某种意义上比晚婚、只生一两个孩子的人<strong>更幸运</strong>。如果你用某种客观方式衡量人类幸福——比如统计微笑时间 vs 皱眉时间——<strong>摩门教徒平均会远比一般人幸福</strong>。我没有兴趣为了更幸福而去相信我不相信的东西，我在这点上是个怪人。但我毫不怀疑摩门教徒平均比我们其他人更幸福。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>当然。在我们的政治体系里，州和市里握有政治权力的人不想要大量新开发，而且他们有法律权力禁止它，也确实这么做了。<b>这导致年轻人获得好住房的机会比在我年轻时少得多。</b>你能理解城市认为"不接受增长更好"——对很多城市来说，不增长符合自身利益。<b>也许文明也有一些必须去适应的悲哀，就像人一样。</b>并不是"你的生活一定会比父辈更好"。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>我们该多担心“制度僵化”？比如你为加州大学圣塔芭芭拉分校开发的那块临水地产，现在没法用 40 年前能做的方式开发了。年轻人获得好住房越来越难。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你觉得世界在哪些方面变糟？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>当然。在我们的政治体系里，州和市里握有政治权力的人不想要大量新开发，而且他们有法律权力禁止它，也确实这么做了。<strong>这导致年轻人获得好住房的机会比在我年轻时少得多。</strong>你能理解城市认为“不接受增长更好”——对很多城市来说，不增长符合自身利益。<strong>也许文明也有一些必须去适应的悲哀，就像人一样。</strong>并不是“你的生活一定会比父辈更好”。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>我认为我们有"政治帮派"问题，可能和历史上任何时候一样糟。我们有些疯狂的独裁者在核战争的边缘。</b>世界从不是绝对安全的地方，现在也不是。<b>我们至今躲过算是幸运，但如果足够多的疯子拥有足够多的氢弹，最终就会有足够多的仇恨。总有一天会发生某种核战，你几乎可以断定。我认为概率在变大，不是变小。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你觉得世界在哪些方面变糟？</p></span></div>
 
-  <div class="h3sec">九、建筑与"共享的错觉"</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>我认为我们有“政治帮派”问题，可能和历史上任何时候一样糟。我们有些疯狂的独裁者在核战争的边缘。</strong>世界从不是绝对安全的地方，现在也不是。<strong>我们至今躲过算是幸运，但如果足够多的疯子拥有足够多的氢弹，最终就会有足够多的仇恨。总有一天会发生某种核战，你几乎可以断定。我认为概率在变大，不是变小。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>聊聊你对建筑的兴趣。你自己设计了这栋房子，最近又为加州大学圣塔芭芭拉分校设计了不少楼。你觉得建筑师为什么老犯错？</p></div>
+        <h3>九、建筑与“共享的错觉”</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我认为<b>建筑是艺术之王</b>，它极其重要。但就像财富管理犯很多常见错误一样，<b>建筑师也犯很多常见错误</b>。太多建筑师只因为厌倦了常规形式，就想弄出点不一样的东西，于是比赛谁做得更"艺术"、更"疯"。结果就出现了 MIT 那种宿舍——人一走进去就<b>晕船</b>，因为所有墙都是斜的，蠢得离谱。<b>"怪"本身不是艺术。</b></p>
-  <p>你必须<b>理解客户的生意和客户真实的需求</b>。就说密歇根大学的研究生宿舍：他们只剩一个小停车场。我意识到，如果合理利用周边、把停车场面积翻倍，就能盖一栋容纳很多研究生的大方块楼——但这样做必然会让一些卧室没有窗。而我也知道<b>卧室缺窗根本没关系</b>：我在安娜堡转了一圈，当地私人开发商盖过没窗、全靠人工照明的公寓；两间一模一样的卧室，光墙那间<b>租金只便宜 10%</b>。<b>我去找了证据。</b></p>
-  <p>每艘邮轮天生都"缺窗"，可人们一周付两万美元上船，嫌光少就去公共休息室。<b>我遵循的是来自船舶建筑的正确先例。但你能给我找一个从船舶建筑学到东西的建筑师吗？如果你不去看，你就不会找到。</b>我还给学生安排单人房——<b>我从没见过哪个孩子喜欢跟一两个不相干的人睡同一间房。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>聊聊你对建筑的兴趣。你自己设计了这栋房子，最近又为加州大学圣塔芭芭拉分校设计了不少楼。你觉得建筑师为什么老犯错？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>那这个"共享的错觉"为什么持续了这么久？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我认为<strong>建筑是艺术之王</strong>，它极其重要。但就像财富管理犯很多常见错误一样，<strong>建筑师也犯很多常见错误</strong>。太多建筑师只因为厌倦了常规形式，就想弄出点不一样的东西，于是比赛谁做得更“艺术”、更“疯”。结果就出现了 MIT 那种宿舍——人一走进去就<strong>晕船</strong>，因为所有墙都是斜的，蠢得离谱。<strong>“怪”本身不是艺术。</strong></p>
+        <p>你必须<strong>理解客户的生意和客户真实的需求</strong>。就说密歇根大学的研究生宿舍：他们只剩一个小停车场。我意识到，如果合理利用周边、把停车场面积翻倍，就能盖一栋容纳很多研究生的大方块楼——但这样做必然会让一些卧室没有窗。而我也知道<strong>卧室缺窗根本没关系</strong>：我在安娜堡转了一圈，当地私人开发商盖过没窗、全靠人工照明的公寓；两间一模一样的卧室，光墙那间<strong>租金只便宜 10%</strong>。<strong>我去找了证据。</strong></p>
+        <p>每艘邮轮天生都“缺窗”，可人们一周付两万美元上船，嫌光少就去公共休息室。<strong>我遵循的是来自船舶建筑的正确先例。但你能给我找一个从船舶建筑学到东西的建筑师吗？如果你不去看，你就不会找到。</strong>我还给学生安排单人房——<strong>我从没见过哪个孩子喜欢跟一两个不相干的人睡同一间房。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>起因是<b>消防规范</b>：他们担心消防员要爬梯子从窗户往里看、爬进去救人，所以规定每个睡眠空间必须有窗。这有两点错。<b>第一，从没发生过</b>——没人能找出"消防员爬高梯、透过窗发现有人昏在床上"的案例。<b>第二，现代建筑有自动喷淋系统，死亡概率基本为零。</b>规范后来改了，但<b>人们已经习惯了某种做法，当然就照旧做下去</b>。就连梅奥诊所——文化最令人敬佩的地方之一——也曾长期用医生会的旧术式做髋关节置换，因为新术式对医生太难学。<b>建筑师没什么不同，他们做的是自己习惯做的。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>那这个“共享的错觉”为什么持续了这么久？</p></span></div>
 
-  <div class="h3sec">十、双赢与资本主义</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>起因是<strong>消防规范</strong>：他们担心消防员要爬梯子从窗户往里看、爬进去救人，所以规定每个睡眠空间必须有窗。这有两点错。<strong>第一，从没发生过</strong>——没人能找出“消防员爬高梯、透过窗发现有人昏在床上”的案例。<strong>第二，现代建筑有自动喷淋系统，死亡概率基本为零。</strong>规范后来改了，但<strong>人们已经习惯了某种做法，当然就照旧做下去</strong>。就连梅奥诊所——文化最令人敬佩的地方之一——也曾长期用医生会的旧术式做髋关节置换，因为新术式对医生太难学。<strong>建筑师没什么不同，他们做的是自己习惯做的。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你在书里花很多篇幅讲"双赢"的生意、以及它对长期的重要性。</p></div>
+        <h3>十、双赢与资本主义</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>还有什么比这更重要？</b>双赢不只是"创造共同的富足"更有效，<b>在道德上也更好</b>。就像资本主义——它有这种成倍放大的效应，<b>这正是文明运转得这么好的原因：因为其中有大量双赢。</b>比如 Dairy Queen——夏天父母来买便宜的热狗和蛋筒，小店周围的人赚得还不错：顾客拿到想要的，看店的人拿到想要的，股东也拿到回报。<b>全是双赢。</b></p>
-  <p>想想那些卖 OxyContin 的人，纯粹令人作呕的赚钱方式。我也不想要大众狂热——比如"感恩而死"那种全场观众都在吸毒的音乐会，<b>那是在助长文明的衰败</b>。<b>资本主义的美妙之处，是让双赢交易变得非常容易、几乎自动发生。像 Bernie Sanders 和 Elizabeth Warren 这样的人，就是不明白这一点。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你在书里花很多篇幅讲“双赢”的生意、以及它对长期的重要性。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你担心政治光谱里"不信资本主义"这一派崛起吗？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>还有什么比这更重要？</strong>双赢不只是“创造共同的富足”更有效，<strong>在道德上也更好</strong>。就像资本主义——它有这种成倍放大的效应，<strong>这正是文明运转得这么好的原因：因为其中有大量双赢。</strong>比如 Dairy Queen——夏天父母来买便宜的热狗和蛋筒，小店周围的人赚得还不错：顾客拿到想要的，看店的人拿到想要的，股东也拿到回报。<strong>全是双赢。</strong></p>
+        <p>想想那些卖 OxyContin 的人，纯粹令人作呕的赚钱方式。我也不想要大众狂热——比如“感恩而死”那种全场观众都在吸毒的音乐会，<strong>那是在助长文明的衰败</strong>。<strong>资本主义的美妙之处，是让双赢交易变得非常容易、几乎自动发生。像 Bernie Sanders 和 Elizabeth Warren 这样的人，就是不明白这一点。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>当然。看看那种苦难——<b>这发生在俄罗斯人身上</b>。他们不喜欢旧制度（农奴侍奉地主、腐败），于是转向了更糟的东西：创造一种新政府形式很难，而<b>俄罗斯做到了让它比被推翻的更糟</b>。不仅如此，他们还为自己做到了而自豪。<b>你绝不该为自己的缺陷而自豪。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你担心政治光谱里“不信资本主义”这一派崛起吗？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>我一直喜欢那句话——"资本主义是我们照顾陌生人的方式"。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>当然。看看那种苦难——<strong>这发生在俄罗斯人身上</strong>。他们不喜欢旧制度（农奴侍奉地主、腐败），于是转向了更糟的东西：创造一种新政府形式很难，而<strong>俄罗斯做到了让它比被推翻的更糟</strong>。不仅如此，他们还为自己做到了而自豪。<strong>你绝不该为自己的缺陷而自豪。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>它运转得极其惊人。如果我治理一个现代文明，我会<b>对一切无法造假的东西非常慷慨</b>——给严重失明者一份随通胀上调的终身养老金；<b>任何人从小学到大学的教育政府全包——但必须是精英制</b>。但<b>任何容易被造假的东西，我不付</b>，因为那会招来太多欺骗。我会相当慷慨，但对下背痛、心理问题的人相当强硬。<b>没人像我这样想，我感到孤独。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>我一直喜欢那句话——“资本主义是我们照顾陌生人的方式”。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>《穷查理宝典》是怎么来的？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>它运转得极其惊人。如果我治理一个现代文明，我会<strong>对一切无法造假的东西非常慷慨</strong>——给严重失明者一份随通胀上调的终身养老金；<strong>任何人从小学到大学的教育政府全包——但必须是精英制</strong>。但<strong>任何容易被造假的东西，我不付</strong>，因为那会招来太多欺骗。我会相当慷慨，但对下背痛、心理问题的人相当强硬。<strong>没人像我这样想，我感到孤独。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我四处做了几次演讲——我有点敬佩本·格雷厄姆：他既投资赚钱，也努力做个教育者。我说这是公民义务，而且我也乐在其中。但我<b>绝不会</b>去传播它。<b>Peter Kaufman</b> 跑来请求翻我的文件，我说，只要我什么都不用做，你就进我办公室随便翻——我办公室里没有见不得人的秘密。于是 Peter 翻了翻我的办公室，<b>造出了《穷查理宝典》。真实地说，那是他的作品，不是我的。</b></p>
-  <p>它传播到了全世界，而且<b>我在印度和中国比在自己国家受欢迎得多</b>。去过一些科技公司，我看到的是<b>一片中国和印度的面孔</b>——这两个群体在高科技界非常成功，而且<b>地球上很难找到比他们更想出人头地的两个群体</b>。而这本书记录的正是这样一套方法：一本"慢慢变富"的手册。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>《穷查理宝典》是怎么来的？</p></span></div>
 
-  <div class="h3sec">十一、伯克希尔：合伙、SEC 与回购</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我四处做了几次演讲——我有点敬佩本·格雷厄姆：他既投资赚钱，也努力做个教育者。我说这是公民义务，而且我也乐在其中。但我<strong>绝不会</strong>去传播它。<strong>Peter Kaufman</strong> 跑来请求翻我的文件，我说，只要我什么都不用做，你就进我办公室随便翻——我办公室里没有见不得人的秘密。于是 Peter 翻了翻我的办公室，<strong>造出了《穷查理宝典》。真实地说，那是他的作品，不是我的。</strong></p>
+        <p>它传播到了全世界，而且<strong>我在印度和中国比在自己国家受欢迎得多</strong>。去过一些科技公司，我看到的是<strong>一片中国和印度的面孔</strong>——这两个群体在高科技界非常成功，而且<strong>地球上很难找到比他们更想出人头地的两个群体</strong>。而这本书记录的正是这样一套方法：一本“慢慢变富”的手册。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你和 Warren 合作了几十年；Patrick 和我合作十年，还计划再合作几十年。对我们建立一段建设性伙伴关系，你有什么建议？</p></div>
+        <h3>十一、伯克希尔：合伙、SEC 与回购</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>你很幸运有一个好的生活伴侣。有个好伙伴一起做，比孤身一人要好得多、也是福气。</b>Warren 和我不仅是一起赚了钱，<b>我们真的很有乐趣</b>，身边是一群极好的人。我们的乐趣在于"做事"和"理解"——我们都喜欢学到新东西、喜欢"完成一些事"，正因为它难、而你还能做到。</p>
-  <p>我们<b>不争论</b>。有些事我愿意做、Warren 不愿意，那我就适应。他在对时间做预算——<b>Warren 不想做任何"小"的事，他想要"大口吃"</b>。我们都相信：如果你异常成功，你就该在一定程度上分享。所以我们享受"教育 + 慈善 + 经营"的混合。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你和 Warren 合作了几十年；Patrick 和我合作十年，还计划再合作几十年。对我们建立一段建设性伙伴关系，你有什么建议？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你们当初为什么把各自的实体"合并"？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>你很幸运有一个好的生活伴侣。有个好伙伴一起做，比孤身一人要好得多、也是福气。</strong>Warren 和我不仅是一起赚了钱，<strong>我们真的很有乐趣</strong>，身边是一群极好的人。我们的乐趣在于“做事”和“理解”——我们都喜欢学到新东西、喜欢“完成一些事”，正因为它难、而你还能做到。</p>
+        <p>我们<strong>不争论</strong>。有些事我愿意做、Warren 不愿意，那我就适应。他在对时间做预算——<strong>Warren 不想做任何“小”的事，他想要“大口吃”</strong>。我们都相信：如果你异常成功，你就该在一定程度上分享。所以我们享受“教育 + 慈善 + 经营”的混合。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我们其实不介意那样"混在一起"。但<b>既然那么多金融操盘手都在操纵、不诚实</b>，如果我们要有很多不同实体彼此买来买去，看起来就有点像"搞鬼"。所以我们把它们合并到一起，<b>以免显得像在操纵</b>。而很多真的"多方下注"的人，确实在操纵、行为不当。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你们当初为什么把各自的实体“合并”？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你怎么看 SEC？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我们其实不介意那样“混在一起”。但<strong>既然那么多金融操盘手都在操纵、不诚实</strong>，如果我们要有很多不同实体彼此买来买去，看起来就有点像“搞鬼”。所以我们把它们合并到一起，<strong>以免显得像在操纵</strong>。而很多真的“多方下注”的人，确实在操纵、行为不当。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>有 SEC 我们好得多。在所有形式的财富管理里，靠金融欺诈发财的倾向极其巨大。</b>它随罗斯福一起诞生，而<b>我认为它最大的毛病是"不够强硬"——对不端行为（miscreancy）。</b>我会<b>强制所有大资金管理者按"每美元每年"（per dollar a year）而非历史业绩来报告投资记录</b>，那样就能把不端行为剔除出去。非常简单，而且会彻底改变整个行业，让它走向真相和卓越。<b>可谁曾建议过？没人提过这个。</b>为什么 Bernie Sanders 和 Elizabeth Warren 不推这个？那是低垂的果实——他们不喜欢资本主义的不端行为，这里有一个很容易修的，可他们却想改成更像俄罗斯的整个体系，这疯了。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你怎么看 SEC？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>反回购战争似乎非常错误、危险。回购是我们把资金从低效公司返还给更高产企业的途径；否则就是在鼓励"制度僵化"。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>有 SEC 我们好得多。在所有形式的财富管理里，靠金融欺诈发财的倾向极其巨大。</strong>它随罗斯福一起诞生，而<strong>我认为它最大的毛病是“不够强硬”——对不端行为（miscreancy）。</strong>我会<strong>强制所有大资金管理者按“每美元每年”（per dollar a year）而非历史业绩来报告投资记录</strong>，那样就能把不端行为剔除出去。非常简单，而且会彻底改变整个行业，让它走向真相和卓越。<strong>可谁曾建议过？没人提过这个。</strong>为什么 Bernie Sanders 和 Elizabeth Warren 不推这个？那是低垂的果实——他们不喜欢资本主义的不端行为，这里有一个很容易修的，可他们却想改成更像俄罗斯的整个体系，这疯了。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>换个角度看：<b>当股东"买自己股票"比"做别的"更划算时，你当然该做。</b>公司管理者应该是股东的好受托人。你有超额现金、自家股票又低于价值，<b>当然该买自家股票</b>。所以我反对那些想把它定成非法的疯子。当然，有些人回购只是为了拉高股价好拿它当"货币"用——<b>那当然不光彩，我们从不那样做。我们在它太便宜时才买。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>反回购战争似乎非常错误、危险。回购是我们把资金从低效公司返还给更高产企业的途径；否则就是在鼓励“制度僵化”。</p></span></div>
 
-  <div class="h3sec">十二、Stripe、中国与李录</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>换个角度看：<strong>当股东“买自己股票”比“做别的”更划算时，你当然该做。</strong>公司管理者应该是股东的好受托人。你有超额现金、自家股票又低于价值，<strong>当然该买自家股票</strong>。所以我反对那些想把它定成非法的疯子。当然，有些人回购只是为了拉高股价好拿它当“货币”用——<strong>那当然不光彩，我们从不那样做。我们在它太便宜时才买。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>假如我拿 Stripe 来向你路演，你会想搞懂这门生意的什么？你的顾虑会是什么？</p></div>
+        <h3>十二、Stripe、中国与李录</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>考虑到伯克希尔很大一部分来自支付系统、包括美国运通，<b>我们认识到在支付领域拥有主导地位的力量</b>。任何让整个互联网运转的现代支付都很有用。所以我认为你们的钱赚得光荣，赚了很多，为你们高兴。<b>我敬佩你们做的事。</b>你们的一切对美国运通有一点威胁，但美国运通的地位有点像爱马仕——不一定被"故事"毁掉。</p>
-  <p>问题在于：它<b>是否可能永远作为"赚钱机器"存在</b>？<b>如果柯达能突然被淘汰，也许 Stripe 被淘汰也不是完全不可想象。</b>软件里也不是每样东西都会永远赢——风投倾向于认为软件里的一切永远都会赢，<b>我一点都不信。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>假如我拿 Stripe 来向你路演，你会想搞懂这门生意的什么？你的顾虑会是什么？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你非常看好中国，为什么？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>考虑到伯克希尔很大一部分来自支付系统、包括美国运通，<strong>我们认识到在支付领域拥有主导地位的力量</strong>。任何让整个互联网运转的现代支付都很有用。所以我认为你们的钱赚得光荣，赚了很多，为你们高兴。<strong>我敬佩你们做的事。</strong>你们的一切对美国运通有一点威胁，但美国运通的地位有点像爱马仕——不一定被“故事”毁掉。</p>
+        <p>问题在于：它<strong>是否可能永远作为“赚钱机器”存在</strong>？<strong>如果柯达能突然被淘汰，也许 Stripe 被淘汰也不是完全不可想象。</strong>软件里也不是每样东西都会永远赢——风投倾向于认为软件里的一切永远都会赢，<strong>我一点都不信。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>第一，<b>他们的经济增长比我们快</b>——很长时间里快得多。第二，<b>我们能在中国以低得多的价格买到好得多、强得多的公司</b>。另一面，我们必须承担<b>政治风险</b>。只要我们能拿到足够多的便宜货，我就愿意承担——而且只会用<b>部分</b>资产，<b>天哪，我们绝不会把全部资金投在中国</b>。当然，我们是<b>通过李录投资</b>的，他是非常出色的资金管理人。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你非常看好中国，为什么？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你是通过这本书认识李录的，还是单独认识的？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>第一，<strong>他们的经济增长比我们快</strong>——很长时间里快得多。第二，<strong>我们能在中国以低得多的价格买到好得多、强得多的公司</strong>。另一面，我们必须承担<strong>政治风险</strong>。只要我们能拿到足够多的便宜货，我就愿意承担——而且只会用<strong>部分</strong>资产，<strong>天哪，我们绝不会把全部资金投在中国</strong>。当然，我们是<strong>通过李录投资</strong>的，他是非常出色的资金管理人。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>有个有趣的故事。李录来访，因为他曾是<b>天安门广场</b>（学生领袖）——一位朋友的妻子很左翼，欣赏他做那件事。当然，我<b>对李录的"革命勇气"毫无兴趣</b>，我认识的是他<b>适应现代资本主义</b>的那一面。他来到我这儿，<b>我们聊了三小时</b>。三小时结束时，我做了件从没做过的事：我说，<b>如果你停止现在做的事、只投亚洲，我就给你一些 Munger 的钱让你管。</b>他当场就答应了。<b>我们从见面到做出财务承诺，正好用了三小时。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你是通过这本书认识李录的，还是单独认识的？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>现在的地缘政治鹰派氛围，怎样改变你对投资中国的看法？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>有个有趣的故事。李录来访，因为他曾是<strong>天安门广场</strong>（学生领袖）——一位朋友的妻子很左翼，欣赏他做那件事。当然，我<strong>对李录的“革命勇气”毫无兴趣</strong>，我认识的是他<strong>适应现代资本主义</strong>的那一面。他来到我这儿，<strong>我们聊了三小时</strong>。三小时结束时，我做了件从没做过的事：我说，<strong>如果你停止现在做的事、只投亚洲，我就给你一些 Munger 的钱让你管。</strong>他当场就答应了。<strong>我们从见面到做出财务承诺，正好用了三小时。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>显然，我现在比过去更不安。</b>那个改变整个体制、说"<b>不管黑猫白猫，抓住老鼠就是好猫</b>"的人，希望中国经济像新加坡那样运转。我们当然爱那个人，而<b>新那位不像他那么符合我们的理想</b>。我认为<b>我们应该不遗余力地与大核武国保持大量友好关系</b>。中美两国作为超级核大国，<b>彼此和睦相处是一种神圣义务</b>。最好的相处方式是：<b>我们应仔细设计一系列与中国的双赢交易，并努力让它们运作得更好——这才是美国的正确政策。</b>我们不该像<b>唠叨的保姆</b>那样去"管教"中国。<b>我们自己的政府形式也有很多可耻之处，不该四处去教训别人。</b>你可以说，<b>中国走向现代化，主要靠与美国的双赢交易</b>——因为我们对他们的进口如此开放，才让他们这么快发展起来。<b>我为此自豪，很高兴我们帮了他们，我想做得更多。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>现在的地缘政治鹰派氛围，怎样改变你对投资中国的看法？</p></span></div>
 
-  <div class="h3sec">十三、Intel、Jack Welch 与"我赢"体系</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>显然，我现在比过去更不安。</strong>那个改变整个体制、说“<strong>不管黑猫白猫，抓住老鼠就是好猫</strong>”的人，希望中国经济像新加坡那样运转。我们当然爱那个人，而<strong>新那位不像他那么符合我们的理想</strong>。我认为<strong>我们应该不遗余力地与大核武国保持大量友好关系</strong>。中美两国作为超级核大国，<strong>彼此和睦相处是一种神圣义务</strong>。最好的相处方式是：<strong>我们应仔细设计一系列与中国的双赢交易，并努力让它们运作得更好——这才是美国的正确政策。</strong>我们不该像<strong>唠叨的保姆</strong>那样去“管教”中国。<strong>我们自己的政府形式也有很多可耻之处，不该四处去教训别人。</strong>你可以说，<strong>中国走向现代化，主要靠与美国的双赢交易</strong>——因为我们对他们的进口如此开放，才让他们这么快发展起来。<strong>我为此自豪，很高兴我们帮了他们，我想做得更多。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>汤姆·沃尔夫写过一篇叫"坏噪音（Bad Noise）"的短篇——你可以把它读作<b>关于爱荷华州 Grinnell、以及中西部文化在硅谷的影响</b>。但我要说，<b>Intel 的失败是同样有趣的故事</b>。Intel 站在现代芯片制造的"零点"上，位置最好，却最终<b>彻底丧失了领导地位</b>。</p>
-  <p>部分原因是：他们<b>太在意"永远报告更多盈利"</b>，没有足够鞭策自己去保持领先。<b>事实是，中国的人比 Intel 狂热得多。</b> 而 Intel 有一支官僚大军，关心的是高管奖金、市盈率、华尔街的认可。他们足够强大，可以靠权力把盈利"做上去"、风光一时，<b>但本该用这种权力确保自己远远领先、做完全可靠的供应商——而他们不是，他们让很多客户失望。如果你想拥有一个"信任的网"，你就不能辜负客户。Intel 的失败才是那个伟大的故事。</b></p></div>
+        <h3>十三、Intel、Jack Welch 与“我赢”体系</h3>
 
-  <div class="dlg p"><p class="who">John</p><p>这本书 2005 年出版。面对 GE 过去 17 年的表现，你改变对 Jack Welch 的看法了吗？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>汤姆·沃尔夫写过一篇叫“坏噪音（Bad Noise）”的短篇——你可以把它读作<strong>关于爱荷华州 Grinnell、以及中西部文化在硅谷的影响</strong>。但我要说，<strong>Intel 的失败是同样有趣的故事</strong>。Intel 站在现代芯片制造的“零点”上，位置最好，却最终<strong>彻底丧失了领导地位</strong>。</p>
+        <p>部分原因是：他们<strong>太在意“永远报告更多盈利”</strong>，没有足够鞭策自己去保持领先。<strong>事实是，中国的人比 Intel 狂热得多。</strong> 而 Intel 有一支官僚大军，关心的是高管奖金、市盈率、华尔街的认可。他们足够强大，可以靠权力把盈利“做上去”、风光一时，<strong>但本该用这种权力确保自己远远领先、做完全可靠的供应商——而他们不是，他们让很多客户失望。如果你想拥有一个“信任的网”，你就不能辜负客户。Intel 的失败才是那个伟大的故事。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>当然。我私下认识他，他是个<b>傲慢的"指挥家之子"、工程热力学博士</b>，极其好胜，一心想赢。他<b>痴迷于"往上爬"</b>，并用激励系统逼其他人也这样，像一支运动队——让每个人都更狂热。到最后，<b>他认为"让盈利上升"是自己的职责</b>，于是不断在"如何呈现盈利"上妥协、越让越多。<b>短期管用，长期毁了这个国家。</b>他死后，人人知道他是个失败者、一个操纵者。<b>我称之为"我赢（me-win）"体系——这是对"双赢"的戏仿。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>这本书 2005 年出版。面对 GE 过去 17 年的表现，你改变对 Jack Welch 的看法了吗？</p></span></div>
 
-  <div class="h3sec">十四、衍生品、委托-代理与 Jim Simons</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>当然。我私下认识他，他是个<strong>傲慢的“指挥家之子”、工程热力学博士</strong>，极其好胜，一心想赢。他<strong>痴迷于“往上爬”</strong>，并用激励系统逼其他人也这样，像一支运动队——让每个人都更狂热。到最后，<strong>他认为“让盈利上升”是自己的职责</strong>，于是不断在“如何呈现盈利”上妥协、越让越多。<strong>短期管用，长期毁了这个国家。</strong>他死后，人人知道他是个失败者、一个操纵者。<strong>我称之为“我赢（me-win）”体系——这是对“双赢”的戏仿。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>用金融危机后的视角读这本书很有意思，也很值得看你早在危机前几年就痛斥衍生品。衍生品交易如此操纵性：两个人做一笔大交易，双方账上都记一笔大利润——同一笔交易，一个报盈利，另一个也报盈利，<b>不可能两个都对</b>。</p></div>
+        <h3>十四、衍生品、委托-代理与 Jim Simons</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>如果一切变得太容易、太操纵性，进入那种文化——股票经纪、大银行……下大单的人会被带去拉斯维加斯，塞一摞可转让的筹码给他。<b>有可卡因、有妓女。那不是一种漂亮的文化。</b>还有银行家的交易——<b>高盛与马来西亚主权基金（1MDB）那笔</b>，那家伙明显该被避开，无论从道德还是审慎角度。<b>但他们被"轻松的钱"醉倒了。</b></p>
-  <p><b>你几乎想象不出一个比财富管理更充满"委托-代理问题"的领域。</b>包括基金会管理人：他想拿 40 万美元年薪（而教授拿 11 万），证明高薪的办法只有一个——挑那些"先抽 3%"的资金管理人以及私募股权，所以他会想把大量钱投给私募股权。而私募股权当然会做各种可怕的事去赚那 3 个点。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>用金融危机后的视角读这本书很有意思，也很值得看你早在危机前几年就痛斥衍生品。衍生品交易如此操纵性：两个人做一笔大交易，双方账上都记一笔大利润——同一笔交易，一个报盈利，另一个也报盈利，<strong>不可能两个都对</strong>。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你们这行里真正做到的一个人是 Jim Simons。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>如果一切变得太容易、太操纵性，进入那种文化——股票经纪、大银行……下大单的人会被带去拉斯维加斯，塞一摞可转让的筹码给他。<strong>有可卡因、有妓女。那不是一种漂亮的文化。</strong>还有银行家的交易——<strong>高盛与马来西亚主权基金（1MDB）那笔</strong>，那家伙明显该被避开，无论从道德还是审慎角度。<strong>但他们被“轻松的钱”醉倒了。</strong></p>
+        <p><strong>你几乎想象不出一个比财富管理更充满“委托-代理问题”的领域。</strong>包括基金会管理人：他想拿 40 万美元年薪（而教授拿 11 万），证明高薪的办法只有一个——挑那些“先抽 3%”的资金管理人以及私募股权，所以他会想把大量钱投给私募股权。而私募股权当然会做各种可怕的事去赚那 3 个点。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>他是世界级数学家。<b>他用计算机找出有深刻人类心理背景的市场模式。</b>有一个很简单：他发现市场的整体模式有四种组合——<b>赢-赢、输-输、赢-输、输-赢</b>。如果纯随机，四种应大致相等。结果"赢-赢"更常见，"输-输"也更常见。所以他们只要写个程序做<b>适度规模</b>的交易，<b>钱就"从清算系统里涌出来"——数十亿</b>。它如此简单、如此初级，而<b>用这种方式赚钱的社会效用几乎为零</b>。如果是我这么干，我会为自己"很聪明"而得意，但<b>我会有点羞愧——因为我除了赚大钱，没给社会交付任何东西。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你们这行里真正做到的一个人是 Jim Simons。</p></span></div>
 
-  <div class="h3sec">十五、Sequoia、Robinhood 与"四个投资"</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>他是世界级数学家。<strong>他用计算机找出有深刻人类心理背景的市场模式。</strong>有一个很简单：他发现市场的整体模式有四种组合——<strong>赢-赢、输-输、赢-输、输-赢</strong>。如果纯随机，四种应大致相等。结果“赢-赢”更常见，“输-输”也更常见。所以他们只要写个程序做<strong>适度规模</strong>的交易，<strong>钱就“从清算系统里涌出来”——数十亿</strong>。它如此简单、如此初级，而<strong>用这种方式赚钱的社会效用几乎为零</strong>。如果是我这么干，我会为自己“很聪明”而得意，但<strong>我会有点羞愧——因为我除了赚大钱，没给社会交付任何东西。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你觉得 Sequoia 为什么做得这么好？</p></div>
+        <h3>十五、Sequoia、Robinhood 与“四个投资”</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>Sequoia 入场早，而且是狂热的精英制。</b>他们所有人非常努力，比别人早得多地做大、成功，而且不断加码——就像某些芯片制造商，每一代芯片都赢得那一代。他们<b>有一份"档案"</b>：我们用的一些公寓里有个小伙子调租金的程序，我让人一查——<b>Sequoia 早就对他建了档。</b>他们有一支年轻人组成的军队到处去找每个"小子"、建大档案，所以<b>比其他人看到更多、更早、更多的机会</b>。加上声誉，那些异常成功的人想跟 Sequoia 合作，<b>这个组合无可匹敌</b>。</p>
-  <p>但最近，<b>他们投 Robinhood 是巨大错误，他们不该投。道德上和潜在后果上都是，真的愚蠢。</b>"每个热门新东西我们都得在场"——<b>他们开始像投行那样想问题。</b>而且他们撒谎——"这是一个新的自由兄弟会"，整件事就是个谎言。<b>他们在制造大众歇斯底里，我基本不喜欢"把人诱进来、然后坑他们"。</b>你在 Sequoia 很成功、跟"给苹果融资"联系在一起，<b>你为什么非要碰 Robinhood 和鬼知道什么加密货币？你该排除掉很多东西，因为"它有失身份"。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你觉得 Sequoia 为什么做得这么好？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>感觉这种叙事在变化——人们开始理解"在真正管用的仓位上集中"的价值？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>Sequoia 入场早，而且是狂热的精英制。</strong>他们所有人非常努力，比别人早得多地做大、成功，而且不断加码——就像某些芯片制造商，每一代芯片都赢得那一代。他们<strong>有一份“档案”</strong>：我们用的一些公寓里有个小伙子调租金的程序，我让人一查——<strong>Sequoia 早就对他建了档。</strong>他们有一支年轻人组成的军队到处去找每个“小子”、建大档案，所以<strong>比其他人看到更多、更早、更多的机会</strong>。加上声誉，那些异常成功的人想跟 Sequoia 合作，<strong>这个组合无可匹敌</strong>。</p>
+        <p>但最近，<strong>他们投 Robinhood 是巨大错误，他们不该投。道德上和潜在后果上都是，真的愚蠢。</strong>“每个热门新东西我们都得在场”——<strong>他们开始像投行那样想问题。</strong>而且他们撒谎——“这是一个新的自由兄弟会”，整件事就是个谎言。<strong>他们在制造大众歇斯底里，我基本不喜欢“把人诱进来、然后坑他们”。</strong>你在 Sequoia 很成功、跟“给苹果融资”联系在一起，<strong>你为什么非要碰 Robinhood 和鬼知道什么加密货币？你该排除掉很多东西，因为“它有失身份”。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>这周我正好和一群 Fidelity 的人吃饭，他们管理数以万亿计，只从上面刮一点点。他们有个很棒的业务，但有个道德问题：<b>他们的普通股投资根本不可能超过指数基金</b>——基本上他们逼每个人当"隐形指数投资者"。</p>
-  <p><b>我一生中重要的投资有什么？我有 Costco 股票、Berkshire 股票、李录的中国基金，还有几栋公寓。基本上就是四个投资。</b>60 年之后，我觉得自己<b>已经充分分散了</b>。没人教"这样算充分分散"——<b>他们大错特错。</b>找到 4 样高于平均的东西，比找 40 样容易。<b>你不该指望有那么多"清晰可辨"的机会。一生有四记真正凶狠的"扑击"，就是非常成功的一生。</b>你必须既极度耐心、又极度进取：耐心地坐着观察勘察，然后偶尔全力扑击。而电视上那种"每次都是每家公司专家"的人——<b>那是疯的。</b></p>
-  <p>但我要说，<b>整个资金管理系统都是腐败的</b>——<b>他们照顾"代理人"远好于照顾"委托人"，对自己撒谎、也对别人撒谎。这就是我们的体系。</b>我认为<b>现代风投就是伪装的投行</b>——同样的道德，同样痴迷于"大量快速财富"。当然，做得正当的投行没问题。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>感觉这种叙事在变化——人们开始理解“在真正管用的仓位上集中”的价值？</p></span></div>
 
-  <div class="h3sec">十六、伯克希尔文化：信任与"无缝之网"</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>这周我正好和一群 Fidelity 的人吃饭，他们管理数以万亿计，只从上面刮一点点。他们有个很棒的业务，但有个道德问题：<strong>他们的普通股投资根本不可能超过指数基金</strong>——基本上他们逼每个人当“隐形指数投资者”。</p>
+        <p><strong>我一生中重要的投资有什么？我有 Costco 股票、Berkshire 股票、李录的中国基金，还有几栋公寓。基本上就是四个投资。</strong>60 年之后，我觉得自己<strong>已经充分分散了</strong>。没人教“这样算充分分散”——<strong>他们大错特错。</strong>找到 4 样高于平均的东西，比找 40 样容易。<strong>你不该指望有那么多“清晰可辨”的机会。一生有四记真正凶狠的“扑击”，就是非常成功的一生。</strong>你必须既极度耐心、又极度进取：耐心地坐着观察勘察，然后偶尔全力扑击。而电视上那种“每次都是每家公司专家”的人——<strong>那是疯的。</strong></p>
+        <p>但我要说，<strong>整个资金管理系统都是腐败的</strong>——<strong>他们照顾“代理人”远好于照顾“委托人”，对自己撒谎、也对别人撒谎。这就是我们的体系。</strong>我认为<strong>现代风投就是伪装的投行</strong>——同样的道德，同样痴迷于“大量快速财富”。当然，做得正当的投行没问题。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>伯克希尔文化的秘诀，是不是"反官僚"倾向？能这么概括吗？</p></div>
+        <h3>十六、伯克希尔文化：信任与“无缝之网”</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>伯克希尔的文化相当极端。</b>我们<b>深刻意识到官僚机构如何制造出自己的内在动力</b>——人人保护人人，没人改变任何东西。结果是很多官僚机构做出很蠢的决定。我们最主要的做法是"<b>身边根本不留人</b>"——<b>总部里没有人</b>，他们人不在，就没法官僚。这对我们是巨大优势。</p>
-  <p>另一件事是：<b>我们喜欢非常可信的人。</b>我宁愿跟一个我信任的人打一通简短的电话，也不愿跟一个我不信任的人签一份由世界顶级律所准备的 40 页合同。<b>我们喜欢跟可信的人打交道，能指望他们的口头承诺。</b>如果你走进一间梅奥诊所的手术室——<b>那是我所谓的"一张该被信任的无缝之网"（a seamless web of deserved trust）</b>：外科医生信任麻醉师，麻醉师信任外科医生，护士被信任，人人信任人人，<b>完全没有官僚</b>。<b>正是这张"该被信任的无缝之网"才能完成这些极复杂的操作。</b><b>信任是地球上最伟大的经济力量之一。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>伯克希尔文化的秘诀，是不是“反官僚”倾向？能这么概括吗？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>在"往母公司交多少现金 vs 再投回业务"上，你多常与管理层意见不合？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>伯克希尔的文化相当极端。</strong>我们<strong>深刻意识到官僚机构如何制造出自己的内在动力</strong>——人人保护人人，没人改变任何东西。结果是很多官僚机构做出很蠢的决定。我们最主要的做法是“<strong>身边根本不留人</strong>”——<strong>总部里没有人</strong>，他们人不在，就没法官僚。这对我们是巨大优势。</p>
+        <p>另一件事是：<strong>我们喜欢非常可信的人。</strong>我宁愿跟一个我信任的人打一通简短的电话，也不愿跟一个我不信任的人签一份由世界顶级律所准备的 40 页合同。<strong>我们喜欢跟可信的人打交道，能指望他们的口头承诺。</strong>如果你走进一间梅奥诊所的手术室——<strong>那是我所谓的“一张该被信任的无缝之网”（a seamless web of deserved trust）</strong>：外科医生信任麻醉师，麻醉师信任外科医生，护士被信任，人人信任人人，<strong>完全没有官僚</strong>。<strong>正是这张“该被信任的无缝之网”才能完成这些极复杂的操作。</strong><strong>信任是地球上最伟大的经济力量之一。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>我们从不强抽现金到总部。<b>社会上每个人都知道，我们更希望现金被送回来。他不残忍——他是把它"挠"（tickles）出来的。</b>我不需要钱的时候，它总有办法毫无内部摩擦地回到总部。我们从成立以来<b>净发行的股份很少</b>，所以我们拥有的大部分，几乎是从"无"里创造出来的。</p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>在“往母公司交多少现金 vs 再投回业务”上，你多常与管理层意见不合？</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>一个著名的发股例子是 2000 年收购 General Re。是因为你们觉得那是市场顶部吗？</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>我们从不强抽现金到总部。<strong>社会上每个人都知道，我们更希望现金被送回来。他不残忍——他是把它“挠”（tickles）出来的。</strong>我不需要钱的时候，它总有办法毫无内部摩擦地回到总部。我们从成立以来<strong>净发行的股份很少</strong>，所以我们拥有的大部分，几乎是从“无”里创造出来的。</p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p>当时我们的股票确实比现在更被高估，而我们对 General Re 也给了高于其真实价值的估值。但最后都解决了——<b>每个人都会高估。</b>一个糟糕的例子是我们用伯克希尔股票换来的 <b>Dempster Shoe（邓普斯特鞋业），中国的竞争摧毁了我们的生意</b>——<b>收购墨迹未干，两年后我们就看出那是个可怕的错误。</b>不过它只影响了某一年两个百分点的表现，在伯克希尔的历史上不算多。当然，<b>当东西一路下跌时，我们更愿意用积累的现金大举买入；当东西疯涨时，我们越来越难找到标的。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>一个著名的发股例子是 2000 年收购 General Re。是因为你们觉得那是市场顶部吗？</p></span></div>
 
-  <div class="h3sec">十七、李光耀：最像《穷查理宝典》的人</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p>当时我们的股票确实比现在更被高估，而我们对 General Re 也给了高于其真实价值的估值。但最后都解决了——<strong>每个人都会高估。</strong>一个糟糕的例子是我们用伯克希尔股票换来的 <strong>Dempster Shoe（邓普斯特鞋业），中国的竞争摧毁了我们的生意</strong>——<strong>收购墨迹未干，两年后我们就看出那是个可怕的错误。</strong>不过它只影响了某一年两个百分点的表现，在伯克希尔的历史上不算多。当然，<strong>当东西一路下跌时，我们更愿意用积累的现金大举买入；当东西疯涨时，我们越来越难找到标的。</strong></p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>你停下想想，《穷查理宝典》很像那个缔造现代新加坡的人。</p></div>
+        <h3>十七、李光耀：最像《穷查理宝典》的人</h3>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>弄清楚什么管用，然后去做。</b>他只是比任何人都更执着、更聪明地这么做。就领导力的品质而言，<b>他可能是史上最伟大的"建国者"，包括伯里克利和历史上所有人。</b>它非常像《穷查理宝典》：<b>弄清什么管用就去做，弄清什么不管用就避开。</b>他起步是个<b>左翼劳工律师</b>，最终缔造现代新加坡——就靠这一件事，<b>简单得要命</b>。</p>
-  <p>我从李光耀一生中喜欢的一个"弄清什么管用就去做"的好例子，是那个<b>刻意选择英语作为国语</b>的决定。当逻辑要求时，<b>他就想清楚那样对自己的民众更好，然后就这么做了。</b><b>人人都该研究李光耀。</b>在这栋房子里，我只挂了两尊别人的半身像：<b>一尊是本杰明·富兰克林，一尊是李光耀。</b>就这些。富兰克林我能猜到，李光耀我猜不到。<b>我认为他对毒贩判死刑是明智的</b>——新加坡没有严重的毒品问题，因为他们处决毒贩。中国当年也是这样：当六个人里就有一个鸦片成瘾时，他们的解决办法是<b>对吸毒者判死刑、绝不例外</b>，并不需要杀很多人，问题就消失了。<b>我认为更多事情应该用李光耀式的方法处理。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>你停下想想，《穷查理宝典》很像那个缔造现代新加坡的人。</p></span></div>
 
-  <div class="dlg p"><p class="who">John</p><p>这或许是很好的收尾的一组经验。</p></div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>弄清楚什么管用，然后去做。</strong>他只是比任何人都更执着、更聪明地这么做。就领导力的品质而言，<strong>他可能是史上最伟大的“建国者”，包括伯里克利和历史上所有人。</strong>它非常像《穷查理宝典》：<strong>弄清什么管用就去做，弄清什么不管用就避开。</strong>他起步是个<strong>左翼劳工律师</strong>，最终缔造现代新加坡——就靠这一件事，<strong>简单得要命</strong>。</p>
+        <p>我从李光耀一生中喜欢的一个“弄清什么管用就去做”的好例子，是那个<strong>刻意选择英语作为国语</strong>的决定。当逻辑要求时，<strong>他就想清楚那样对自己的民众更好，然后就这么做了。</strong><strong>人人都该研究李光耀。</strong>在这栋房子里，我只挂了两尊别人的半身像：<strong>一尊是本杰明·富兰克林，一尊是李光耀。</strong>就这些。富兰克林我能猜到，李光耀我猜不到。<strong>我认为他对毒贩判死刑是明智的</strong>——新加坡没有严重的毒品问题，因为他们处决毒贩。中国当年也是这样：当六个人里就有一个鸦片成瘾时，他们的解决办法是<strong>对吸毒者判死刑、绝不例外</strong>，并不需要杀很多人，问题就消失了。<strong>我认为更多事情应该用李光耀式的方法处理。</strong></p></span></div>
 
-  <div class="dlg n"><p class="who">Charlie</p><p><b>弄清楚什么管用，然后去做；避开重大错误；采取跨学科的方法。</b></p></div>
+        <div class="qa"><span class="sp">John</span><span class="tx"><p>这或许是很好的收尾的一组经验。</p></span></div>
 
-  <div class="note"><b>收尾（Patrick）：</b>如果你喜欢这期节目，请访问 join.colossus.com 找到本播客的每一集、完整逐字稿、节目笔记与学习资源，也可以订阅 newsletter《Colossus Weekly》。</div>
+        <div class="qa"><span class="sp">Charlie</span><span class="tx"><p><strong>弄清楚什么管用，然后去做；避开重大错误；采取跨学科的方法。</strong></p></span></div>
 
-</section>
+        <p class="sub"><strong>收尾（Patrick）：</strong>如果你喜欢这期节目，请访问 join.colossus.com 找到本播客的每一集、完整逐字稿、节目笔记与学习资源，也可以订阅 newsletter《Colossus Weekly》。</p>
 
-</div>
+        </section>
+      </section>
 
-<footer>
-  <div class="wrap">
-    中文精译整理 · 供学习分享 · 原文版权归 Colossus / <i>Invest Like the Best</i> 与 Charlie Munger 遗产所有
-  </div>
-</footer>
+    </div>
+  </article>
+
+  <!-- 其它文章 -->
+  <section class="other-section">
+    <div class="eyebrow">Other Articles</div>
+    <h3 class="cta-h2" style="font-size:22px; margin-top:.5rem;">不妨再读一篇</h3>
+    <div class="other-grid">
+      <a href="https://pekxing-0.github.io/share/noah-shinn-instinct.html" class="other-card">
+        <div class="other-date">Building Instinct · Noah Shinn</div>
+        <div class="other-title">Instinct：一个「就是能用」的个人 Agent</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/langone-american-dream.html" class="other-card">
+        <div class="other-date">The American Dream · Ken Langone</div>
+        <div class="other-title">美国梦、罗斯·佩罗，与「把橙色的血一直流到今天」</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/ai-founder-mode-chesky.html" class="other-card">
+        <div class="other-date">AI Founder Mode · Brian Chesky</div>
+        <div class="other-title">从「创始人模式」到「AI 创始人模式」</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- More Articles CTA -->
+  <section class="more-cta">
+    <div class="more-cta-inner reveal">
+      <div class="eyebrow">More Articles</div>
+      <h2 class="cta-h2">更多访谈精译</h2>
+      <p style="font-size:15px; line-height:1.8; color:var(--ink2); margin-bottom:1.5rem; max-width:460px; font-family:system-ui,sans-serif;">
+        译自 Colossus《Invest Like the Best》系列。<br/>
+        仅供个人学习与交流，不构成任何投资建议。
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer-text ui-sans">
+    <div class="footer-inner">
+      <div class="fm">THANK<span style="color:#19B5DC">*</span></div>
+      <div class="fc">译自 Invest Like the Best（Colossus）· 仅供交流 · 版权归原作者所有</div>
+    </div>
+  </footer>
+
+</main>
+
+
+<script>
+  // 阅读进度
+  var bar = document.getElementById('progress');
+  function updateBar(){
+    var h = document.documentElement;
+    var total = h.scrollHeight - h.clientHeight;
+    var pct = total > 0 ? (h.scrollTop / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateBar, {passive:true});
+  updateBar();
+
+  // 阅读时长（按 280 字/分钟）
+  var body = document.getElementById('body');
+  if (body) {
+    var txt = body.innerText || body.textContent;
+    var mins = Math.max(1, Math.round(txt.length / 280));
+    document.getElementById('read-time').textContent = '阅读 ' + mins + ' 分钟';
+  }
+
+  // 通用 reveal
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  document.querySelectorAll('.article-section').forEach(function(el){ io.observe(el); });
+
+  // 段落 stagger
+  var paraIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); paraIO.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote, .article-body .item, .article-body .tblwrap, .article-body .qa, .article-body .case').forEach(function(el){ paraIO.observe(el); });
+
+  // strong 下划线
+  var strongIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in-strong'); strongIO.unobserve(en.target); } });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.article-body strong').forEach(function(el){ strongIO.observe(el); });
+</script>
 
 </body>
 </html>
