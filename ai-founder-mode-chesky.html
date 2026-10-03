@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI 创始人模式：从 founder mode 到 AI founder mode | Brian Chesky 访谈精译</title>
+<meta name="description" content="Airbnb 联合创始人 Brian Chesky 谈 founder mode、AI founder mode、Project Hawaii、11 星体验，以及如何停止追逐喝彩、重新为热爱而创作。">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231A1A1A'/%3E%3C/svg%3E">
+
+<style>
+  :root{ --paper:#F4F4F4; --ink:#1A1A1A; --ink2:#6B6B6B; --ink3:#A0A0A0; --ghost:#D0D0D0; --paper2:#E8E8E8; }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html,body{ background:var(--paper); color:var(--ink); overflow-x:hidden; margin:0; }
+  body{
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  a{ color:inherit; }
+  .ui-sans, .nav, .pill, .eyebrow, .meta-line, .other-card, .cta-h2, .article-h2 .num, .footer-text, .tbl, .lead-num{
+    font-family: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* ============ 顶部阅读进度 ============ */
+  .progress{ position:fixed; top:0; left:0; height:2px; background:var(--ink); width:0; z-index:60; transition: width .12s linear; }
+
+  /* ============ NAV ============ */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(244,244,244,0.85);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(26,26,26,0.06);
+  }
+  .nav-inner{ max-width:1100px; margin:0 auto; height:60px; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+  @media (min-width:768px){ .nav-inner{ padding:0 2.5rem; } }
+  .brand{ font-size:16px; font-weight:500; letter-spacing:-0.04em; text-decoration:none; }
+  .brand span{ color:#19B5DC; }
+  .pill{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.6rem 1.1rem; border:1px solid var(--ink); border-radius:999px;
+    font-size:13px; font-weight:500; color:var(--ink); background:transparent;
+    text-decoration:none; transition: background-color .25s ease, color .25s ease; cursor:pointer;
+  }
+  .pill:hover{ background:var(--ink); color:var(--paper); }
+
+  main{ padding-top:60px; }
+
+  /* ============ Hero ============ */
+  .hero{ padding:3rem 1.5rem 2rem; }
+  @media (min-width:768px){ .hero{ padding:5rem 1.5rem 3rem; } }
+  .hero-inner{ max-width:680px; margin:0 auto; }
+  .eyebrow{ font-size:12px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink2); }
+  .article-h1{ font-size:48px; font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:1.5rem 0 0; }
+  @media (max-width:640px){ .article-h1{ font-size:32px; } }
+  .article-lead{ font-size:21px; line-height:1.7; color:var(--ink2); margin-top:1.5rem; max-width:640px; font-style:italic; }
+  @media (max-width:640px){ .article-lead{ font-size:17px; } }
+  .meta-line{ display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; font-size:13px; color:var(--ink3); margin-top:1.75rem; }
+  .meta-line .dot{ color:var(--ink3); }
+
+  /* ============ Cover · 排版封面 ============ */
+  .cover-wrap{ max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+  .cover-block{
+    background:var(--paper2);
+    padding:4rem 2rem; text-align:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:280px;
+  }
+  .cover-block .cq{ font-size:26px; line-height:1.5; font-weight:500; max-width:720px; margin:0; }
+  @media (max-width:640px){ .cover-block{ padding:2.5rem 1.25rem; min-height:200px; } .cover-block .cq{ font-size:20px; } }
+  .cover-block .cq cite{ display:block; margin-top:1.25rem; font-size:13px; font-style:normal; color:var(--ink2); letter-spacing:0.05em; }
+
+  /* ============ 正文容器 ============ */
+  .article-shell{ position:relative; padding:5rem 1.5rem; max-width:1100px; margin:0 auto; }
+  @media (max-width:640px){ .article-shell{ padding:3rem 1.25rem; } }
+  .article-body{ max-width:680px; margin:0 auto; position:relative; }
+
+  /* ============ 章节 ============ */
+  .article-section{ position:relative; margin-bottom:4rem; }
+  @media (max-width:640px){ .article-section{ margin-bottom:2.5rem; } }
+
+  .h2-num-display{
+    position:absolute; left:-3rem; top:-2.5rem;
+    font-size:160px; font-weight:500; color:rgba(26,26,26,0.05);
+    letter-spacing:-0.05em; line-height:1;
+    font-variant-numeric: tabular-nums;
+    pointer-events:none; user-select:none;
+    transform:scale(0.85); opacity:0;
+    transition: transform 1s cubic-bezier(.16,1,.3,1), opacity 1s ease;
+    z-index:0;
+  }
+  .article-section.in .h2-num-display{ transform:scale(1); opacity:1; }
+  @media (max-width:900px){ .h2-num-display{ left:-1rem; top:-2rem; font-size:110px; } }
+  @media (max-width:640px){ .h2-num-display{ left:-.5rem; top:-1.5rem; font-size:80px; } }
+
+  .article-h2{ font-size:26px; font-weight:600; letter-spacing:-0.01em; line-height:1.3; margin:0 0 1.5rem; padding-top:1rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-h2{ font-size:22px; } }
+  .article-h2 .num{ display:block; font-size:11px; letter-spacing:0.2em; font-weight:500; color:var(--ink3); margin-bottom:.5rem; text-transform:uppercase; }
+
+  /* ============ 正文段落 ============ */
+  .article-body p{ font-size:18px; line-height:1.95; color:var(--ink); margin:0 0 1.4rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-body p{ font-size:16.5px; line-height:1.85; } }
+  .article-body p.sub{ color:var(--ink2); }
+
+  .article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote,
+  .article-body .item, .article-body .tblwrap, .article-body .qa{
+    opacity:0; transform:translateY(12px); transition: opacity .7s ease, transform .7s ease;
+  }
+  .article-body p.in, .article-body ul.in, .article-body ol.in, .article-body .pull-quote.in, .article-body .inline-quote.in,
+  .article-body .item.in, .article-body .tblwrap.in, .article-body .qa.in{ opacity:1; transform:translateY(0); }
+
+  /* 首字下沉（仅章节第一段）*/
+  .article-body .lead-para::first-letter{
+    float:left; font-size:72px; font-weight:600; line-height:.9; margin:4px 12px 0 0; color:var(--ink);
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", serif;
+  }
+  @media (max-width:640px){ .article-body .lead-para::first-letter{ font-size:54px; margin:2px 8px 0 0; } }
+
+  /* strong 滚动到位下划线 */
+  .article-body strong{
+    position:relative; font-weight:600; color:var(--ink);
+    background-image: linear-gradient(to right, var(--ink) 0, var(--ink) 0);
+    background-position:0 100%; background-size:0% 1.5px; background-repeat:no-repeat;
+    transition: background-size 1s cubic-bezier(.16,1,.3,1); padding-bottom:1px;
+  }
+  .article-body strong.in-strong{ background-size:100% 1.5px; }
+  .article-body em{ color:var(--ink); font-style:italic; }
+
+  /* 列表 */
+  .article-body ul, .article-body ol{ margin:.5rem 0 1.75rem; padding-left:1.4rem; }
+  .article-body li{ font-size:17px; line-height:1.9; color:var(--ink); margin-bottom:.85rem; padding-left:.25rem; }
+  @media (max-width:640px){ .article-body li{ font-size:16px; } }
+  .article-body li::marker{ color:var(--ink3); font-weight:500; }
+
+  /* 反共识观点 · 编号条目 */
+  .item{ position:relative; z-index:1; padding-left:3rem; margin:0 0 1.9rem; }
+  .item .lead-num{
+    position:absolute; left:0; top:.15rem;
+    font-size:13px; font-weight:600; letter-spacing:0.02em; color:var(--ink3);
+    font-variant-numeric: tabular-nums;
+  }
+  .item h3{ font-size:18px; font-weight:600; line-height:1.5; margin:0 0 .6rem; }
+  .item p{ font-size:16.5px; line-height:1.9; color:var(--ink); margin:0 0 .6rem; }
+  .item p.sub{ color:var(--ink2); font-size:15.5px; }
+
+  /* Pull Quote */
+  .pull-quote{
+    position:relative; margin:3rem -2rem; padding:2.5rem 3rem 2.5rem 4rem;
+    font-size:24px; line-height:1.55; color:var(--ink); font-weight:500;
+    border-top:1px solid var(--ink); border-bottom:1px solid var(--ink);
+    transform:scale(0.96); transform-origin:center;
+  }
+  .pull-quote.in{ transform:scale(1); }
+  .pull-quote::before{ content:"\201C"; position:absolute; left:1.25rem; top:1.5rem; font-size:64px; line-height:1; color:var(--ink); opacity:.5; font-family:ui-serif, serif; }
+  .pull-quote .cite{ display:block; margin-top:1rem; font-size:13px; color:var(--ink2); font-weight:400; }
+  @media (max-width:900px){ .pull-quote{ margin:2.5rem -1rem; padding:2rem 1.5rem 2rem 3rem; font-size:21px; } .pull-quote::before{ left:.5rem; top:1rem; font-size:48px; } }
+  @media (max-width:640px){ .pull-quote{ margin:2rem 0; padding:1.75rem 1.25rem 1.75rem 2.5rem; font-size:18px; } .pull-quote::before{ left:.35rem; top:.75rem; font-size:40px; } }
+
+  /* 小引用 */
+  .inline-quote{ padding:.25rem 0 .25rem 1.25rem; border-left:2px solid var(--ink3); color:var(--ink2); margin:1.5rem 0; font-size:16.5px; line-height:1.85; font-style:italic; }
+
+  /* 对话 */
+  .qa{ position:relative; z-index:1; margin:0 0 1.35rem; }
+  .qa .sp{ font-family:system-ui,"Helvetica Neue",Arial,sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:.28rem; }
+  .qa .tx{ font-size:17px; line-height:1.92; }
+  @media (max-width:640px){ .qa .tx{ font-size:16px; } }
+
+  /* 表格 */
+  .tblwrap{ position:relative; z-index:1; overflow-x:auto; margin:0 0 2rem; }
+  .tbl{ width:100%; border-collapse:collapse; font-size:15px; }
+  .tbl th, .tbl td{ text-align:left; vertical-align:top; padding:.85rem .9rem; border-bottom:1px solid rgba(26,26,26,0.10); line-height:1.65; }
+  .tbl th{ font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink2); font-weight:600; border-bottom:1px solid var(--ink); }
+  .tbl td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .tbl td{ color:var(--ink2); }
+
+  /* 文末注 */
+  .footnotes{ margin-top:3.5rem; padding-top:1.75rem; border-top:1px solid rgba(26,26,26,0.08); }
+  .article-body .footnotes p{ font-size:13px; line-height:1.85; color:var(--ink3); margin-bottom:1rem; font-style:italic; }
+
+  /* Reveal */
+  .reveal{ opacity:0; transform:translateY(8px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* 其它文章 */
+  .other-section{ padding:4rem 1.5rem 2rem; max-width:1100px; margin:0 auto; }
+  .other-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem; margin-top:1.5rem; }
+  @media (max-width:768px){ .other-grid{ grid-template-columns:1fr; } }
+  .other-card{ display:block; padding:1.75rem 1.5rem; background:#fff; border:1px solid rgba(26,26,26,0.08); text-decoration:none; color:inherit; transition: border-color .25s ease, transform .25s ease, background-color .25s ease; }
+  .other-card:hover{ border-color:var(--ink); transform:translateY(-3px); background:#fcfcfc; }
+  .other-date{ font-size:11px; letter-spacing:0.15em; color:var(--ink3); text-transform:uppercase; margin-bottom:.65rem; }
+  .other-title{ font-size:17px; font-weight:600; line-height:1.4; }
+
+  /* More Articles CTA */
+  .more-cta{ background:var(--paper2); padding:4rem 1.5rem; }
+  @media (min-width:640px){ .more-cta{ padding:5rem 2rem; } }
+  .more-cta-inner{ max-width:820px; margin:0 auto; }
+  .cta-h2{ font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 .75rem; }
+
+  .footer-text{ padding:3rem 1.5rem; }
+  .footer-inner{ max-width:1100px; margin:0 auto; text-align:center; }
+  .footer-inner .fm{ font-size:16px; font-weight:500; letter-spacing:-0.04em; }
+  .footer-inner .fc{ font-size:12px; color:var(--ink3); padding-top:.5rem; line-height:1.8; }
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand ui-sans">THANK<span>*</span></a>
+    <span class="pill ui-sans">访谈精译 · EP.471</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner reveal">
+      <div class="eyebrow">Invest Like the Best · 访谈精译</div>
+      <h1 class="article-h1">从「创始人模式」<br/>到「AI 创始人模式」</h1>
+      <p class="article-lead">Brian Chesky（Airbnb 联合创始人兼 CEO）× Patrick O'Shaughnessy。关于 founder mode、Project Hawaii、11 星体验，以及如何停止追逐喝彩、重新为热爱而创作。</p>
+      <div class="meta-line">
+        <span>Brian Chesky × Patrick O'Shaughnessy</span>
+        <span class="dot">·</span>
+        <span>EP.471 · Colossus</span>
+        <span class="dot">·</span>
+        <span id="read-time">阅读 — 分钟</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cover · 排版封面 -->
+  <section class="reveal">
+    <div class="cover-wrap">
+      <div class="cover-block">
+        <p class="cq">「喝彩像一个底部有洞的杯子。你不断往里倒，以为是爱，可它一直从底下漏走。」<cite>Brian Chesky</cite></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <article class="article-shell">
+    <div class="article-body" id="body">
+
+      <!-- 00 摘要 -->
+      <section class="article-section">
+        <div class="h2-num-display">00</div>
+        <h2 class="article-h2"><span class="num">00</span>摘要</h2>
+        <p class="lead-para">这是 Airbnb 联合创始人 Brian Chesky 与 Patrick O'Shaughnessy 的一场对话，主线是他从工业设计师 → 创始人 → CEO → 重新回到「创始人模式」（founder mode）的整段心路。</p>
+        <p>Chesky 的核心经历可以压成一条曲线：<strong>2010 年代他乘着 Airbnb/Uber 那一批「火箭飞船」一路狂飙，到 2019 年醒来，发现自己在经营一家 7000 人、自己已完全不认识的公司</strong>——感觉像坐在方向盘前却转不动方向，向左打，公司向右走。他把这归咎于自己：过度授权、把公司交给职业经理人、不再听自己的直觉。疫情成了转折点——八周内业务蒸发了 80%，他进入「战时状态」，彻底接管公司，像 Steve Jobs 1997 年回归 Apple 那样钻进每一个细节，一钻就是两三年。</p>
+        <p>他把这套做法叫 <strong>founder mode</strong>（Paul Graham 根据他的经历造的词），并顺势提出下一个版本——<strong>AI founder mode</strong>：在 AI 时代，你能按需拿到几乎一切，所以必须比 founder mode <strong>更深入细节</strong>；会议文化会让位给异步协作；管理层级会大幅减少；<strong>纯粹的人数经理会消失</strong>——每个人都必须「能动手」（工程师要写代码，律师要读判例），「你通过作品管理团队，而不是管理人」。</p>
+        <p>第二个大主题是<strong>产品方法</strong>：Project Hawaii（十人小队、crawl-walk-run-fly、一年做出两三亿美元增量收入）、「11 星体验」（把荒谬推到极致，好让 6–7 星显得理所当然）、以及贯穿全篇的一句内核——<strong>「把问题做到尽可能小」</strong>（加热浴缸，不要加热海洋）。他引用 Paul Graham：「100 个人爱你，胜过 100 万人还算喜欢你。」</p>
+        <p>第三个大主题是<strong>动机的脱毒</strong>。他坦白：公司成功后，他一度把成功当成记分牌，去追逐「喝彩」（adulation）；而喝彩是「底部有洞的杯子」，是越喝越要加量的药。IPO 那天市值千亿，他以为是人生最好的一天，第二天穿着运动裤开 Zoom，才意识到那其实是<strong>最悲伤的一天</strong>。他最终把动机拉回「艺术家的动机」——不为喝彩，只为创造本身。</p>
+        <p>四个最重要的判断：</p>
+        <ol>
+          <li><strong>创始人模式越久，公司越长久。</strong>他把 Disney（Walt 死后 50 年，IP 仍是印钞机）和 Apple（Jobs 留下的 iPhone）当证据：创始人把「表达」沉淀成护城河，放手之后公司还能继续长。<strong>「火腿三明治也能运营的生意」和「创始人是公司天花板」这两句话都对，只是分属两个阶段。</strong></li>
+          <li><strong>AI 时代已经没有纯粹的「人数经理」的位置。</strong>每个人都要有「与现实的接触面」，都要能动手。</li>
+          <li><strong>消费级 AI 才是最大的机会</strong>，眼下的 AI 只是「企业现象」。他预测未来 12–24 个月会开启一轮「消费 AI 复兴」。</li>
+          <li><strong>不要在你还不需要放手的时候放手。</strong>「先亲力亲为，再吝啬地一点点交出控制权」——大多数创始人做的恰恰相反。</li>
+        </ol>
+      </section>
+
+      <!-- 01 反共识观点 -->
+      <section class="article-section">
+        <div class="h2-num-display">01</div>
+        <h2 class="article-h2"><span class="num">01</span>反共识观点</h2>
+
+        <div class="item">
+          <span class="lead-num">01</span>
+          <h3>创始人天生，CEO 不是；CEO 的直觉几乎全是错的。</h3>
+          <p>「好的创始人是天生的——你跳进泳池就学会游泳。但没有人是天生的好 CEO。CEO 这份工作完全反直觉，你对它该怎么做几乎全部直觉都是错的。」</p>
+          <p class="sub">更致命的是：CEO 不能靠试错来学——「你招一个人，他建起一个帝国，然后他走了，你要花四年去拆解他的帝国。你白白浪费了好几年。」所以「千万别一边当 CEO 一边现学」。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">02</span>
+          <h3>控制权不是零和的。</h3>
+          <p>「人们以为如果我握有全部权力，你就一点也没有。但还存在第三种情形：我们所有人都毫无权力。」<strong>「如果我有更多权力和控制，我反而能把权力交给你。」</strong></p>
+          <p class="sub">他建议的路径是：<strong>先亲手抓、把控制权攥住，然后「吝啬地」一点点交出去</strong>。「大多数创始人做的是反的——把人招进来，让他们自己去摸索，等出问题了再干预，可那时他们已经有了错误的肌肉记忆。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">03</span>
+          <h3>纯粹的「人数经理」在 AI 时代没有价值。</h3>
+          <p>「我不认为未来人数经理还有任何价值。我指的是那些只管人的人。以后每个人都必须是『混合型』的领导——都得跟现实有一点接触面，都得能动手。」</p>
+          <p class="sub">用他的话说：<strong>「工程师要写代码，连经理也要写代码。如果你是律师，你就不能只管理人，你得真的去读判例。」</strong>两类人无法穿越 AI 时代：<strong>纯人数经理</strong>，以及<strong>僵化、拒绝变化的人</strong>。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">04</span>
+          <h3>「你通过作品管理团队，而不是管理人。」</h3>
+          <p>他举的设计例子：<strong>Jony Ive 是既做设计又带团队；一个只管人、不碰设计的设计负责人，在他看来不可思议。</strong></p>
+          <p class="sub">「Frank Lloyd Wright 是用作品管理设计团队的。……一年里有两三次，你该跟人交心、聊聊家庭、建立关系——但那是例外，不是日常。你不是别人的心理咨询师。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">05</span>
+          <h3>AI 眼下是「企业现象」，消费级 AI 才是最大的奖赏。</h3>
+          <p>「如果拿掉 ChatGPT 里那些玩票的、生成图片的，它基本上就是个企业现象。」他引 YC 数据：最新一批 175 家，159 家是企业级，<strong>一家消费级都没有</strong>。</p>
+          <p class="sub">原因是：(a) ChatGPT 一出，大家怕被它杀死，投资人也不敢投；(b) <strong>AI 还没有消费级商业模式</strong>（订阅会触顶、广告不做、电商被关停，而推理成本还在烧钱）；(c) 分发已经成熟、且「情绪化、跟风」；(d) 消费级更难——更依赖爆款、更 all-or-nothing，还要求你在设计、营销、文化、公关上都更强。<strong>他的预测：未来 12–24 个月，消费 AI 复兴将开始。</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">06</span>
+          <h3>把问题做到尽可能小——加热浴缸，不要加热海洋。</h3>
+          <p>「Paul Graham 给我的最重要一句建议是：<strong>100 个人爱你，胜过 100 万人只是还算喜欢你。</strong>」</p>
+          <p class="sub">「你想让 100 万人喜欢，可你没法跟 100 万人讲话，最后得到一个浅浅的泳池——<strong>你在试图加热整片海洋，它升温太慢，而且你根本看不出变化。</strong>不如加热一个浴缸。」Airbnb 从纽约一城、100 个用户起步；Uber 从旧金山起步；DoorDash 从帕洛阿尔托起步。<strong>规则是「一到十到多」（one → ten → many）</strong>，先在一个市场做透，再工业化复制。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">07</span>
+          <h3>11 星体验：把荒谬推到极致，好让 6–7 星不再荒谬。</h3>
+          <p>在「评分压缩」的世界里，五星只等于「什么都没出错」。于是他强迫自己往下想：<strong>6 星</strong>=房里有你最爱的酒和手写卡片；<strong>7 星</strong>=机场有加长轿车、有为你准备的冲浪板；<strong>8 星</strong>=机场有头大象、你骑着它参加为你办的游行；<strong>9 星</strong>=「披头士式接机」——5000 个少女尖叫着喊你的名字、草坪上为你开新闻发布会；<strong>10 星</strong>=马斯克接你去太空。</p>
+          <p class="sub"><strong>「这是一场『荒谬性』的练习——你一直推到 10 星，忽然 6、7 星就一点都不疯狂了。」</strong>而你真正要做的，是从「超越现实」倒推回来，做一个能规模化的 6 星。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">08</span>
+          <h3>简化不是删东西，是蒸馏出本质。</h3>
+          <p>「Hiroki（浅井浩己，Steve Jobs 的创意总监）教会我：<strong>simplicity 不是把东西拿掉，是把一个东西蒸馏到极致，以至于你理解了它的本质。</strong>」——这近乎 Elon 讲的「第一性原理」，也是设计术语。</p>
+          <p class="sub">另一课是<strong>手艺与细节</strong>：「你怎么做任何一件事，就是你怎么做所有事。」他引 Bill Walsh 的《The Score Takes Care of Itself》：<strong>别盯记分牌，把每一个输入做到完美</strong>——输入对了，赢是自然结果。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">09</span>
+          <h3>掌声是「底部有洞的杯子」。</h3>
+          <p>他坦承：创业初始是「出于热爱与乐趣」，成功后<strong>成功变成了记分牌，动机从内在滑向地位与讨好</strong>。「小时候我学到，获得爱的方式是『特别』；如果我做出特别的事，就会得到赞美，就感到被爱。……于是它翻译成：如果我足够成功，我就会得到喝彩，就会获得我一直在找的那种感觉。」</p>
+          <p class="sub"><strong>「喝彩像一个底部有洞的杯子，你不断往里倒，以为是爱，可它一直从底下漏走。」</strong>它是药，要越加越多的剂量，最终彻底失效、只剩空虚。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">10</span>
+          <h3>火腿三明治悖论 vs 创始人天花板——两者都对。</h3>
+          <p>Buffett 说「买连火腿三明治都能运营的生意」；另一位投资人却说「公司是创始人个人成长的载体，你的天花板就是公司的天花板」。Chesky 把两者缝在一起：<strong>「这两句都对。」</strong></p>
+          <p class="sub">证据是 Walt Disney——你能叫出很多迪士尼电影，却几乎叫不出一部派拉蒙/华纳/环球/MGM 的电影。<strong>「一个公司被创始人以 founder mode 运行得越久，反而越能放手，越是谁都能接管。」</strong>唯一 caveat：<strong>科技公司不同</strong>——「科技是变化的行业，你在『变化』这个行业里，就必须更长时间待在 founder mode。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">11</span>
+          <h3>Airbnb 的原子单位要从「家」变成「人」。</h3>
+          <p>「Airbnb 现在是一个名词也是一个动词，像 Kleenex——这既是了不起，也是麻烦：当你是 Kleenex，你想卖洗发水，人家会说『我才不把纸巾抹头上』。」</p>
+          <p class="sub"><strong>他想要的 bedrock 是「人」</strong>：最可信的身份、最丰富的偏好库、真实世界里的社交图谱、会员体系——「在 AI 时代，<strong>『人格证明』（proof of personhood）会变得极其重要。</strong>」目标是像亚马逊从「书」扩到「一百样东西」那样，让一个人中心、周围一圈五十样东西。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">12</span>
+          <h3>未来没有 App，只有 agent。</h3>
+          <p>「我不认为未来还有 App，我认为会是 agent。所以如果我们还绑在 App 上，我们最好赶紧放手。」</p>
+          <p class="sub">在「软件=超快时尚」的世界里，能留存下来的不是界面，而是<strong>社区、理念、使命、组织、品牌、身份、声音</strong>——「我们不是在造一个 App，不是在造一个服务，我们是在造一个社区，因为那才是唯一能留下来的东西。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">13</span>
+          <h3>健美教会我两件事：先改变身体，再改变人生；一天练不成。</h3>
+          <p>13 岁进冰球体校，青春期来得晚，从一线掉到四线，于是他开始练举重——135 磅起步，19 岁打到全国赛。<strong>第一课：「如果你能改变你的身体，你就能改变你的人生。」</strong>先改自己，由内而外，最终你能设计你周围的世界。</p>
+          <p class="sub"><strong>第二课：「你不可能一天练出身材。」</strong>练 20 小时只会过度训练——<strong>变强是「渐进超负荷」下的适应反应，是每天进步 1%，靠复利。</strong>「很多创始人只是放弃得太早。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">14</span>
+          <h3>招聘和管理的时长是 1:1 的交换。</h3>
+          <p>「作为领导，你可以选择把时间花在招聘还是管理上。<strong>人越好，需要管理的越少。</strong>你在招聘上花的时间越多，花在管理上的时间就越少——这是一比一。」</p>
+          <p class="sub">Sam Altman 早年就告诉他「你会有 50% 的时间花在招聘上」——「我当年没听，那是我最大的失误。」<strong>「每天我醒来第一个电话打给招聘官。人们应该把第一个员工当成招聘官，而不是工程师。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">15</span>
+          <h3>相信一个人，是你能给的最大礼物。</h3>
+          <p>被问到「别人为你做过的最善良的事」，他答：<strong>「最大的礼物，是有人相信我。」</strong>16 岁转学到公立高中，美术老师 Ms. Williams 对他父母说「他会成为有名的艺术家」——「我后来并没有成为有名的艺术家，但那给了我『我确实在某件事上有天赋』的信心。」</p>
+          <p class="sub">Paul Graham 破例收了一个非工程师、还觉得他的点子不怎么样——但<strong>「他相信我」</strong>。「我这辈子最大的幸运，就是有人慷慨地相信我、帮我。所以我能回馈的最大礼物，就是去相信别人。」</p>
+        </div>
+
+        <blockquote class="pull-quote">你无法在不越过现实边界、再倒推回来的情况下，做出 6 星、7 星体验。<span class="cite">Brian Chesky</span></blockquote>
+      </section>
+
+      <!-- 02 关键案例与对比 -->
+      <section class="article-section">
+        <div class="h2-num-display">02</div>
+        <h2 class="article-h2"><span class="num">02</span>关键案例与对比</h2>
+        <div class="tblwrap">
+          <table class="tbl">
+            <thead><tr><th>对象</th><th>判断</th></tr></thead>
+            <tbody>
+              <tr><td>Project Hawaii</td><td>把 7000 人的大公司「变小」：10–12 人的全栈小队（设计/工程/产品/数据），只攻一个题（从搜索到下单的转化率），按 crawl→walk→run→fly 推进，「当作一家小创业公司来带」。结果：第一年做出约 2–3 亿美元增量收入，次年 4–5 亿，如今约 <strong>600 个基点</strong>的杠杆（对 130–140 亿美元盘子）。随后把这套打法复制到定价等新题。</td></tr>
+              <tr><td>11 星体验</td><td>不是五个星，而是从 5 星（「什么都没出错」）一路想到 10 星（「马斯克带你去太空」）的荒谬练习。目的是让 <strong>6–7 星</strong>变得可执行——「你无法在不越过现实边界、再倒推回来的情况下，做出 6、7 星体验。」6 星可以规模化；5 星到 6 星的差距，就是你和对手的差距。</td></tr>
+              <tr><td>Disney vs 派拉蒙/华纳/环球/MGM</td><td>你能叫出很多迪士尼电影，却几乎叫不出别的片厂的一部。<strong>原因是迪士尼是「创始人主导的、一个人的自我表达」。</strong>前 CFO 曾对他说：「Walt 1966 年去世后，迪士尼其实没做过真正新的东西。」——但 Walt 留下的 IP 与主题公园，成了 50 年后仍在运转的印钞机。</td></tr>
+              <tr><td>Apple</td><td>与迪士尼同理：Jobs 死后，「他们基本不需要发明新产品，还在卖 iPhone」；市值从几千亿涨到几万亿。「Steve 留下的礼物太惊人了。」</td></tr>
+              <tr><td>Hermès vs Zara</td><td>想造耐久之物，却活在「软件的超级快时尚」里：10 年前的软件显得老态，硬件还过得去，室内设计还行，建筑会有包浆。<strong>耐久度：物理世界 &gt; 硬件 &gt; 软件（极度短暂）。</strong></td></tr>
+              <tr><td>Gmail / Paul Buchheit</td><td>Buchheit 做 Gmail，花了 <strong>两年</strong>才让 Google 内部 100 个人真正喜欢它——可一旦 100 个人喜欢，1 亿人就会喜欢，「样本量够了」。</td></tr>
+              <tr><td>Kleenex 类比</td><td>Airbnb 已经「既是名词也是动词」——品牌力极强，但也是双刃剑：当你是 Kleenex，你想卖别的就难了。</td></tr>
+              <tr><td>Airbnb 现状</td><td>年 GMV 近 1000 亿美元；每在世界花掉 1000 美元，就有 1 美元花在 Airbnb；40% 自由现金流利润率；营收约 1000 亿美元级别。问题是「18 年没能做出第二个爆款」。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 03 全文翻译 -->
+      <section class="article-section">
+        <div class="h2-num-display">03</div>
+        <h2 class="article-h2"><span class="num">03</span>全文翻译</h2>
+        <p class="lead-para">以下为全文中译。说话人以「Patrick」（提问方）与「Brian」（回答方）标注；原逐字稿有口语重复与转写错漏，译文已做可读化处理。"</p>
+
+        <div class="qa"><span class="sp">Patrick · 开场</span><span class="tx">大家好，欢迎。我是 Patrick O'Shaughnessy，这里是 Invest Like the Best。本节目是一场开放的探索——关于市场、想法、故事与策略，帮你更好地投资你的时间与金钱。今天的嘉宾是 Brian Chesky——Airbnb 的联合创始人兼 CEO。我们的对话，从他早年在 RISD（罗德岛设计学院）接受的工业设计训练讲起，一路穿过那个逼他进入「创始人模式」的疫情时刻。他会解释什么叫「AI 创始人模式」、以及为什么它要求你<strong>更加关注细节</strong>；他会讲他的「11 星练习」——我自己这些年用过很多次——那是他用来逼近产品市场契合（PMF）的方法：<strong>先去想象一种最荒谬的客户体验</strong>。请欣赏与 Brian Chesky 的这场对话。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">正式开始前，我们刚在聊工业设计——你在 RISD 学的这个。我对这段历史有种奇怪的偏爱，因为雷蒙德·罗维（Raymond Loewy）——最著名的工业设计师之一——间接帮了我很多。想听你随便聊聊，像他这样的人，对你在早期学习里有什么影响，以及你当初为什么选了这个专业。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">很有意思的背景。我从小是个画画的，但不知道自己这辈子要干什么。后来进了罗德岛设计学院。在 RISD，大一就得选专业。我才 17 岁，就得在三个月内决定「余生干什么」。我记得工业设计系的系主任来了——我以前从没听过「工业设计」这个词，完全不知道那是什么。他们说：工业设计是造一切东西——从一支牙刷，到一艘宇宙飞船，以及其间的一切。我立刻说：<strong>这就是我这辈子想做的事。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">雷蒙德·罗维大概是 20 世纪最重要的工业设计师。他设计了无数了不起的产品——第一位设计「空军一号」的设计师，设计过很多漂亮的消费产品和汽车。学设计史的时候，我觉得太不可思议了——<strong>工业设计是一个技术性极强的领域。</strong>建筑也相当技术性，但边界更明确。而<strong>工业设计，大体上是从 Josiah Wedgwood 开始的</strong>——它真正属于工业革命之后，是「大规模工业产品」的学问。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我成长在 80 年代，爱玩电子游戏——Game Boy、Game Gear、超级任天堂。还记得 80、90 年代的耐克球鞋、锐步 Pump。<strong>这些产品抓住了孩子的想象力，和你建立了非常私密的关系，真的有「个性」。</strong>后来是苹果的黄金时代——大概从 1998 年的 iMac 开始，到我的偶像 Jony Ive。<strong>他们真正「教育」了公众什么叫设计；一旦被教育过，人们就再也看不起烂产品了。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我喜欢工业设计，一是因为它很技术——你要和机械工程师、电气工程师一起工作；二是<strong>它和别的设计几乎都不一样：一门设计只有卖得出去才算成功。</strong>如果你设计一栋办公楼，建筑师可以拿奖，楼却可能一直租不出去。所以<strong>奖项和商业成功是脱钩的</strong>。但一件产品如果没人买，就是失败。正因为商业成功重要，<strong>你必须同时考虑营销、制造、分销、解决问题</strong>——不只是拿奖，而是要对客户真的可行。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">还有一点：<strong>它是个纯「解决问题」的领域，边界极多，而且非常依赖同理心——讲的是「用户旅程」。</strong>举个例子：我毕业时设计过一台儿童呼吸机。我不是只去想那台呼吸机的造型，而是要<strong>想象自己是医院里那个六岁的孩子</strong>——想象你六岁、很害怕，抬头看着一台呼吸机；再想象父母——父母走进去，心想「我的孩子会没事吗？如果这台机器看起来阴森森的、像在勉强吊命，父母会吓坏的。」</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我还学到一件事：<strong>那些技术型护士，很奇怪——她们不介意设备复杂。</strong>但医院想要一台「简单到谁都会用」的呼吸机，可技术员又<strong>以「只有我会用」为荣</strong>。所以你得权衡所有利益相关者。<strong>而工业设计里没有产品经理——你就是 PM。</strong>设计、工程、项目管理的分工里，设计师就是产品经理。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你觉得整个世界会朝那个方向走吗？你显然以推动「创始人模式」这个概念闻名……现在它上面又叠了新的一层。我在想它该叫什么。看起来，<strong>第一次，一个运营着庞大公司、管着很多人的人，可以重新「去中介化」从想法到结果之间的一大堆环节</strong>——设计的这套东西，可能比以往任何时候都更适用。这个新模式是什么样？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">「founder mode」这个词是 Paul Graham 造的，但它源于我的一段亲身经历。我认为<strong>好的创始人基本是天生的</strong>——换句话说，是内在的。你不需要去「学」怎么当一个好创始人，就像你跳进泳池就自然学会游泳。<strong>但没有人是天生的好 CEO。</strong>而且 CEO 这份工作<strong>完全反直觉</strong>——你对「该怎么做」几乎全部的直觉都是错的。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">问题在于，我们这些创始人<strong>从来没被准备好去当一个好 CEO</strong>。我们被教的是「边做边学」——这对创始人很好，对 CEO 却不好。<strong>你绝不该一边当 CEO 一边现学</strong>——换句话说，<strong>试错对 CEO 而言是有害的。</strong>为什么？<strong>因为你招一个人进来，他建起一个帝国，然后他走了，你得花四年去拆解他的帝国。你白白浪费了好几年。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我学到的核心是：<strong>创始人把公司过度授权给职业经理人</strong>——我不是贬低他们，而是说<strong>创始人把自己「摘」了出去，变成了「被管理」的人，而不是「管理公司」的人。</strong>而答案就是：<strong>不要为你经营公司的方式道歉，要扎进细节里。这就是 founder mode。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">有没有一个时刻，让你意识到「必须换模式」了？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">有，就是疫情。其实发生了两件事。我在 2010 年代搭着火箭飞：Airbnb、Uber，我们几个人，就像现在 OpenAI、Anthropic 在经历的那样。那很棒。但到那十年快结束时，大概是 2019 年，我记得有一天醒来，<strong>发现自己在经营的是一家完全认不出的公司。</strong>我手下有 7000 人，<strong>我不知道任何人在干什么。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我感觉像坐在一辆车里，方向盘在我手里，可<strong>我根本转不动公司</strong>。我说「向左转」，公司却往右走。而且不只我感觉失控——<strong>我觉得没有任何人觉得自己在掌控</strong>。到了某个点，我记得做过一个梦，我告诉了联合创始人：2019 年底我梦见<strong>我离开了公司十年，回来一看，有人替我经营了十年，把它变成了一个巨大的、政治的官僚机器，我甚至认不出这家公司。</strong>然后我意识到：<strong>天哪，那个「有人」一直是我。是我的错——是我亲手让这一切发生的。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">差不多在疫情的同时，我招了一个人：浅井浩己（Hiroki Asai），他来自苹果。他告诉我 Steve Jobs 是怎么经营苹果的。<strong>Steve Jobs 1997 年 7 月回到苹果时，离破产只有九天。</strong>他基本上就是进入了你们说的 founder mode——<strong>钻进每一个微小的细节。</strong>我想那么做。但一开始，<strong>公司是抗拒的，几乎是把它「弹」了回去。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">然后疫情来了。<strong>我们八周内失去了 80% 的业务。</strong>那一刻，<strong>我从和平时期切换到战争时期</strong>，然后我就彻底接管了整家公司，<strong>再也没松开手。</strong>我做的，基本上就是<strong>两三年里审查每一件事，一周工作 100 小时，审每一个细节。</strong>我的愿景不是永远这样干、永远微观管理——<strong>我的愿景是：在我把权力交出去之前，我得先知道到底发生了什么。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">那种「伟大的领导就是招到很棒的人、然后信任他们知道该做什么」的说法——<strong>如果你不去审计他们在做什么，你怎么知道他们很棒？</strong>而且你其实应该<strong>从亲力亲为、处于掌控开始，然后「吝啬地」一点点交出阵地</strong>。所有人做的都是反的。回到你的问题：<strong>这就是 founder mode。我们需要「AI founder mode」。AI 创始人模式会比创始人模式更激烈。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你在进入这个模式时，脑子里在想哪些原则？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我觉得 AI founder mode 里，你<strong>要扎进多得多的细节，因为你几乎什么都能按需拿到</strong>。founder mode 的机制是<strong>大量开会</strong>，因为那是我传递信息的唯一方式——我一周大概开 35 小时的会，跟 Steve 经营苹果的方式很像。我不做一对一，只做<strong>群组会议</strong>。<strong>我把整条指挥链放进同一个房间，任何人都能发表意见。最终决定由我来做。我不会先发言，通常最后发言，而且我通常同意团队，只有 10% 的时候不同意——但我会为每一个决定盖章。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">但那是一种<strong>基于会议</strong>的文化。我认为在 AI 时代，<strong>我们会从「基于会议」走向「异步」</strong>。管理层级会<strong>少得多</strong>。有句老话：<strong>天主教会存在了 2000 年，只有四层管理。</strong>凭什么别的公司要有七八九层？<strong>我认为公司里每一个人的工作都会变。</strong>我现在做的一件很神奇的事，就是让大家去用 AI 工具，先看看每个人的工作会怎么变；然后我打算来一次<strong>根本性的重设计</strong>。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我不认为「人数经理」未来有任何价值</strong>——就是那些只管人的人。我认为<strong>每个人都必须变成「混合型」的领导</strong>——意思是他们得和现实有接触面，得是<strong>某个客户最终会看到、会摸到的东西</strong>。比如说工程师，<strong>每个工程师都得写代码，连经理也要写代码。</strong>不管领域对应的「代码」是什么版本，你都得「写代码」：<strong>如果你是律师，你就不能只是管理人，你得真的去读判例、真正参与进去。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">你不能只是当那种「心理咨询师式」的经理，光开会、光做一对一。<strong>那些每天有一堆循环式一对一会议的人，是活不下来的。</strong>因为他们在做的事是：「你有什么问题都来找我，我像导师、像教授一样帮你」——<strong>那种领导风格行不通。你得有 context（语境/内容）。</strong>挺不过去的，是两类人：<strong>一类是纯粹的人数经理，以为当领导就只是「领导力」；不，是内容加上领导力。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>Jony Ive 是既做设计、又带人。一个只管人的设计领导，在我看来不可思议。</strong>Frank Lloyd Wright 是用作品来管理设计团队的。<strong>我常说：你通过作品管理团队，而不是管理人。否则你在干嘛？</strong>当然，<strong>一年里有两三次，你该跟人交心、问问家里、建立关系</strong>——你应该这么做。但那不是日常的事。你不是别人的心理咨询师。<strong>你是通过作品在管理人。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以，无法完成向 AI 迁移的，是<strong>纯人数经理</strong>和<strong>僵化、不愿改变和进化的人</strong>。只要你有成长型思维，工具本身会非常容易。<strong>经济上的安排，会逼着这些工具简单到人人都会用。</strong>而且我认为 <strong>AI 现在其实是个「企业现象」</strong>。我在 Y Combinator 董事会：<strong>上一批 175 家，159 家是企业级，没有一家消费级。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">因为没有新的消费公司，<strong>「把界面做得极简」的激励就不存在</strong>——企业客户反正有专人去搞懂界面。<strong>AI 的下一波是消费 AI。消费 AI 才是最大的奖赏。</strong>你能想到一家消费 AI 公司吗？也许 OpenAI，但他们大部分精力现在在 Codex 上；Google 有 Gemini，但大部分还是在搜索——<strong>他们不想吃掉自己的业务。</strong>所以我认为那就是未来的方向。<strong>我在开始把 AI 当成一个消费级的事情来想：怎么把工具做得简单到在座每个人都会用？</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">让人意外的是，居然这么少人去攻消费级——历史上最大的公司里，很多都是消费公司。你造出了上一代最伟大的消费公司之一。对那些想用这项技术做消费生意的人，你会给什么建议？如果下一批 YC 创业公司因为你的建议而「反其道而行」，你会怎么引导他们？我特别好奇你为什么认为它们不够多。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我认为正在发生的原因有三四个。<strong>第一，ChatGPT 出来的时候，很多人害怕了</strong>——怕它杀死自己的生意；很多投资人也不愿投那种「看上去会被 ChatGPT 干掉」的东西。<strong>第二，商业模式很难。</strong>我至今没看到 AI 的消费级商业模式。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">比如 ChatGPT 有三种变现方式：<strong>订阅</strong>——不幸的是，订阅用户比例大概会撞上一个局部上限，何况 Claude、Gemini 都是免费的；<strong>广告</strong>——同样撞上限，因为 Claude、Gemini 不做广告；<strong>电商</strong>——他们把第三方应用关掉了。<strong>而推理成本高到让他们烧很多钱。</strong>所以第一件事就是：<strong>我们得为消费 AI 找到商业模式。你不能只做「信息」生意，因为人们没被训练成「为信息付费」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>第二个问题：分发已经成熟。</strong>当然，现在前三名的 App 都是 AI——这确实证明，<strong>只要你有真正革命性的东西，你会想方设法冲到顶端。</strong>第三，虽然硅谷喜欢把自己说成「叛逆者」，但加上 Twitter 那种「永远在线」的氛围，<strong>这里其实非常「跟风」、非常「看情绪」</strong>。会有一种「大家都做什么，大家就都做什么」的感觉。<strong>现在的潮流是企业级。</strong>最后也许：<strong>消费级就是更难。它更依赖「爆款」，奖赏更大但风险更高，更 all-or-nothing。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>消费级则更 hit-driven（靠爆款）</strong>——你得在很多方面都更强：设计、营销、文化、公关。<strong>企业级里，用产品的人往往不是买产品的人</strong>，所以销售很重要，但你可以用「聪明的公司」把销售做得非常轻。<strong>而消费级很难：你怎么「小规模起步」？你从街上找谁开始？</strong><strong>我的预测是：我们正处在「企业 AI 时代」，而未来 12–24 个月，你会看到消费 AI 复兴的开端。</strong>我手机首屏上几乎所有 App，自 AI 出现以来都还没发生根本变化——<strong>包括 Airbnb。我认为这会在两年内改变。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">在你最近一次财报电话会上，你提到了「Project Hawaii」——像是对「即将被定义的 AI 创始人模式」的一次地面实战。能不能描述一下那是什么？作为一家存量的消费公司，你怎么把自己变成一家 AI 公司？这样一个项目，能撬动什么？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">这故事特别棒。我们有 7000 人，后来降到 5000 人。<strong>我想把「创业初期的那种魔法」拿回来</strong>——我们当年在一个小公寓里一起工作。<strong>我想和一个 10 人的团队一起工作，把那种团队感集中在一个问题上。</strong>于是我们聚焦到<strong>一个问题</strong>上：<strong>改善客人体验、提高转化率。</strong>转化率基本上就是「搜索到下单」——用户输入地点和日期、然后下单的比例。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我们组了一个 10 到 12 人的团队：设计、工程、产品、数据科学家——基本上就是个纯软件团队。<strong>我们把它当成一家小创业公司来做，只聚焦。</strong>我们定了一套「爬、走、跑、飞」（crawl, walk, run, fly）的系统。<strong>一切都要被测量，一切都要被运营化。</strong>这个团队的成果是惊人的：第一年就做出了相当于 <strong>2 到 3 亿美元</strong>的收入；第二年大概是 4 到 5 亿；<strong>现在大概是 600 个基点</strong>——对应 130、140 亿美元的盘子。<strong>而且这只是一支团队。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">接着我们把这套方法用到下一个问题——<strong>定价</strong>。完全不同的团队，同样的模式。再下一个，再下一个。<strong>我一开始每周和他们见面，后来变成每两周、再后来每月。</strong>我总体的哲学是：<strong>一开始非常亲力亲为，然后随着时间慢慢放手。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我不打高尔夫，但上过几节课。<strong>打高尔夫，你要在形成任何习惯之前先找一个教练</strong>——因为如果你自己瞎练，会练出一个怪异的挥杆，等你再找教练，他得先改你的肌肉记忆。<strong>教练得看你挥几千次，最终他不用看了，你随时间放手。</strong>大多数创始人做的是反的：把人带进来，让他们自己去摸索，之后才干预——可那时他们<strong>已经形成了错误的肌肉记忆</strong>。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">Airbnb 的核心业务非常成功，年 GMV 接近 1000 亿美元——<strong>在全世界每花掉的 1000 美元里，就有 1 美元花在 Airbnb 上。</strong>但问题是：<strong>我们是「一曲歌王」（one-hit wonder）。18 年里，我没能做出第二个爆款。</strong>答案其实太明显了：<strong>我们总想「从第一天起就全球规模化」</strong>这些新业务。而当年创办 Airbnb，我们是从一个城市——纽约——开始的，只有 100 个用户。<strong>我们一家一家地敲门去见用户。</strong>基本哲学是：<strong>把问题做到尽可能小，做到产品市场契合，然后再规模化。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>Airbnb 从纽约起步，Uber 从旧金山起步，DoorDash 大概从帕洛阿尔托起步。</strong>让我们把问题做小，把一个城市做到完美。<strong>于是任何新业务，我们都做「一到十到多」（one to ten to many）</strong>：先在一个市场试点；跑通了就去十个；十个跑通了，再工业化。<strong>我们花了 16 年才做出第二个、第三个业务。</strong>现在我们有 10 到 20 个试点，最终会有 50 到 70 个新垂直。<strong>这就是 Hawaii 系统：把这头巨兽变小、变成一支精锐小队，像海豹突击队。我把问题做到尽可能小。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>Peter Thiel</strong>（我们的早期投资人之一）说过：<strong>「在一个极小市场里做垄断，好过在一个大市场里占一小块份额。」</strong>这很反直觉——<strong>每个投资人都想进大市场，我不喜欢大市场，大市场有太多竞争。进一个小市场，把它做大。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">「在多伦多能跑通、但在 100 城规模下不行」，以及「10 人小队能跑赢 100 人小队」——这两件事是同一个原因吗？是不是某种「与现实更好的接触面」、而公司越大现实就被扭曲了？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">这回到我得到过的最重要的一条建议。<strong>第一次 YC，Paul Graham 说：「100 个人爱你，胜过 100 万人只是还算喜欢你。」</strong>这话其实来自 <strong>Paul Buchheit</strong>——YC 的合伙人，Gmail 的创造者。有个著名的故事：他做出 Gmail，花了两年——因为公司说「除非 Google 内部有 100 个人喜欢它，否则不许上线」。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>一旦 100 个人喜欢一样东西，1 亿人就会喜欢——样本量够了。</strong>问题是：<strong>你想让 100 万人喜欢，可你没法跟 100 万人对话，最后得到一个浅浅的泳池。就像你在试图加热一整片海洋，海洋升温太慢，而且你根本看不出变化。</strong>不如加热一个浴缸。<strong>把问题做到尽可能小，你才贴近客户。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>如果你只聚焦一个城市、甚至一个城市的一小部分，你可以跟每一个人对话。</strong>把全部资源压在一个极小的问题上。我向你保证：<strong>资源越多、问题越小，你就越能改变数字和轨迹</strong>。先做<strong>不规模化的事情</strong>，然后才规模化——<strong>规模化就是「工业化」。但产品市场契合和工业化，是两个不同的问题。</strong>把问题做到尽可能小、理解用户、把自己放进他们的鞋子里、做「打样」（prototyping）——<strong>这就像 R&amp;D，也很像工业设计。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以是的，<strong>问题越小，抽象层级越少，你就越在地面上、越在跟人对话</strong>——那就是你验证的方式。Hawaii、这些试点，都是同一件事。<strong>AI 也一样：你在移除抽象层，把问题做小，直接抵达源头。</strong><strong>如果不这么做，我们就是在玩「传话游戏」，信息会一层层丢失。</strong>这也正是<strong>创始人为什么不喜欢经营大公司——他们最后掉进一场传话游戏</strong>：他说一句话，往下传五层、再往上传五层，然后一堆会——<strong>会变成了「系统评审会」。我最低落的时刻，是在开「关于开会的会」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你已经进入这个新模式了，它叫「创始人模式」，不叫「CEO 模式」。<strong>你觉得你现在是个好 CEO 吗？</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我认为我是。我认为我<strong>天生是个好创始人</strong>——不过我也很幸运，有两个很棒的联合创始人。我认为我<strong>也曾是个很好的早期 CEO</strong>。而当我不得不组建高管团队时，<strong>我很难完成从创始人到 CEO 的转变</strong>。<strong>我认为在 2010 年代，我不是一个好 CEO，我们为此付出了代价</strong>——为我的学习曲线买单。疫情对我来说是一记当头棒喝。<strong>我是个回避冲突的人。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">有人说过：<strong>投手永远不会自己走下投手丘；作为经理，你必须上去把他换下来。</strong>我不想伤别人的感情，我想让他们自己走下来。<strong>可你把投手留在场上越久，他被打出的全垒打越多，大家越难受</strong>——而且无论你什么时候换他下来，他都会生你的气。所以我不认为我天生就是个好 CEO。疫情来了，我们经历了一场「濒死体验」，我说：「去他的胡思乱想，这是生死存亡。」<strong>那之后，我觉得我学会了怎么干这份活。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">CEO 其实有好几个阶段：<strong>有个想法 → 做到产品市场契合 → 从 PMF 到超高速增长 → 从超高速增长变成一家「真正的公司」</strong>（真正=盈利、上市）。这些我都做过：我们自由现金流利润率约 40%，年销售 1000 亿美元。<strong>CEO 的最后一个阶段，是「重塑公司」、做产品延伸。</strong>所以我还得继续证明自己。还有一个证明点：<strong>我能不能驾驭这场 AI 转型？</strong><strong>我认为 founder mode 是 AI 时代唯一的经营方式。</strong>如果你是那种「职业 CEO」、极度厌恶风险、只想渐进式改良，<strong>那些人挺不过 AI 时代。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">爱因斯坦有句话：<strong>保持自行车平衡的最好方式，就是一直往前骑。</strong>你必须一直往前骑。<strong>创始人在 AI 时代会非常有优势，因为我们必须再一次把整家公司从零重新设计。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">Hiroki 还教过你别的吗？Steve 大概是你刚才说的一切最极致的例子——<strong>永远钻进细节、永远在重塑公司</strong>。在往下讲之前，先说说 Hiroki 是谁——大家都知道 Jony Ive。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>Hiroki（浅井浩己）是个被埋没的英雄。</strong>我总听到他，他像是个传说中的人物、很神秘：网上几乎没有他的照片，没有视频，他从不站到台前。<strong>但他是 Steve Jobs 的创意总监</strong>——一个隶属于市场部的职能。他做广告、做平面设计。<strong>那种黑体字配灰字、产品放在白底上的美学，就是他的手笔。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">他教会我两条苹果的原则。<strong>第一是「简」（simplicity）。</strong>创业公司一开始，因为没钱、约束极强，<strong>你天然就是简单的</strong>——<strong>匮乏制造约束，于是「简」是被强加给你的，这对你有好处。</strong>可一旦你融了一大笔钱、招了一堆人，你就会往很多方向走，丢掉焦点。<strong>Hiroki 教我的「简」，不是「把东西拿掉」，而是「把一个东西蒸馏到极致，以至于你理解它的本质」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">Steve 说过：<strong>设计是「人造物」的根本灵魂，它通过一层层的叠加显现出来。</strong>换句话说，<strong>伟大的设计就是把一个东西蒸馏到它的本质。</strong>这有点像 Elon 在 SpaceX 讲的「第一性原理」——它是个物理术语，但也是设计术语。<strong>它的意思是：如果我要重新发明这个产品，我必须理解玻璃的全部属性、关于它的一切，才能蒸馏出它的本质。</strong>于是我痴迷于「简」——产品的简、组织的简、一切的简。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>第二课，是「手艺与细节」——你怎么做任何一件事，就是你怎么做所有事。</strong>我说：<strong>一切都必须完美。</strong>这来自 Bill Walsh（旧金山 49 人队教练）的《The Score Takes Care of Itself》，也来自 John Wooden。<strong>John Wooden 在 12 年里拿了 10 个 NCAA 冠军。他带队第一天、第一个小时，花整整一个小时教球员怎么穿袜子。</strong>就像《龙威小子》里的宫城先生。<strong>那是个隐喻：一切都这么严苛。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">Bill Walsh 说：<strong>你怎么把球衣塞进裤子里，是决定你输赢的一万个细节之一。</strong>说白了：<strong>别盯着赢，把每一个输入做到完美。</strong>如果你把一切做到完美，你就会赢。<strong>别盯着记分牌。</strong>我们<strong>某种程度上停止关注增长，转而去关注「把每一件事做到完美」</strong>。<strong>如果一切都完美、你还是没增长，那说明你盯错了输入。但只要输入对了、并做到完美，你就会长得非常快。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">他真的教会了我——我想是——<strong>founder mode，因为我从没见过 Steve，我只是通过 Hiroki 认识他。</strong>我说：我喜欢这个。我是个艺术家、是个设计师，<strong>我可以对产品有更多掌控，我可以把一切做到完美。</strong>founder mode 最初的努力，引发了巨大的反弹——所有人都讨厌它，因为大家以为我在微观管理。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我学到了一个根本的东西：一开始所有人都讨厌它，到最后所有人都喜欢它。</strong>（讨厌它的人走了，所以也许有「留下来的都是喜欢的人」的幸存者偏差。）<strong>但即便是那些以为自己想要自主、独立、赋能的人，也没意识到：控制与权力不是零和的。</strong>不是「我握有全部权力，你就一点没有」。<strong>存在一种情形：我们所有人都毫无权力（那就是最大的官僚机器）。也存在一种情形：因为我有权力，所以我能把权力交给你。它不是零和的。</strong>核心是：<strong>车有方向盘，你向左打，它真的向左转。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">我认为最关键的，是<strong>整家公司朝着同一个方向划桨</strong>。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">就是这样。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你历史上说过的、对我影响最大的一句话，是<strong>「11 星体验」</strong>——不是五星，而是从六星、一步步往上，强迫自己把它写出来。我脑子里一直有这个想法，因为「简」与「蒸馏」……<strong>它很美，本质上是对客户的同理。但为什么这个想法在实践中如此强大？</strong>当你把星级往上推，会发生什么？到 11 星？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">基本上，<strong>在 Airbnb 上预订，大多数人给五星；如果你给四星，那意味着体验很糟。</strong>五星=一切都按计划进行。这叫<strong>「评分压缩」（review compression）</strong>，和 Uber 一样。<strong>那如果我们「超越」呢？六星长什么样？</strong>六星大概是：你到了 Airbnb，<strong>桌上摆着你最爱的酒、水果、零食，还有一张手写卡片。</strong><strong>那七星呢？</strong>也许<strong>机场有一辆加长轿车等你</strong>；他们知道你喜欢冲浪，<strong>有一块冲浪板等着你</strong>。<strong>那八星呢？</strong>八星，我到了机场——<strong>有一头大象。我骑上大象，参加了一场为我办的游行。</strong><strong>那九星呢？</strong>我称之为「披头士式入住」——1964 年披头士那样，<strong>我下飞机，有 5000 个少女尖叫着喊我的名字、举着牌子。</strong>我到了 Airbnb 门前的草坪，<strong>有一场为我开的新闻发布会。</strong><strong>那十星呢？</strong>十星：<strong>马斯克来迎接我，带我上太空。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>这是一场「荒谬性」的练习。你一直推到十星这种荒谬的程度，于是六星、七星忽然就一点都不疯狂了。</strong>而通往产品市场契合的方式，<strong>就是做出一个六星或七星体验。但你无法在不「越过边界」的情况下做出六星、七星——换句话说，越过现实的边缘，再倒推回来。</strong><strong>而五星和六星之间的那点差距，就是你和对手的区别。</strong>如果你能想出办法把它工业化、规模化，<strong>你可能就在某件特别的事情上，找到了产品市场契合。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你讲那些高星级的荒谬例子时，我想起我自己用 AI 时的感受：<strong>我的想象力几乎萎缩了</strong>——用这些工具时我才意识到这件事有多难：「哦，我可以做任何东西。」然后我坐下来，心想：「我一点主意都没有该做什么。」而当我开始做点小东西，忽然<strong>我的想象力就被重启了。</strong>这个练习感觉就像一场「想象力练习」。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">它是。有句话叫<strong>「好的写作就是好的思考」</strong>。但我发现——不知道你是不是——有些人有想法，然后把它写下来；<strong>而我有时是通过「写」这个动作才把想法想出来的。写作的动作，就是产生想法的动作；设计的动作，就是产生想法的动作。</strong>你很难坐在房间里、抽象地「想」出想法。<strong>你得去做点什么。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以我想，过去发生的情况是：<strong>我们没有足够的工具来表达自己。</strong>很多工具非常被动。我们越来越多地把时间花在「向后靠」的体验上，比如社交媒体。<strong>我喜欢 AI 的地方在于，它把我们的注意力从「消费」转向「创造」。</strong><strong>而 AI 不是关于意见，是关于「为创造去验证假设」。我喜欢现在正在发生的事：忽然之间，我们每个人都有了一支画笔和一张画布去创造东西。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我认为 AI 会带来一场创造力复兴。<strong>打个比方：有些人——比如 Prince——大概无法用语言表达自己，但通过音乐，你就看到了一整个你从不知道的维度。</strong><strong>我们很多人心里都有创造力，只是没有表达它的手艺或工具。而 AI 要做的，就是给我们表达它的能力。我们会发现，有创造力的人比我们以为的多得多。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">毕加索说过：<strong>「每个孩子都是天生的艺术家，问题在于长大后如何保持是艺术家。」</strong>每个孩子都有创造力——如果每个孩子都有，那就意味着每个成年人也都可以有。<strong>你问一个普通人「你有创造力吗？」大概两个人里就有一个说「没有」——以我的经验是这样。但那是错的，他们只是没练过那块肌肉。</strong><strong>AI 的魔力在于：我们脑子里的东西可以显化出来。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">而且就像你说的，我们还能在脑子里长出新想法，因为这是个关系——<strong>你有一个小想法，试一下，它又给你一个想法，你就在这条路上走下去。</strong>很多人把创始人叫「有远见的人」（visionaries），<strong>我们其实更是「远征者」（expeditionaries）——我们在远征，只是事后才被叫成「远见」。本质上，我们只是一步一步往前走。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">能不能谈谈「创作」的两种动机之间的区别——一种是你在前面说的「讨好他人、拿成就、刷战绩」，另一种是「纯粹为了那份快乐本身」，后者似乎更接近你现在所处的状态。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我觉得当初做 Airbnb，我们并不是一心要成功。<strong>我常开玩笑：如果我只是想赚钱，我会想出一个比「充气床垫加早餐」更好的主意。</strong>我真的<strong>是出于热爱和乐趣</strong>才做的。然后走着走着，我变得非常成功。<strong>而这几乎成了一种诅咒，因为成功变成了记分牌。</strong>接着我想更成功——<strong>它不再来自内在，而变成了一种地位、一种讨好。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我花了一阵子才看清我在做什么。<strong>我真正想要的，其实是爱。</strong>我小时候学到：<strong>获得爱的方式是「特别」；如果做出特别的事，就会得到赞美，我就感到被爱。</strong>这就翻译成：<strong>如果我足够成功，我就会得到喝彩；如果我得到喝彩，我就会获得那种一直在找的感觉。</strong><strong>喝彩，某种程度上就像在追地位。</strong>那么多人追地位。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">这本身没什么错。<strong>但问题是：伟大的产品和伟大的公司，不是从这里来的。</strong>你看，<strong>喝彩就像一个底部有洞的杯子。你不断往里倒，以为那是爱，可它一直从底下漏走。</strong>到某个时候，你必须面对：<strong>我到底是为谁做这件事？</strong>不管是哪种，那都是毒品。<strong>而它像真正的毒品一样：你需要越来越大的剂量才能获得快感，最终它不再起作用，你到达一个顶点，然后一切变得毫无意义、空虚。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>而那种事发生在了我身上。</strong>疫情前后某个时候，我们上市了。<strong>千亿美元市值。那像是我人生最好的一天。第二天我醒来，穿上运动裤、去开一场 Zoom 会议——好像它从没发生过。</strong>那变成了<strong>我人生最悲伤的一天</strong>，因为我意识到：「好吧，然后呢？我得到了全部喝彩，可我并没有任何不同的感觉。」那让我重新审视：我到底为了什么做这件事。<strong>我必须接受：我要出于纯粹的内在理由去做事。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以我必须把自己从「别人的认可」、「地位」、「关心 Airbnb 有多热、我有多成功」中抽离出来——<strong>而这些，在我们创业时我从来不在乎。</strong>你知道，一旦你开始拿到赞誉，你就想要更多。<strong>而你必须放下它，因为这是一场必输的游戏。</strong>我开始专注于埋头做事，<strong>像你小时候那样——那时有光。就做东西。为自己做。</strong>Rick Rubin 那本好书里说：<strong>「一个艺术家，是在他们为自己创作的时候才算艺术家」</strong>。<strong>我不再试图成功，我回到了基本功。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我意识到：<strong>一个不认识你的人，永远不会爱你。这没关系。爱你的是认识你的人。</strong>而且，<strong>有一个重要的人必须爱你——就是你自己。</strong>我们还应该爱<strong>你正在做的那件事</strong>。<strong>就像「记分牌会照顾自己」那句话。别试图成功，去做一件你热爱的、了不起的事。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">这是奥巴马副总统有一次告诉我的。他说：<strong>「如果我盯着『我想成为谁』——盯着『当上美国总统』——而我没当成，我的人生就失败了。但我盯着『我想做什么』：我想帮助人、想当社区组织者——那么我就不一定非要当总统。」</strong>所以我认为，太多创业者盯着「我想成为什么」：<strong>「我想成为一个科技巨头创始人，我想运营一家十亿美元公司。」</strong>而不是盯着：<strong>「我想做出什么？」</strong>而一旦你在做你热爱的东西，<strong>忽然之间，就不存在「失败」这回事了。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">这套想法很了不起。我好奇：在最近这段时期，随着这个心态转变，你生活里「退场」最多的是什么？也就是说，当你停止追逐喝彩后，你做的比过去少了的是什么？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">主要是<strong>反复咀嚼（ruminating）</strong>。少了很多胡思乱想——<strong>少担心别人怎么看我。</strong>有人说过：担心所有人的看法，有点自恋的味道——<strong>好像所有人都在想你。</strong>现实是：即便是看这个节目的人，除了某一刻他们会想到我，其他时候他们大多在想自己，这没关系。<strong>我们都是这样。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>放下别人怎么看你，因为那是一座监狱。</strong>忽然之间，你就在「为获得认可」而做东西，<strong>然后你就失去了勇气。</strong><strong>有意义的事主要有两桶：创造，以及和你关心的人共度时光。就这两样。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">有两个截然不同的观点，我想听你回应。第一个是巴菲特那句名言：<strong>作为投资人，你要买那些「连一个火腿三明治都能经营」的公司，因为总有一天会轮到它。</strong>而另一个极端：<strong>我最喜欢的一位早期投资人，会告诉每个创始人，应该把公司当成「自己个人成长的载体」，你成长的能力，就是公司的天花板。</strong>这是两个相反的观点。你怎么看：你介不介意有一天「一个火腿三明治能运营 Airbnb」？以及「你的天花板就是公司的天花板」？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我认为两者都对。我试着把它们缝在一起——用一个例子。</strong>Walt Disney。<strong>我希望看这个节目的人试着叫出一部派拉蒙的电影、一部华纳兄弟的电影（也许你能想到《蝙蝠侠》）、一部环球的电影、一部 MGM 的电影——挺难的吧？但你能叫出很多迪士尼电影，大概还有黄金时代的皮克斯。</strong><strong>一个大区别是：迪士尼是极强「创始人主导」的，迪士尼是「一个人的个人表达」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">讽刺的是：<strong>一家公司被创始人以 founder mode 运行得越久，我认为它反而越能放手、越是谁都能接管。</strong>我并不是要贬低迪士尼的 CEO——新任的 Josh 很棒，我见过他。<strong>但我总体认为，迪士尼的 CEO 手里握着一副「已经装填好的底牌」</strong>：你有那座无论运营得好坏都会有人来的主题公园——<strong>每年去迪士尼乐园的人，跟去旧金山的人一样多</strong>；你有那批惊人的 IP。<strong>不是说这活容易，而是 Walt 留下了太多东西。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我记得大概 10 年前，我和迪士尼前 CFO 聊过，他说：<strong>「自 Walt 去世后，迪士尼其实没做过真正新的东西。」</strong>Walt 1966 年去世。<strong>自 1966 年以来，我们还在做：动画长片、电视、魔法王国。</strong>当然他们做了新东西，<strong>但本质上，还是同一套剧本。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以我认为这是一个例子：<strong>创始人不断重塑公司、他们的「表达」创造出了如此巨大的 IP、势能与护城河，以至于他死后 50 年，Walt Disney 的精神依然无处不在。</strong>而 <strong>Louis B. Meyer</strong>——我怀疑大多数人根本说不出他属于哪家片厂。<strong>你看，差别巨大。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>所以我认为这是个悖论。</strong>「火腿三明治」——你有一门好到「谁都能经营」的生意，因为迟早会轮到。<strong>而最好的生意，是那些创始人在经营、在重塑、并且创造出了如此大的股东权益与护城河，以至于当他们交棒之后，公司还能在身后继续增长。</strong>我认为苹果非常类似：<strong>他们基本不需要发明新产品，还在卖 iPhone。Steve 给他们留下的礼物太惊人了</strong>——他去世时苹果是几千亿美元的公司，现在是几万亿美元。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>唯一的 caveat 是：我认为科技公司不一样。</strong>巴菲特一般不投科技公司，苹果是例外。可口可乐是他的一笔大投资，喜诗糖果也是——<strong>这些是不会被颠覆的东西。而科技是「变化的症状」。</strong>如果你身处「变化」这个行业，<strong>你就需要更长时间待在 founder mode。</strong><strong>所以我是这么缝合的：公司是创始人潜能的上限；你在 founder mode 里待得越久，它就越能延续。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我记得有位创始人跟我说：<strong>「我想让这家公司存续 100 年，所以我不能扎在细节里，所以我必须赋能别人。」</strong>我说：<strong>「如果你想让公司存续 100 年，你就应该尽可能久地控制它、让它尽可能久地待在 founder mode 里——像迪士尼那样。」</strong>人们会说：「可公司会变得非常依赖你。」——<strong>是啊，但替代方案是：你会把这种魔法「制度化」到它根本无法在你身后延续。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">Edwin Land（宝丽来创始人）以用 Ansel Adams 作为他设备的「终极测试者」闻名——他在意的是「史上最好的摄影师之一」怎么评价他的设备。你讲到迪士尼时让我想到这个，因为我脑子里有个画面：<strong>Walt 一直在往下钻，钻到某种「基岩」。作为创始人，这就是你现在的使命——基岩。从此刻往后，那个基岩是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>当人们想到 Airbnb，闭上眼睛想象一幅画面，你大概会想到一栋房子。我们既是一个名词，也是一个动词——像 Kleenex。这既了不起，又不那么了不起。了不起在于：我们是品类领导者。难在于：当你是 Kleenex，你想卖洗发水，人家会说「等等，我才不把纸巾抹头上」。</strong>我们的品牌是一把双刃剑。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>对我来说，基岩是：如何把 Airbnb 的「原子单位」从「家」变成「人」？</strong>我不希望 Airbnb 是关于「家」的，我希望它是关于「人」的，<strong>我希望「人」成为原子单位。</strong>在 Airbnb 上，你可以订到房子、可以体验、可以买服务，最终还能订机票。<strong>想象一个人站在中心，周围一圈五十样东西——这些就是你能得到的东西。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>Airbnb 的基岩会是身份、档案、人的偏好。我想打造互联网上最可信的身份。在 AI 时代，「人格证明」（proof of personhood）会变得非常、非常重要。我想打造互联网上最丰富的用户档案。</strong>以前这是 Facebook 的位置，他们多少放弃了这个战略。<strong>我想打造最丰富的「你作为一个人的偏好库」，因为那会非常有用。我想打造一个社交图谱——但是在真实世界里的。最终我想有一个会员计划，你可以获得各种权益。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>所以基岩是「人」。</strong>我想弄清楚，我们怎么像亚马逊那样——从「书」扩到「一百样东西」。<strong>我不想我们只有房子，我想要一百样东西。</strong>所以我们需要打造一台「工业化机器」，去理解这些不同业务里<strong>一致的那些「原子单位」或「原语」（primitives）是什么</strong>。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">最后一个是 AI。<strong>我们有点「创新者的窘境」</strong>：大约 1000 亿美元流经这个 App。我有很多颠覆性的愿景，<strong>但你是一家上市公司，你在给指引，而「没达标」和「达标」的差别——不只是股价，很多人的生计依赖 Airbnb。</strong>如果我们折腾某个东西，<strong>有人可能从「能糊口」变成「糊不了口」。所以你必须非常小心。而当你非常小心时，那不是大规模创新的环境。</strong>所以我也在探索一些小的「沙盒」，几乎像是一个独立 App——<strong>一个彻底、彻底不同的 Airbnb 是什么样的？Airbnb 之后是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以这就是我在想的三件事：<strong>第一，如何把 Airbnb 的原子单位从「家」变成「人」？第二，如何把 Airbnb 提供的东西从「三样」工业化为「五十样」？第三，如何在别人之前、用 AI 颠覆我们自己——同时又不坑我们的投资人和依赖我们的房东。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">也许最后一件我在想的、作为 CEO 的事是：<strong>我觉得我已经达到了一定程度的精通</strong>——产品市场契合、超高速增长、盈利。<strong>我正在进入第四级：重塑自己、产品延伸。</strong>我认为在 AI 时代，<strong>可能还有一个「第四级之上」的东西。</strong>我的一个优势是「我的全部经验」，<strong>而这现在也成了我的弱点。我 44 岁，不老，但也不年轻。我不像 20 岁的人那样是「AI 原住民」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">举个反面例子：<strong>我创业时 25、26 岁，竞争对手是 Expedia。</strong>他们用 Outlook，我们用 Google Docs；我们像 iPhone，用着最酷的新工具，跑得更快。<strong>这些现在听起来都过时了，但当时那就是创新。</strong>所以<strong>还要保持年轻。</strong>毕加索另一句话：<strong>「你越老，那股劲越强，它总在你脸上。」</strong>你必须保持轻快、保持年轻、不断重塑自己、保持好奇。<strong>我不想变成一个「老派的、固化的」人，我得重塑我自己。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">有件事：<strong>当我第一次真的自己动手构建东西时</strong>——我不是工程师，我以前也做东西，但我是「告诉别人」，反馈回路慢得痛苦、还有损耗。<strong>现在只要 5 到 15 分钟，保真度还很高。很快会是 5 秒、完美保真。</strong>我一直很喜欢 Brett Victor 那个想法：<strong>让「输出」和「输入」之间的连接尽可能紧密。</strong>我们正在到达那个阶段。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">我在经历这件事时有一种焦虑：<strong>感觉「没有任何东西能持久」。</strong>历史上总有一些建立持久护城河的方式。你有 2 亿人、你对他们的了解很深；你有几亿条评价。<strong>但当我开始造这些东西时，感觉是：「哦，要拥有某种持久的东西会非常难。」</strong>你也有这种焦虑吗？当摩擦消失时，<strong>彩虹尽头的那桶金子，仿佛也在往后退。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">打个比方。<strong>拿一个时装品牌，比如 Hermès——我想它是世界上最值钱的单一时装品牌。</strong>铂金包、凯莉包，<strong>大概每十年才出一个新产品</strong>。这些几十年的老物件会增值、会二手溢价。<strong>而另一边是 Zara 快时尚。</strong>我们都想造能持久的东西，<strong>却活在「软件的超级快时尚」里。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>10 年前的软件，无论当时多好，看起来都很老、很过时。10 年前的硬件，看起来还行。室内设计，看起来还不错——甚至更好。建筑，过一段时间有了包浆，变得很美妙。</strong><strong>物理世界的东西，耐久度极高；硬件，中等；软件，极度短暂。</strong>意见也是这样，<strong>但有些想法能渗透、能留存。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">这是我自己也在挣扎的问题，因为我想做能持久的东西。<strong>除了这么说，我没能找到和解的方式：我痴迷于我们的 App——Airbnb 的 App、它的设计、它的界面。可无论它 10 年后有多好，我都会觉得它像垃圾。</strong>因为我看 10 年前的界面，就觉得像垃圾——<strong>无论当时它有多好。软件永远不「耐看」，哪怕当年它确实好。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">所以你得问：<strong>到底什么能持久？我确实认为有些东西能持久。Airbnb——社区能持久。我意识到：软件不会持久，网络效应大体还算持久，但 Airbnb 的理念、它的原则、它的使命、它的组织、公司、品牌、身份、logo、声音、社区、它所代表的东西——这些会持久。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>最重要的是社区。</strong>我意识到——有一天我对公司说：<strong>「我们不是在造一个 App，不是在造一个服务，我们是在造一个社区。因为那是唯一能留下来的东西。」</strong>我不认为未来还有 App，<strong>我认为未来是 agent。</strong>所以，<strong>如果我们还绑在 App 上——我认为 App 不会存在了——我们最好放手。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">我们聊到的许多主题，都是「随着时间稳步进步、用来服务他人」。<strong>你年轻时练健美，关于「随时间稳步进步」，它教了你什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">奇怪的是，<strong>健美教了我太多能用在硅谷的东西。它教了我两条重要原则。</strong>我爸很迷冰球，想让我当冰球运动员。<strong>不幸的是，我很瘦，青春期来得特别晚。</strong>我 13 岁进了冰球体校<strong>可到 14 岁我还没发育，后来到 15、16 岁才发育。这在冰球里是「死刑」</strong>——忽然之间，我从一线、二线掉到三线、四线。<strong>于是我开始练举重。</strong><strong>我那时候 135 磅。结果我 19 岁打到了全国级别，参加了青少年全国赛。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>从健美学到的第一课是：如果你能改变你的身体，你就能改变你的人生。</strong>这其实是最根本的改变。<strong>大家都想改变周围的东西，可如果你先改变你自己——身体上呢？</strong>我甚至认为：<strong>很多人的建议是「先改变你的想法」，而我会说先改变你的身体。改变你的生理，改变你的身体，你就能改变你的人生。</strong>这是赋能最极致的表达。<strong>好，我改变了身体，我还能改变什么？</strong>这是个隐喻：<strong>最终，你能设计你周围的世界。这是一种由内而外。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>但健美教我的另一件事——可能更有用——是：你不可能一天练出身材。</strong>如果你去健身房练 20 个小时，<strong>你不会变得更好，反而会过度训练。你变强的方式，是「渐进超负荷」下的适应</strong>：你给身体施压，<strong>身体不是在运动中变强，实际上肌肉是撕裂的，然后是一种像免疫系统一样的适应性反应，它变强了；你只要不断重复。</strong>核心思想是：<strong>你不可能一天练成，它是每天进步 1%。而如果你每天复利 1%，最终会有巨大的增长。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>所以它本质上是关于纪律。而且它非常「分析化」。</strong>健美是件美妙的事：<strong>它是一项主观的、靠视觉评判的运动，但你却用科学去测量它。你称你的食物，你得把自己放进合适的卡路里缺口，你得写下你的训练、写下你的重量。</strong>它极度分析化——非常数据驱动——<strong>而又真的靠纪律与一致性。</strong>我认为这很重要，<strong>因为很多创始人放弃得太早。它靠的是纪律。而且：如果你练一个月、停一个月，你是从头再来。这是关键——你永远不放弃。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">作为领导，你要应用「渐进超负荷」的很多技能，<strong>却是看不见的。你怎么确定「目标函数」？</strong>你怎么把同样的事应用到别人看不见的东西上？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我试着聚焦在「这家公司有多好」上，然后把它落到项目上。举个例子：<strong>一个目标是打造尽可能好的团队。所以我们一年做两次「路线图评审」（Roadmap Review），把最顶层的 100 个人聚在一个房间里，我就能看到房间里人的质量。</strong><strong>我在 Airbnb 最重要的一份工作，是招聘。</strong><strong>视觉反馈就是：一年两次，我把最顶层的 100 人聚在房间里，我能看到这场对话里「人的质量」。</strong>换句话说，<strong>你会用很多指标，我痴迷于它。</strong>永远是：把问题拆解为可观察、可测量的东西。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">顺便说一句，这点非常重要：<strong>作为领导，你可以选择把时间花在招聘还是管理上——二选一。人越好，需要管理的事越少。你在招聘上花的时间越多，你需要花在管理上的时间就越少。这是一比一。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我记得创业时，Sam Altman——现在大家都知道，OpenAI 的——<strong>是我之前、红杉投的两个人之一。</strong>在我之前，红杉在 YC 投过两个人：Dropbox 的 Drew Houston，<strong>而第一个是 Sam Altman</strong>，他的公司叫 Looped。我记得他对我说——我当时 27、28 岁，红杉刚投了我们 60 万美元、3000 万美元投后估值，是当时 YC 历史上最高的估值；<strong>现在平均估值是 3000 万美元</strong>——他说：<strong>「你会有 50% 的时间花在招聘上。」</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我当年没有这么做——那是我最大的失误。花在招聘上的时间越少，我就越多地花在管理上。</strong>然后我开始明白：<strong>我的第一份工作就是招聘。每天我醒来，第一个电话打给招聘官。</strong>我认为人们应该想：<strong>你的第一个员工应该是招聘官，而不是工程师。</strong><strong>公司有多好，取决于人有多好。好公司和伟大公司的差别，就是人。</strong><strong>我痴迷于招聘，一天花好几个小时。而且我不只招高管，我会往下招两层、三层。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">一般不要做「搜寻」（search），你要<strong>建立管道</strong>（pipeline）。人们招聘时犯的错误是：<strong>「我要招一个某某」。于是去做一次搜寻</strong>——雇一家猎头公司，他们扫描一圈给你 50 份简历，你筛到 10 个、联系 10 个、挑最好的那个录用。然后一年后你发现他是好是坏。如果是坏的——<strong>糟糕，他已经招了他自己的团队了。那是错误的方式。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>最好的方式是「管道式招聘」：你在持续地招人，持续地见人。</strong>你要做的，是<strong>把硅谷最好的人都画在一张地图上。</strong>比方说，我要招非常棒的工程师。<strong>我不做搜寻，我只是「信息性地」去见世界上最好的工程师。每一次见面，任务都是「拿到下一次见面」——见另一个人。</strong><strong>判断一个人是否优秀最好的两种方式是：(1) 从「结果」倒推到「人」。</strong>很多人说「我要一个很好的营销人，去耐克」——<strong>不对。换个做法：找一条你喜欢的广告，弄清楚是谁做的，从结果倒推到人。别从简历开始。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>另一种是：不断问人，来建立你的「人脉罗盘」。我在不断构建罗盘。一旦我发现一个人真的很棒，我就问他「你认识的最棒的人都有谁」。我基本上是在建立这些小小的「帮派」（mafia）。</strong>每家公司都有一个小小的人才帮派——比如 Uber 有个「运营帮」，苹果有个「设计帮」。<strong>你建起这些小生态，他们会告诉你其他好人是谁。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我做的是：我是公司前 200 人的「联合招聘经理」（co-hiring manager）。这非常激进。</strong>很多 CEO 认为「招自己的高管团队」才是他们的工作，<strong>如果高管团队自己招自己的团队——我认为那是致命的。</strong><strong>你永远要「往上娶」——招面向未来的人。</strong>我以前常说：<strong>我的高管要招到「没有我的帮忙就绝不会为他们工作」的人。</strong><strong>你要招你能招到的最棒的人。</strong>所以我不断见人、不断面试。<strong>我每天的第一个和最后一个电话，都打给招聘团队。我大概每天花两三个小时在上面。每一年，我花在招聘上的时间都更多。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">顺便说一句，2000 年代我不是这样的。<strong>我当时以为一切都在于「有个好点子、有台招聘机器、管好人」。好处是：我现在不太需要「管理」了。你在招聘上花的时间越多，花在管理上的时间越少，因为真正优秀的人是自我管理的。</strong><strong>而如果你不得不「管理」人，那也许你该考虑升级人才。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你之前说过，你认为创始人主要是天生的。那它是可以被塑造的吗？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>大体上是天生的。</strong>也许有个 caveat：<strong>也许创始人不是「天生」的，而是我们一辈子都在折腾、在构建。但你没法「模拟」当 CEO。</strong>我本来想问：你认为他们是被某种东西「激活」的吗？<strong>也许有原材料，然后某个事件发生了。</strong>Palantir 的 Sean 会把这叫做「布鲁斯·班纳/伽马射线」那种东西。关于「激活人才」，你学到了什么？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我认为「激活」就是给某人一个挑战。</strong>我们的创业故事，是我们当时付不起房租。<strong>但当然，在那之前我还有 50 个挑战的故事。只是 Airbnb 这个故事，以我从未有过的规模激活了某种东西。</strong><strong>它并不是我做的第一件东西——我一辈子都在做东西。所以激活一个人的方式，是给他一个问题或机会，看他能不能做到。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我认为「高能动性」（high agency）的人会去做。我不知道怎么「教」动力。也不知道它能不能被教。</strong>我认为<strong>你可以激励人，但我不认为你能把一个没有动力的人变成有动力的人。</strong><strong>所有创业者都有「自我驱动」这个特质。所以关键就是给他一个挑战。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">既然你已经把「喝彩」这个漏水的桶补上了，<strong>你现在的动力是什么</strong>，在你进入下一个篇章时？</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我的英雄大多是艺术家。我挑四个人：两个我已经反复提过——达·芬奇、梵高；还有 Walt Disney、Steve Jobs。</strong>他们有很多共同点，<strong>但有一个共同点是什么？——他们生命的最后一天、或最后一周，都在工作。</strong><strong>达·芬奇直到去世都带着《蒙娜丽莎》，而他肯定不是为了喝彩——因为他从没把它给任何人看。梵高一生只卖出一幅画，默默无闻地死在麦田里，但他做这件事，是因为他热爱。Walt Disney 生命的最后一天，躺在医院病床上，他哥哥 Roy 在给他搓冰冷的脚，他看着天花板——瓷砖是格子的——在想象迪士尼世界。Steve Jobs，据 Hiroki 说，生命最后几周还在看营销、看产品。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">有些人会把这种解读成「哦，好悲伤，他们都没花时间陪家人」。<strong>当然，梵高和达·芬奇没有家庭。据我所知，Steve 和 Walt 在生命最后是陪了家人的。但我不觉得「他们到最后还在工作」是个悲伤的故事——因为我认为他们做的是他们热爱的事。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我的动力，是一个艺术家的动力。我的动力，是创造出了不起的东西。那就是我的动力。</strong>我当然希望成功，希望股东有回报，希望员工觉得自己在一家好公司，希望给世界带来巨大影响。<strong>但最主要的是：我只想做出点东西。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我觉得我更像一个设计师，而不是一个 CEO。</strong>而我大概被赋予了一个人类历史上设计师所能拥有的最伟大的画布之一——<strong>通常设计师得不到这么多资源。这几乎像系统里的一个 bug。几乎像是意外：是 Airbnb 让我撬开了这个 bug，拿到了我本不该拥有的资源，但我不打算放手。所以我的动力，是一个艺术家的动力。我只想做出不可思议的东西。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">考虑到我们现在手上的工具，<strong>这是个近乎完美的收尾：每个人都可以这么做，只要他们愿意，而我们应该鼓励他们这么做。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>「每个孩子都是天生的艺术家，问题在于长大后如何保持是艺术家。」AI 是我们所有人成为艺术家、科学家和创造者的机会。我们不再必须是消费者，我们可以是创造者。</strong><strong>真正的创造者。</strong>我们听到「creator」这个词，会想到社交媒体上的表演者。<strong>那是一种创造方式——你可以表演。但问题是，「creator」被理解成了「表演」。现在，creator 可以意味着「创造、制作」。现在每个人都能制作了。这太棒了。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">我最后一个问题，每次都一样：<strong>别人为你做过的最善良的事是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>别人给我的最大礼物，是「相信我」。而我认为你能给别人的最大礼物之一，也是「相信他」。</strong><strong>举几个例子。我 16 岁转学到一所公立高中。我特别迷艺术，画得还不错，但我不知道自己有多好。我有个老师叫 Ms. Williams。她相信我。</strong>我记得她对我父母说：<strong>「他会成为一个有名的艺术家。」</strong>我后来并没有成为有名的艺术家。<strong>但（那句话）给了我信心——让我知道，我确实在某件事上有天赋，因为我在冰球上并不算好。</strong><strong>而忽然之间，那份「相信」把我带上了另一条路。那一刻我说：「我要去艺术学校。」也是那一刻，我意识到：我可以决定余生要快乐。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我来到硅谷，<strong>遇到 Michael Seibel 和 Justin.tv 的人，他们相信我</strong>——他们是早期的 YC 人。<strong>Paul Graham 破例让我进了 YC。他相信我。我那时不是工程师，而他几乎从不投非工程师。他其实觉得那个主意不好</strong>——他说「有人在做了」。<strong>但他相信我。</strong><strong>我的投资人</strong>——一长串投资人，他们相信我。<strong>Joe 和 Nate——我根本没有任何理由当 CEO，Joe 却不知怎么相信了我。</strong>我今天能在这里，<strong>全是因为人们慷慨地相信我、帮助我。而我认为我能回馈的最大礼物，就是去相信别人、去帮助他们，不要把梯子抽走。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>我后来有幸加入了「捐赠誓言」（Giving Pledge），你得写一封信。我记得我写的是：如果你去问我的高中老师，谁会加入捐赠誓言，他们绝不会猜是我。</strong>我的人生哲学基本是：<strong>我们都有未知的潜能。我们脑子里关于「自己能做到什么」的故事，往往低估了自己。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">回到 John Wooden——有人问他，成功的秘诀是什么？他说：<strong>「我只要求我的球员做到他们最好的自己。」</strong>那人说：「哦，这好像很奇怪，听起来像那种『让孩子输球』的家长说的话。」<strong>他说：「这里有个关键：我能看到别人自己看不到的潜能。」</strong>这就是我的管理哲学：<strong>当我说某人「这还不够好」，我不是在说「你不够好」，我是在说「我看到了一种你自己没看到的潜能」。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx"><strong>这是你能做的最能激励人的事：说「我相信你，而且我相信你能做得更多」。人们会为这个去爬一座山。</strong>而也许，结束整场对话最合适的一句话是：<strong>你能相信的最重要的人，是你自己。</strong></span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">我认为我们很多人——我们是创业者，<strong>我们被不安全感驱动、被某个洞驱动，不是所有人，但很多人。</strong>我们童年里的某些东西。<strong>我们很多人不是最酷的孩子，心里有某种「想证明」的东西。然后你变得非常成功，却仍带着冒名顶替综合征——而通往幸福与救赎的路，就是「学会相信你自己」这条路。</strong>对我来说，<strong>我是在别人相信我很久之后，才开始相信自己的。现在，我的礼物，就是试着把它给出去。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">一个很美的收尾。谢谢你，兄弟。</span></div>
+
+        <div class="qa"><span class="sp">Brian</span><span class="tx">非常感谢。</span></div>
+
+        <div class="footnotes">
+          <p>本译文依据公开逐字稿（podscripts.co 转写版）意译整理，略去赞助商口播（Ridgeline / WorkOS / Rogo / Vanta / Ramp）。逐字稿存在口语重复与转写错漏，译文已做可读化处理，个别明显错误按语义还原。</p>
+          <p>术语对照：founder mode（创始人模式）、AI founder mode（AI 创始人模式）、adulation（喝彩）、review compression（评分压缩）、proof of personhood（人格证明）、atomic unit（原子单位）、primitives（原语）、resilience（韧性）。</p>
+        </div>
+      </section>
+
+    </div>
+  </article>
+
+  <!-- 其它文章 -->
+  <section class="other-section">
+    <div class="eyebrow">Other Articles</div>
+    <h3 class="cta-h2" style="font-size:22px; margin-top:.5rem;">不妨再读一篇</h3>
+    <div class="other-grid">
+      <a href="https://pekxing-0.github.io/share/langone-american-dream.html" class="other-card">
+        <div class="other-date">The American Dream · Ken Langone</div>
+        <div class="other-title">美国梦、罗斯·佩罗与「把橙色的血一直流到今天」</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/munger-collison.html" class="other-card">
+        <div class="other-date">Charlie Munger × John Collison</div>
+        <div class="other-title">一场关于「弄明白什么管用，然后去做」的对话</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/noah-shinn-instinct.html" class="other-card">
+        <div class="other-date">Noah Shinn · Instinct</div>
+        <div class="other-title">本能：关于 AI、研究与判断力的一场对话</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- More Articles CTA -->
+  <section class="more-cta">
+    <div class="more-cta-inner reveal">
+      <div class="eyebrow">More Articles</div>
+      <h2 class="cta-h2">更多访谈精译</h2>
+      <p style="font-size:15px; line-height:1.8; color:var(--ink2); margin-bottom:1.5rem; max-width:460px; font-family:system-ui,sans-serif;">
+        译自 Colossus《Invest Like the Best》系列。<br/>
+        仅供个人学习与交流，不构成任何投资建议。
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer-text ui-sans">
+    <div class="footer-inner">
+      <div class="fm">THANK<span style="color:#19B5DC">*</span></div>
+      <div class="fc">译自 Invest Like the Best（Colossus）· 仅供交流 · 版权归原作者所有</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // 阅读进度
+  var bar = document.getElementById('progress');
+  function updateBar(){
+    var h = document.documentElement;
+    var total = h.scrollHeight - h.clientHeight;
+    var pct = total > 0 ? (h.scrollTop / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateBar, {passive:true});
+  updateBar();
+
+  // 阅读时长（按 280 字/分钟）
+  var body = document.getElementById('body');
+  if (body) {
+    var txt = body.innerText || body.textContent;
+    var mins = Math.max(1, Math.round(txt.length / 280));
+    document.getElementById('read-time').textContent = '阅读 ' + mins + ' 分钟';
+  }
+
+  // 通用 reveal
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  document.querySelectorAll('.article-section').forEach(function(el){ io.observe(el); });
+
+  // 段落 stagger
+  var paraIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); paraIO.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote, .article-body .item, .article-body .tblwrap, .article-body .qa').forEach(function(el){ paraIO.observe(el); });
+
+  // strong 下划线
+  var strongIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in-strong'); strongIO.unobserve(en.target); } });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.article-body strong').forEach(function(el){ strongIO.observe(el); });
+</script>
+
+</body>
+</html>
