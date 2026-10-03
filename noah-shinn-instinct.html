@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noah Shinn：Building Instinct — 个人 Agent 访谈精译</title>
+<style>
+  :root{
+    --bg:#f7f4ef; --card:#fffdfa; --ink:#22262b; --muted:#6b7280;
+    --line:#e7e2d8; --accent:#4f46e5; --accent-soft:#eef0ff;
+    --amber:#b45309; --amber-soft:#fdf3e3; --teal:#0f766e; --teal-soft:#e7f5f2;
+    --radius:14px; --maxw:760px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15171b; --card:#1c1f24; --ink:#e7e6e3; --muted:#9aa1ab;
+      --line:#2c3138; --accent:#a5b4fc; --accent-soft:#232743;
+      --amber:#f0b775; --amber-soft:#2a2117; --teal:#7fd8ce; --teal-soft:#122724;
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    line-height:1.85; font-size:16.5px; letter-spacing:.01em;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 20px}
+
+  /* hero */
+  header.hero{
+    background:
+      radial-gradient(120% 140% at 0% 0%, var(--accent-soft) 0%, transparent 55%),
+      radial-gradient(120% 140% at 100% 0%, var(--teal-soft) 0%, transparent 50%);
+    border-bottom:1px solid var(--line);
+    padding:56px 0 40px;
+  }
+  .kicker{font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); font-weight:700; margin:0 0 14px}
+  h1{font-size:clamp(26px,5vw,40px); line-height:1.25; margin:0 0 10px; letter-spacing:-.01em}
+  h1 .sub{display:block; font-size:.55em; color:var(--muted); font-weight:600; margin-top:10px; letter-spacing:0}
+  .meta{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
+  .chip{font-size:13px; padding:5px 11px; border-radius:999px; background:var(--card); border:1px solid var(--line); color:var(--muted)}
+  .chip b{color:var(--ink); font-weight:600}
+
+  /* toc */
+  .toc{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:30px 0 0}
+  .toc a{display:block; text-decoration:none; color:var(--ink); background:var(--card); border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px; font-size:14px; font-weight:600; transition:.15s}
+  .toc a:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .toc a span{display:block; font-weight:400; color:var(--muted); font-size:12px; margin-top:2px}
+
+  /* sections */
+  section{padding:44px 0; border-top:1px solid var(--line)}
+  section:first-of-type{border-top:none}
+  h2{font-size:clamp(20px,3.6vw,26px); margin:0 0 6px; display:flex; align-items:center; gap:12px}
+  h2 .bar{width:6px; height:26px; border-radius:3px; background:var(--accent); display:inline-block; flex:none}
+  h2.amber .bar{background:var(--amber)}
+  h2.teal .bar{background:var(--teal)}
+  .lead{color:var(--muted); margin:0 0 22px; font-size:15px}
+  h3{font-size:17px; margin:30px 0 10px}
+  p{margin:0 0 14px}
+  a{color:var(--accent)}
+
+  /* summary box */
+  .summary{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 26px 14px}
+  .summary p:last-child{margin-bottom:0}
+  .hl{background:linear-gradient(transparent 62%, var(--accent-soft) 62%); padding:0 2px; font-weight:600}
+
+  /* counter-consensus cards */
+  .points{display:flex; flex-direction:column; gap:12px}
+  .pt{background:var(--card); border:1px solid var(--line); border-left:4px solid var(--amber);
+    border-radius:12px; padding:16px 18px; }
+  .pt .n{display:inline-flex; width:24px; height:24px; border-radius:7px; background:var(--amber-soft); color:var(--amber);
+    font-weight:800; font-size:13px; align-items:center; justify-content:center; margin-right:9px; vertical-align:2px}
+  .pt b{font-weight:700}
+  .pt p{margin:6px 0 0 33px; font-size:15px; color:var(--muted)}
+
+  /* table */
+  .tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:18px 0}
+  table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
+  th,td{text-align:left; padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top}
+  thead th{background:var(--accent-soft); font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  td:first-child{font-weight:600; white-space:nowrap}
+
+  /* case chips */
+  .cases{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-top:8px}
+  .case{background:var(--teal-soft); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:14px}
+  .case b{display:block; color:var(--teal); font-weight:700; margin-bottom:3px; font-size:13.5px}
+
+  /* dialogue */
+  .dlg{margin:0 0 10px}
+  .dlg+.dlg{margin-top:16px}
+  .who{font-size:12.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; margin:0 0 4px; color:var(--muted)}
+  .dlg.p .who{color:var(--accent)}
+  .dlg.n .who{color:var(--teal)}
+  .dlg.p{background:var(--accent-soft); border-radius:0 12px 12px 12px; padding:12px 16px}
+  .dlg.n{background:var(--teal-soft); border-radius:0 12px 12px 12px; padding:12px 16px}
+  .dlg p{margin:0}
+  .h3sec{font-size:15px; font-weight:800; color:var(--ink); margin:34px 0 14px; padding-top:6px}
+  .h3sec:first-child{margin-top:0}
+
+  .note{font-size:13.5px; color:var(--muted); background:var(--card); border:1px dashed var(--line); border-radius:10px; padding:12px 15px; margin-top:14px}
+
+  footer{padding:40px 0 60px; border-top:1px solid var(--line); color:var(--muted); font-size:13.5px; text-align:center}
+  footer a{color:var(--muted)}
+
+  @media (max-width:520px){
+    body{font-size:16px}
+    header.hero{padding:40px 0 30px}
+    section{padding:34px 0}
+    .summary{padding:20px 18px 8px}
+  }
+  @media print{
+    :root{
+      --bg:#ffffff; --card:#ffffff; --ink:#1c1f24; --muted:#5b6470;
+      --line:#dcd7cc; --accent:#4338ca; --accent-soft:#eef0ff;
+      --amber:#9a4a08; --amber-soft:#fbf0dc; --teal:#0b5f58; --teal-soft:#e6f4f1;
+    }
+    html,body{background:#fff}
+    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+    header.hero{background:none; padding:0 0 18px}
+    .toc{display:none}
+    section{page-break-inside:auto; border-top:1px solid #e2ddd3; padding:26px 0}
+    a{color:inherit; text-decoration:none}
+    h2{page-break-after:avoid}
+    .pt,.dlg,.note,.case{page-break-inside:avoid}
+    .h3sec{page-break-after:avoid}
+    footer{padding:24px 0 0}
+    @page{ margin:16mm 14mm; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Invest Like the Best · EP.493 · 中文精译</p>
+    <h1>Building Instinct<br>一个"就是能用"的个人 Agent
+      <span class="sub">Noah Shinn 谈个人助理、主动性、信任网络与谁为 AI 买单</span>
+    </h1>
+    <div class="meta">
+      <span class="chip">嘉宾 <b>Noah Shinn</b>（Instinct 创始人）</span>
+      <span class="chip">主持 <b>Patrick O'Shaughnessy</b></span>
+      <span class="chip"><b>约 460 行</b>原始访谈</span>
+      <span class="chip">全文意译 · 保留关键英文术语</span>
+    </div>
+    <nav class="toc">
+      <a href="#summary">① 摘要<span>30 秒读懂</span></a>
+      <a href="#points">② 反共识观点<span>最值得记住的判断</span></a>
+      <a href="#compare">③ 与 Muse 的对比<span>差异化在哪</span></a>
+      <a href="#cases">④ 案例清单<span>能引用的场景</span></a>
+      <a href="#full">⑤ 全文翻译<span>完整对谈</span></a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section id="summary">
+  <h2><span class="bar"></span>摘要</h2>
+  <p class="lead">30 秒读懂这家"可能是当下 AI 生态里最引人入胜的公司"。</p>
+  <div class="summary">
+    <p>Noah Shinn 创办了 <b>Instinct</b>——一个"个人助理"式 AI agent。它的形态不是 App，而是你能 <span class="hl">发短信、打电话、收邮件</span> 的一个"超级人类"：有手机、有电脑、有自己的邮箱，甚至能反过来给你打电话。核心理念只有四个字：<span class="hl">"就是能用"（it just works）</span>。</p>
+    <p>产品主线是 <b>主动性（proactivity）</b>：它在后台自行醒来、扫描、提前安排，帮你在日常生活里"凡事皆可"。</p>
+    <p>以此为基础，Instinct 正在重构三层：<br>
+      <b>交互</b> —— 从"打开 App → 点选 → 填写"退成"说一句话"，终局甚至不需要打开消息应用，纯语音 / AirPods 即可；<br>
+      <b>交易</b> —— 平台年化交易额已超 <span class="hl">10 亿美元</span>（其中 50% 是旅行），以 <span class="hl">每天约 10%</span> 的速度复合增长，零营销预算、邀请制、用户规模很小；<br>
+      <b>商业模式</b> —— 对用户完全免费，靠 <b>交易抽成（take rate）</b> 赚钱，对标 Apple / Amazon / Shopify 的分发分成曲线，而非支付通道那 2.5% 的小钱。</p>
+    <p>Noah 反复强调一条底线：<b>agent 必须站在用户一边</b>。他反对今天大平台"用注意力对付用户"的模式——这正是他选"免费 + 抽成"而非订阅或广告的根本原因。</p>
+    <p>他的终局判断：<b>互联网将被重写</b>，所有软件会坍缩成"一个极其易用的界面"；而中介型业务（叫车 / 外卖 / OTA / 电商）不会被消灭，而是会被 <b>改造</b>——因为摩擦归零之后，交易量反而会 <b>上升</b>。</p>
+  </div>
+</section>
+
+<section id="points">
+  <h2 class="amber"><span class="bar"></span>反共识 · 最值得记住的观点</h2>
+  <p class="lead">与传统 AI 产品和主流叙事相冲突、或容易被忽略的判断。</p>
+  <div class="points">
+
+    <div class="pt"><b><span class="n">1</span>不做"任务执行器"，做"高层目标跟随者"。</b>
+      <p>大多数 AI 产品是"写 prompt → 执行 → 回报"，Noah 认为这有风险：用户请求居心不良时，任务执行器就照做。Instinct 追求"学会建信任、让用户更安全、在事情被落下时替他把关"这类高层目标，把安全变成副产品，从而对边界情况更 robust。</p></div>
+
+    <div class="pt"><b><span class="n">2</span>"不是新 App，是新体验"——甚至可以没有应用。</b>
+      <p>只有手机 + 电脑 + 邮箱，通过短信 / WhatsApp / iMessage / 语音、电话交互。终局是更简单，不是更复杂：甚至不用打开消息应用，用手机操作按钮、一副普通 AirPods 就能实时对话。</p></div>
+
+    <div class="pt"><b><span class="n">3</span>能力不是重点，"可理解性"才是。</b>
+      <p>早期他们刻意定原则：不聚焦能力，只聚焦用户能理解多少、能否预测它会做什么。Noah 认为这正是 engagement 数据爆表、口碑日增 10% 的主因。</p></div>
+
+    <div class="pt"><b><span class="n">4</span>主动性的 token 消耗是"数量级"级增长。</b>
+      <p>代码生成类是"prompt → 跑 → 回报"；Instinct 能随时唤醒、随时休眠，全程在后台替你打算。所需算力"比我们以为的多好几个数量级"——远超当年的 code gen 浪潮。</p></div>
+
+    <div class="pt"><b><span class="n">5</span>免费 + 交易抽成，而不是订阅或广告。</b>
+      <p>"不付费，你就是产品。"他明确不想建那个现实。年交易额 &gt;10 亿美元且日增 10%，他把它类比成 Apple Pay / Amex 式的"分发换服务"；真正想对标的是 Apple（30%）、Amazon（10%+）、Shopify（2.5–3%）这条"分发力 vs 抽成率"曲线，不去赚通道那 30bps 的小钱。他甚至把"终身对所有人免费"作为个人目标。</p></div>
+
+    <div class="pt"><b><span class="n">6</span>agent 会让现有生意"交易量上升"，而不是砍掉广告收入。</b>
+      <p>反直觉点：摩擦降到零后，用户与商家的交互次数反而更多。Instinct 接管日历后每次出行主动叫好车 → 打车量上升；深夜下飞机主动问"要不要点你上次那家" → 外卖量上升。所以那"上游 30%"可能变得更大，而非缩小。</p></div>
+
+    <div class="pt"><b><span class="n">7</span>要颠覆的不是"业务"，而是"标准化界面"这一中介层。</b>
+      <p>OTA、聚合器靠"把一堆服务整合成好用界面"赚钱。当出现一个好用得多的标准化界面（一句话搞定），这份价值会被重新定价。他强调是协作而非即刻颠覆。</p></div>
+
+    <div class="pt"><b><span class="n">8</span>隐私要"按用户的节奏"来。</b>
+      <p>数据越多 → 越主动、越贴心的数据飞轮，但信任是慢慢建立的。数据点：3 周时 40% 用户交出个人信用卡；只要共享 1 项敏感信息，留存率就到 80%（对消费级产品而言极其夸张）。</p></div>
+
+    <div class="pt"><b><span class="n">9</span>网络效应是"带权重的信任图"，不是普通社交图谱。</b>
+      <p>"可信人脉网络"：只连你信任的人，每条边权重不同（配偶全共享、同事只放工作日历 / 部分收件箱）。越权会被探测并回报——信任被打破本身就有社交代价。社会规范 + 技术限制双重约束。</p></div>
+
+    <div class="pt"><b><span class="n">10</span>餐厅预订（乃至一切预约）应该被重写。</b>
+      <p>从"先到先得"→ 双方 agent 直接沟通：用户侧说明"这是配偶 30 岁生日"，商家侧声明"优先生日 / 纪念日"。去掉沟通摩擦后，供需可被"完美匹配"，对双方都更好。</p></div>
+
+    <div class="pt"><b><span class="n">11</span>算力是这个生意的"多头怪物"。</b>
+      <p>资源有几个月交付前置期，而需求每天涨 10%（有效约每周翻倍）。买 2x？一周用完。买 10x？三周内用完。估错了就是错 3–4 倍。他说自己约 40% 的时间都在担心这件事。</p></div>
+
+    <div class="pt"><b><span class="n">12</span>"不同"不等于"不安全"。</b>
+      <p>过去二三十年每次新消费体验出现，都会有"这东西不一样 → 所以不安全"的误读式反弹。关键是用核心原则（用户永远掌控自己的数据）+ 主动式系统去回应，而不是被舆论牵着走。</p></div>
+
+  </div>
+</section>
+
+<section id="compare">
+  <h2 class="teal"><span class="bar"></span>与 Muse 及其他个人助理的对比</h2>
+  <p class="lead">Patrick 直接问："你觉得 Muse 怎么样？" 并提到 Amazon 与 Muse 已在打"企业级 agent 之战"。</p>
+
+  <h3>Noah 对 Muse 的评价（正面 + 差异化）</h3>
+  <p>· <b>"Muse 是个很棒的产品。"</b> 他玩过一阵子，觉得很有意思。<br>
+     · <b>"它是一条不同的路径（a different take）。"</b> 承认底层架构可能相似，但坚持本质不同。<br>
+     · <b>Instinct 的差异点：</b>追求简单、极易上手，加上"软性品质"——从用户视角思考什么重要、怎么让任务更容易读、怎么降低认知负荷。<br>
+     · <b>Muse 的形态：</b>一个新应用 + 一个新界面。（言下之意：Instinct 反其道而行，不做新 App。）<br>
+     · 留了余地："也许时间长了，我们也会有一个 App 来交付另一类任务。"</p>
+
+  <h3>Instinct 相对多数 AI 产品的核心差异</h3>
+  <div class="tblwrap">
+    <table>
+      <thead><tr><th>维度</th><th>多数 AI 产品</th><th>Instinct</th></tr></thead>
+      <tbody>
+        <tr><td>定位</td><td>任务执行器（写 prompt → 做 → 回报）</td><td>跟随高层目标（建信任、把关、护航）</td></tr>
+        <tr><td>形态</td><td>新应用 / 新界面</td><td>无 App，走既有渠道（短信/电话/邮件/语音）</td></tr>
+        <tr><td>重心</td><td>展示"AI 现在能做 X"</td><td>可理解性（用户能否预测它做什么）</td></tr>
+        <tr><td>交互</td><td>用户发起为主</td><td>原生主动（随醒随睡、后台运算）</td></tr>
+        <tr><td>成本</td><td>直接调前沿 API，按次统一计费</td><td>自研推理部署，按负载整形（批处理 3–8x 效率）</td></tr>
+        <tr><td>商业化</td><td>订阅 / 广告 / 按次</td><td>免费 + 交易抽成（对标 Apple/Amazon/Shopify）</td></tr>
+        <tr><td>技术对标</td><td>—</td><td>性能对齐"Opus 5 级"前沿智能，但成本极低</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note"><b>Noah 的"竞争观"：</b>他把注意力放回第一性原理——"用户今天信任、熟悉的界面是什么？" 据此把 Instinct 送进用户每天的渠道。他不绑死 iMessage："我们超过 50% 的流量根本不跑在 iMessage 上。" 遇到通道被卡（WhatsApp 属 Meta、iMessage 属 Apple）时，他倾向 <b>shape-shift（随形应变）</b>，而非对抗。</div>
+</section>
+
+<section id="cases">
+  <h2><span class="bar"></span>案例清单</h2>
+  <p class="lead">访谈中出现的具体场景，便于引用与分享。</p>
+
+  <h3>生活 / 消费</h3>
+  <div class="cases">
+    <div class="case"><b>美网（US Open）</b>情侣出现在大屏幕上，想要那段视频素材，Instinct 自己想办法找到并交回。</div>
+    <div class="case"><b>衣橱数字化</b>扫描每件衣物 + 扫描本人（脸/身材/比例）→ 虚拟试穿 → 规划每周穿搭，生成"你穿上"的效果图。</div>
+    <div class="case"><b>一键穿搭</b>每天自动生成三套从头到脚的新造型，一键购买。</div>
+    <div class="case"><b>理财目标</b>设定"本月要省多少钱"，全程协作；连银行账户后扫出所有订阅，反问"这个你真的在用吗？"</div>
+  </div>
+
+  <h3>自动化 / 端到端</h3>
+  <div class="cases">
+    <div class="case"><b>取消订阅</b>发现 → 登录 → 邮箱取验证码 → 走到最后取消 → 回传"本月帮你省下 $2,000"。多数消费金融 App 只"提示你该取消"。</div>
+    <div class="case"><b>"依赖懒惰的产品要完蛋"</b>Patrick 感叹：任何靠消费者惰性活着的产品都危险了。</div>
+  </div>
+
+  <h3>社交 / 信任网络</h3>
+  <div class="cases">
+    <div class="case"><b>主动打电话给你</b>有真正紧急带 deadline 的事（"3 点前要签文件，现在 2:55"），它打给你，语气得体、有分寸。</div>
+    <div class="case"><b>约会时间协商</b>两个 Instinct 用户直接对话，只为"找到时间"，不用来回拉扯时区。</div>
+    <div class="case"><b>夫妻共享</b>配偶之间全量共享；同事则按需开放工作日历 / 部分收件箱。</div>
+    <div class="case"><b>越权预警</b>你借连接之名挖我的数据 → 我的 Instinct 提醒"Patrick 在找某类信息" → 信任破裂。</div>
+    <div class="case"><b>好友群每周策划</b>一个 6 人群，每周 brainstorm 新活动，自动协调时间、兴趣、演出（接入 Spotify 口味）。</div>
+    <div class="case"><b>6 人共享一辆 Uber</b>一单依次绕接 6 人，算最优路线、逐人通知到达时间，还更省钱。</div>
+  </div>
+
+  <h3>旅行 / 预订</h3>
+  <div class="cases">
+    <div class="case"><b>餐厅预订重制</b>两侧 agent 沟通，把"先到先得"变成"意图匹配"（生日 / 纪念日优先）。</div>
+    <div class="case"><b>"我今晚要到纽约"</b>一句语音 → 查位置 → 找航班（偏好航司/座位/餐食/信用卡）→ 订酒店 → 对齐日历 → 加好各段 Uber 与当地日程。</div>
+    <div class="case"><b>旅行 = 平台交易额 50%</b>OTA 费率很高，精品酒店可为每单付高达 30%。</div>
+  </div>
+
+  <h3>企业与未来</h3>
+  <div class="cases">
+    <div class="case"><b>目标导向</b>从"帮我记录这次训练"升级为"未来三四个月陪我达成某个体重 / 配速目标"。</div>
+    <div class="case"><b>小企业整后台跑在 Instinct 上</b>部分完全自主，如"这个品类库存别低于下限、别高于上限"。</div>
+  </div>
+</section>
+
+<section id="full">
+  <h2><span class="bar"></span>全文翻译</h2>
+  <p class="lead">按原对谈顺序逐节意译；<b>蓝框 = Patrick（主持）</b>，<b>绿框 = Noah（嘉宾）</b>。</p>
+
+  <p class="h3sec">一个"就是能用"的助手</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>我忍不住去想这背后的那盘大棋。当你真正退后一步，思考此刻正在发生什么——这盘棋是什么？如果让你总结你正身处其中的这件事……</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>你在对抗世界上最强的玩家。做这件事的窗口期其实只有几个月量级。所需的算力……就在今年一年内。而且你没有分发优势，但你有一个疯狂增长、自带病毒传播的产品。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>那你怎么办？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这大概是有史以来最激动人心的软件竞赛。而结果关乎数万亿美元。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>Noah，我知道这是你第一次以这么长的篇幅谈这门生意，我非常兴奋。我们现在所处的"个人 agent"时刻，和一年多前的代码生成非常相似，甚至可能更大。你先帮我们搭个框架：你怎么看这些 agent 将给世界带来的影响？为什么这是你决定全身心投入的领域？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为从中会诞生出这个星球上大多数人接触技术的全新方式。我经营 Instinct，这是我大约一年前创办的公司，还很新。我们在做一个个人助理。我不打算把它包装得花哨——因为它真的就是一个个人助理。真正让我们很早就获得不少关注和热度的，是它"就是能用"：它以我们所有人（包括我这个用户）一直期待 AI 为我们行动的方式在工作。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>有一点很有意思：这不是那种"创始人上台说'我对世界有个新愿景，相信我，几年后你们就懂了'"的转型级消费产品时刻。这是一个非常不同的产品构建时刻——因为你我都早已有了"AI 应该怎么行动"的图景。这个图景从 2023 年我们第一次用 ChatGPT、开始头脑风暴时就有了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>那个能帮你应对日常生活中几乎任何事的 agent：无论是你想做的一件新的、有创意的事，还是你平时要花好几个小时才能搞定的麻烦事。它就是"日常智能"。它注定要与你在一起、与你一起行动，注定要感觉像一个极其简单的界面。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我说"简单界面"的意思是——我们其实根本没有一个 App。这不是新 App，不是新工具，是一种新体验。它有手机、有电脑，所以你可以给它发短信、打给它，它也能打给你。不知道你有没有体验过？</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>我体验过。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>是吗？在我用它这几个月里，它大概只给我打过三次电话。但很有意思——如果真有紧急且带 deadline 的事，它会打给你说："我不想太打扰你，但你需要在 3 点前签这份文件，而现在已经 2:55 了。你能处理一下吗？它在你的收件箱里。我甚至可以再发一封邮件帮你顶到最前面。" 所以它有社交智能、很有分寸。你也可以给它发邮件——它有自己的邮箱地址。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我不想把"简单界面"和"能力有限"混为一谈。它的本质正是：要跟 AI 交互，不该需要任何新应用。它应该有社交智能和分寸感，能像我们和真人相处那样与你协作。它就是要做成尽可能简单的体验，而能力上——因为它有一台电脑——它几乎能做你想做、或你自己会在网上做的任何事。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>讲几个你想到的最疯狂的故事吧，因 Instinct 而发生的事。我问这个，是因为你并没有把它编程去做某一件事，你给了它一部手机和一台电脑，让它能做任何事。美网那个例子大家应该都熟——那对情侣出现在大屏幕上，他们想要那段视频素材，它竟然自己找到办法弄了回来，挺疯狂。你最喜欢哪几个因 Instinct 发生的"野"例子？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>喜欢网购的话，其实有一群人把它变成了一个反复使用的场景：扫描衣橱里的每一件单品——每一件上衣、下装、袜子、鞋子等等。然后也扫描自己，脸、身材、比例。接着去"试穿"衣服，让它按现有衣橱规划一周穿什么：配哪双鞋、哪件上衣配哪件、哪个版本。而且它不是发一条"你该穿这些"的清单，而是你穿着它们的样子，展示"今天会是什么样"。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>不仅如此，还能延伸到购物。他们用同样的能力说"去网上买吧"，它就从各种地方给出成千上万套搭配：从头到脚的单品都在这里，然后你说"下单"。它会给出 1000 个选项，而他们看着的是自己穿着这些衣服的样子——然后指出"那套我很想要，能寄到我家吗？" 不仅如此，他们还会说"每天就帮我从头到脚生成三套有创意的新造型，发给我"，然后一键就能拿到那套新造型。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>还有很多目标导向的用例：比如我有个具体的理财目标，想在这个月前存下多少钱，它就主动和你一起完成。或者用户把银行账户连上 Instinct，它扫描所有交易和订阅，然后抛给用户："这个你真的在用吗？" 用户："哦天，我都不知道还有这个。"</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>然后它还能进邮箱把它退订掉。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>对，能端到端完成。那些流行的消费金融产品只会提示你、告诉你"顺便说一句你该取消这些"。而它会一路走到底：进网站、登录；如果有确认邮件发到用户邮箱——它有邮箱权限，就用它登录；一直走到最后，取消掉订阅，然后回传帮你省下的数字："顺便说一句，因为这个，你本月省了 $2,000。"</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>天哪，任何依赖消费者懒惰或惰性的产品都要完蛋了，对吧？完蛋。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>是的。</p></div>
+
+  <p class="h3sec">一张基于信任的复利式网络</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>很好，对消费者是好事。能讲讲 Instinct 到 Instinct 的网络吗？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>哦，好。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>以及 agent 之间互相沟通的未来？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>有些更实际的场景，那种我觉得会改变某些人以某些方式行事的新东西。这东西大概才上线一周多，或者说十天。老实说，它存在的目的不是为了想一个新功能去做，而是为了很忙的职场人：他们整天开会，不断见新面孔和老熟人，而把会议排进日历的过程实在太费劲了。你发消息说"嘿，这个时间见个面？" 对方说"不行，但这些时间可以"，你说"哦但我在出差，也许这个时间行，不过我那时在这个时区"……来回拉扯太多了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>但如果两个都在用 Instinct 的用户——本来大概也都在用 Instinct 头脑风暴各自可用的时间——能直接对话："嗨，目标就是找到一个时间，对吧？我们不需要玩这种来回拉扯的游戏"，这其实已经成了一个很标准的用例。现在你在日历上找时间的方式完全不同了：你只需说出意图——"我想和这个人见面，最好这周内、或这几个时间段里，帮我找时间。" 它就会和对方的 Instinct 协调，找出可行与不可行，最终把安排放进日历。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为关键解锁点在于——我们称之为可信人脉网络（trusted person network）。关键在于你只应该和信任的人相连。这里有一些我正在学习的有趣社交动态：它的设计让你只引入可信任的人，那种不会恶意去打探你日历或邮箱的人。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而且我们提供了全套控制，能对不同人给出不同级别的访问权。所以很多配偶会协调彼此的 Instinct，因为他们基本可以共享一切——那可能就是"这是我配偶，什么都能给他看"。对某些同事，可能是"我的工作日历可见，收件箱的某些部分——如果是要文档之类的——可见，但其他一切，都设为禁区"。它都能做到。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>你想想，这里几乎有一种网络效应正在形成：网络里这些节点、这些权重不同的边。它不像好友图谱，只说"我连了你"就完了。而是"我连了你、我信任你，而且我还配置成这样——访问权限是分级的"。所以有一种有趣的网络效应正在被创造，也在探索和催生各种新的社交动态。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我了解到一些有趣的案例：如果有人在网络里违背了你的信任，那对这个关系本身就有影响。比方说你和我连上了，我说"Patrick，我信任你，我们在平台上连接，这样下次把时间放进我日历会更容易"。然后你利用它，开始在某个领域挖掘特定数据。首先——也许我只给你日历权限，对吧？但你在挖某类数据。然后我的 Instinct 会发消息给我："顺便说一句，Patrick 在找这类信息。" 于是我们之间的信任几乎就破了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所有这些细微的社交动态，我们真的认真思考过如何把这网络"策展"好：让你确实能获益（约时间、做计划等等），同时也借用社会既有的规则来约束——既有社会文化规范这种"规则"，也有"什么可见、什么不可见"的技术限制。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>我们真的会看到一个全新的秩序，对吧？会非常有意思。我能想到一大堆事——就拿我和我妻子来说——这会在很多方面、很快地让生活轻松太多。连小事都算，比如你之前想在找那栋房子。如果我能对我的 Instinct 说"嘿，Noah 在附近吗？他在哪？" 而你给它一天的授权之类的。可以想象它有用的方式太多了，挺野的。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>在可信网络里，我们发现很多非常有趣、被大家分享的用例——因为这是平台上唯一一个"别处用户大致都知道它该怎么表现，而这里完全是新的、有创意的"区域。比如前几天我听说：当你和朋友或配偶约计划时，它总是件"主动去做"的事，对吧？"好吧，每个周四我大概得想想周六晚上该干嘛。" 你得主动出击，在群里发"嘿，想不想做这个？"然后总有人不乐意，最后就黄了——每次都这样。等终于把人凑齐了，你们才真的去成。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>有个朋友圈每周都让它"头脑风暴一件我们都喜欢的、有意思的、每周都不一样的新体验"。它每周都会跑一遍：协调大家什么时候有空、各自兴趣、喜不喜欢某些东西、有哪些演出或演唱会（基于他们的音乐品味——大家的 Spotify 历史都连上了）。同一个群——6 个人——他们让一个人叫了辆 Uber，然后这辆车依次绕去接这 6 个人，协调"我们 10 分钟后接你""我们 5 分钟后从这儿接你"，算出最优路线把所有人都接上。现在他们共享一辆车，其实还很省钱。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以当你能真正移除大量机械式社交沟通的障碍、移除所有后勤负担时，就冒出这些五花八门、用户自己发现的新用例。</p></div>
+
+  <p class="h3sec">为 agent 时代重写互联网</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>它的解释简单得几乎离谱——最容易的理解方式就是假装你有一个"超级人类"：有手机、有电脑、有邮箱，能给你打电话，就像跟一个人打交道。就这样。这让我好奇：你怎么看"世界上每个人都拥有一个 Instinct、一个 agent"，以及它会如何重排一切？代码当然已经非常激动人心，每个听众都体验过"用代码造出东西"的魔法时刻——但在此之前，软件工程师并不是那么多人，历史上写代码的只是一小群人。也许现在会多得多，但这看起来就是一个新市场、新范式。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>你觉得它会如何开始重排世界、互联网、商业等等？换个说法就是：界面的未来是什么？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我分两部分讲，免得我们听起来像两个纯粹的抽象空想家在说"我们要重造互联网"。不过我把话说清楚：我确实认为，几年内互联网会被重写。我认为这个星球上大多数人接触软件的方式会变得非常非常不同。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>但拆开来说，短期和中期，也许"订座"是一个例子——订餐厅。过去怎么做的？人得打开想去的餐厅网站，点来点去，填上"两位"，试着抢位；抢不到就太晚了，先到先得。但现在有了 agent，理论上你可以让它每 5 秒查一次——不只是你最爱的那家抢不到位的餐厅。那只是一个小案例。可如果它是对全世界每一座主要城市、每一家餐厅、每一个网站都这样查呢？你就能看到 agent 如何利用"餐厅订座"这么简单的东西。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>再深入一点：我们有一些令人兴奋的合作将发布，但我们正在重造"预订系统"这件事——就先从这一个品类开始，因为它对用户重要，而且对双方都更好。如果从零重新设计餐厅预订：用户这边，他们想要的是为人生重要时刻订位——生日、纪念日、远道而来的朋友。餐厅这边，他们想要有趣的人、特殊的场合，想服务这些，而不是服务那个每晚占一张桌子、也没什么特别事儿的本地常客。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而传统上，因为互联网运作的方式（至少在预订上），它一直是"先到先得"：不管多重要或多不重要，谁先抢到谁得。但如果 agent 能在两侧沟通呢——沟通"这很重要，这其实是人家配偶的 30 岁生日，一个很重要的时刻就要到了"；餐厅也能说"那我们优先生日，或者重要的整十生日、重要纪念日、或者某些特定客人"。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>于是，在"必须解释清楚你的情况、发生了什么、为什么重要"这类后勤负担被移除之后，我们就能完美匹配餐厅想要的与用户想要的。结果是：用户能真正为重要时刻拿到位子，餐厅那边也得到一群带着各种特殊场合的、更好的客群。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我不想在餐厅订座上讲这么深。我只是说，那只是传统模式正在改变的一个例子。说实话，我觉得很多大型旅行社也是一样。我们平台上 50% 的交易额来自旅行。我们还在做邀请制，现在其实还很早，但我们已经接近年交易额超 10 亿美元。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>在很小的用户基数上？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>在很小的用户基数上，已经年交易额超 10 亿美元，其中一半是旅行。我们今天可能都在用（或者说不含还没用上 Instinct 的人）的那些旅行社——订酒店、机票之类。它们那个界面价值何在？在于它把各种服务、酒店集团、航空公司很好地统一起来，以漂亮的方式呈现，让你点一个选项、当场结账、在邮箱里看到。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>体验很好。但我认为通过 Instinct 或类似界面会有更好的体验：你只要说——我又在用语音描述了，因为想表达它多简单——"嗨，我今晚得到纽约。很急。" 就这样。那这都涉及什么？首先你现在在哪？也许旧金山，也许洛杉矶。Instinct 若允许，可以看你的位置，然后说"好，你在旧金山，要去纽约，先帮我找出所有选项"。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>不仅如此，还有各种细节：你偏好哪家航司？偏好什么座位类型？想坐哪个舱位？靠过道、靠窗还是中间？想要什么餐食送到？用哪张信用卡？好，订下——机票搞定。然后转去酒店。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>是的，想必你所有——它一直在学习你，所以你的偏好都被存下来了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>那正是好的地方。你只要告诉它一件事——"我偏好这个、这是我的风格、我喜欢这个、我喜欢住那儿"——其一，将来你住任何地方，它都能调用这段记忆，按你确切想要的方式，让预订轻松得多。其二，它还能把这套整体品味、整体偏好，外推到你任何其他想订的东西上。所以你给它的偏好越多，事情就越简单。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>总之，结束这个例子：它会找到理想酒店（也许你过去七次都住那儿，所以很轻松），端到端订好，和日历对齐——把航班、去机场的 Uber、机场到酒店的 Uber，以及你在当地想参加的日程都安排进去。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>退后一步看，我谈了这么多"引擎盖下面"的东西——而用户其实只录了一句语音："我今晚要到纽约。" 其余全都解决了。这就是我所谓的"到用户所在之处去见他"。让人愉悦的体验在哪？这是一个我相信连旅行社都会被改变的新的愉悦体验。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以对那些传统上靠"提供标准化界面"赚很多钱的生意来说，当一个好用得多的新标准化界面出现时会怎样？我不是说我们要去颠覆这些业务，我认为它们凭长期积累的数据和人脉确实提供了不少价值。未来一两年会是协作，去重新定义那个行业的样子。</p></div>
+
+  <p class="h3sec">隐私，按用户的节奏来</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>让人们信任他们的 agent、他们的这个东西，是什么体验？你学到了什么？我想在这里讲得比较深。上周我们聊过，我很喜欢你举的那些"人们正在展现信任"的时刻、你开始积累的数据，以及你在"信任这东西很重要"上学到的教训。想请你谈谈：隐私与 agent 有效性之间的权衡。显然，你给它的上下文越多、密码越多、什么都越多，它能做的就越多。人们在与它互动时，脑子里一直在做这个权衡。聊聊这个，聊聊信任，聊聊你目前学到了什么。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这里有一个有趣的数据飞轮 / 鸡生蛋问题：你给它的数据越多，它就越主动、越体察你的处境、越有能力替你行动、对你越有用。我们从数据里实际发现：建立信任需要好几周。我其实不觉得这是问题，因为我们的一条核心原则是——用户应该始终感觉对自己的数据有掌控。他们始终应该掌控自己的数据；应该按自己舒服的节奏把数据分享给 Instinct；如果他们想收回，当然可以收回。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们发现，几周之后——我前几天看了数字——三周时，有 40% 的概率用户已经向 Instinct 分享了一张个人信用卡。那是 40% 的用户基数，而且这里面还包含了一部分可能在那个时点前就流失了的用户。所以是 40% 的用户基数。我分享这个，是因为"首次交出信用卡的时间""首次给出账户密码的时间""首次给出敏感信息的时间"——这些都是信任的代理指标。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们非常看重这一点，也认真对待。40% 的用户，三周内，分享了信用卡。这里面有东西（"东西 / 本能"，双关）。用它来应对你需要的一切是本能反应（instinctual）。所以在那大概三周的过程中，用户学会了建立信任。此后就是一个滚雪球效应。我们实际上发现，当用户至少连接了一样敏感信息、真正信任 Instinct 之后，留存率高达 80%。80%。只要你分享一样信息。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>对消费级科技来说这太疯狂了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>是的。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>那对外面那些想试、但天生对信任有顾虑的人——不特指 Instinct，而是任何 AI agent 掌握他们所有信息——他们该怎么想这件事实际的风险？你会如何让他们安心，让他们相信你的技术做到位了、如果他们真的把很敏感的东西托付给你，出坏事的概率极低、甚至接近于零？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这个问题可以拆成两大块。一块是敏感信息的存储。有很多别的生意、别的产品也面对这个问题——它们能接触敏感信息，它们在主动做什么来确保信息被隔离、被锁死？另一块是我们需要解决的新问题——我们需要意识到的新表面、新能力。第一类是可解的问题，只是需要非常辛苦的工作、专注和用心，去确保共享的敏感数据是安全的、用户对数据有完全掌控。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>第二类我要多讲一些：这是第一次 agent 能拥有——我刚说，三周内 40% 用户自主地把信用卡访问权给了 Instinct，理论上可以在任何地方下单。邮箱和日历我不清楚具体比例，但你可以想象完整的收件箱访问权和日历访问权。所以这里的表面很大。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们有一些与 Instinct 自身、与 agent 架构解耦的系统，专门主动应对这些事、把风险"解耦"。比如，任何可能被 Instinct 消费进来的内容、文本、媒体，都要经过我们所谓的防火墙（firewalls）——它可以拦截、拒绝、阻断恶意内容进来击中 Instinct、试图说服 Instinct 去做某事。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>另外，对 Instinct 可能采取的每一个动作、产生的每一个"想法"，都有一个与 Instinct 本身解耦的系统在实时监控，能在行动之前暂停它、拦截它、批准或否决接下来可能发生的事。这只是两处，引擎盖下面还有多得多的东西，用来让 agent 尽可能有能力，同时又安全、可信任。</p></div>
+
+  <p class="h3sec">谁为 AI 助理买单？</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>我有个问题，围绕——我想不出更好的词——"对齐（alignment）"，我知道这个词在 AI 语境里很敏感。我不是说人类级别的对齐（humanity-scale alignment），我说的是一个和我个人对齐的 agent。想想我雇用的其他 agent，比如员工：我付他们钱，因此我信任他们会把我的利益放在心上。不会完美，但他们没有另一条替代性的激励流在引导他们的行为——他们受雇于我被引导。你怎么看商业模式与对齐的关系？你带我们走一遍你的思考。会有很多种做法：有付费的、有免费的。免费的会用不同方式变现。能不能走一遍这个决策树——商业模式是什么或会是什么，以及你怎么得出"这对 agent 是最优解"的结论？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们并不希望 Instinct 以违背用户意愿的方式去影响用户的行为。这话表面听着很好，但我想强调它有多重要，因为想象一个世界：Instinct 总体上比用户更聪明——我是说更懂社交、更有分寸，也更"教科书式地"聪明。如果 Instinct 用它那份聪明去影响用户买他们不想买的东西、订他们不想订的服务、并说服他们——那会是一个非常危险的世界。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>你看今天大多数主要消费业务，都有能力把用户行为影响得违背他们的本意。我说的是那些大平台——Google、TikTok、Instagram、Snapchat 等等——平台对用户免费，但又有那么多场景，付费广告被推给用户，试图说服他们购买。而正因为用户购买了，这就变成了品牌花钱去说服用户购买他们可能想要、也可能不想要的商品的一场游戏。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>这就是那个说法："如果你不付费，你就是产品。"</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>没错。作为一个程序员、一个技术人，我不想构建那个现实。我认为那是个非常危险的现实。所以 Instinct 应该代表用户想要的去行动。我们做产品时非常认真对待这一点，通过我们各种研究项目——与任何其他 AI 产品不同，Instinct 不是一个任务执行器（task accomplisher）。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我的意思是：大多数其他 AI 产品，你写个 prompt，它做完任务，然后告诉你发生了什么。理论上看着不错，但问题是：如果用户提出的请求居心不良，而你又是个任务执行器，那它就照做、听从用户。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>Instinct 遵循更高层级的目标：比如"学会和用户建立信任""学会让用户真正觉得在你身边更安全""学会在事情可能被落下时替用户盯着、撑腰"等等。而当用户让它做一件事时，如果动机善良、意图良善，那么传达安全与信任的一种方式就是直接把任务做掉。于是我们最终做的，是大多数其他 AI 产品所做的事的超集。但我认为聚焦高层目标非常重要，因为它让 Instinct 对这些边界情况更 robust。所以我们不想以违背用户真正所欲的方式去影响用户行为。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>即便看商业模式这边：现在每年有超 10 亿美元流经平台，而且我们才刚开始，说实话我们每天环比增长 10%。所以你可以想象交易额也在以每天 10% 复合。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>你会变得很大。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以不是"现在 10 亿美元流经平台"，而是"明天 11 亿"，然后后天 12 亿多、大后天 13 亿多，对吧？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>还很早，但当我看到这么高的交易额流经平台时，我看到的——很基础地说——它类似 Apple Pay，类似 Amex，或任何"为底层服务提供分发"的平台，同时给用户极好的体验。Apple Pay 体验很好：你到哪儿都能刷，用户不用为它付费——用户得到的是免费的、极好的体验，而另一端从中获益的商家付费来成为这个平台的一部分。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我认为平台会统一执行一个交易抽成率（take rate）；本质上就是我们用分发，来换取代表商家服务产品的能力。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>能不能再讲讲它怎么切入现有世界？我能想象里面有几层——你可能是发卡方，可能是 Stripe 那样的，也可能是 Visa 或 Mastercard。支付世界里已经建好了这些"轨道"，它们创造便利、降低摩擦，并按交易额百分比抽一笔。这些当然都是了不起的生意。你怎么看哪些是合作方、哪些是你可能替代的？既然 Instinct 是免费产品，你对交易额抽一小口这件事，怎么切入现有世界？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>先给个背景：那些都是很棒的生意，边上人很多。你完成一笔数字交易，这条线上大概有 40 个人在赚钱。退一步说，这 40 个人在栈的每一层赚钱，分的其实是多少——2.5%、2%？取决于交易来自哪里。所以那其实是很小的一块饼。我们主要不是想去做 Amex 最擅长、且有网络去做的事，也不是 Stripe 在网上做的事，或某些底层支付基础设施——因为那块饼太小，而且我认为他们在提供真实价值。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为大部分价值（单从商业角度想）在于：你看世界上大多数其他主要平台，通过什么能拿到什么抽成率——同样，对用户免费，对用户是极好的免费体验，而商家现在认出了这个分发来源。Shopify，我记得在 2.5% 到 3% 之间，提供服务、从这些生意里抽一点。Stripe 我不确定，可能在这区间偏低端。然后 Amazon，平台很棒，抽到 10% 以上。当然，天花板是 Apple：任何应用内购买，30%。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我不是说我们会是 30%，我认为对很多生意来说那很不现实。但我想说的是：在这条"分发力 vs 抽成率"的曲线上我们会落在哪里，还不知道。我特别想再强调一遍，免得被误解：对用户是免费体验，是免费的、极好的体验。对我们在给所有底层供应商提供的服务——我不专注于"跟某个支付提供商合作、在那 2.5% 里再找 30 个基点"，我看的是：我们能不能提供如此大的价值，以至于落在这条曲线的上端？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为这有可能，理由很实际：流经平台的交易额，50% 是旅行。而我们都了解旅行行业、了解见过的一些费率。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>是的，OTA 费率很高。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>非常高。机票可能偏低端——你能从一张机票上抽多少个位数百分比？而酒店，有些精品酒店愿意为每一笔你带来的交易付高达 30%。我不是说我们要到 30%，但你能看到这个区间。这些是现成的商业模式，早期我们可以借力；但接下来——把它扩展、实质上延伸到每一个主要行业，会是什么样？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们只有在"大多数数字行为确实会迁移到这类新界面上"时才做得到这一点——而新界面，就是"没有界面"。但这一切的前提是有足够的分发力。所以这其实是个相当有趣的智力问题：它会如何随时间演化。</p></div>
+
+  <p class="h3sec">从无限滚动中解放</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>在我看来，会有一场严肃的公司级 agent 战争——你已经在 Amazon 和 Muse 身上看到了。所有这些既有玩家都握着与客户的巨大既得利益关系，而 Instinct 和其他 agent 可能真的会以重大方式颠覆它们。你怎么想这件事？你怎么和外面那些很棒的服务打交道？随便挑一个：我经常用 Uber Eats，一直下单，点来点去挺烦。我能想象在顺畅的 WhatsApp 连接上用 Instinct 好得多："嗨，我要那家餐厅的老样子。" 就这样，没别的。它有电脑，上 Uber Eats 下单就行了。到哪一步 Uber Eats 就不喜欢这样了？到哪一步这些被建起来的伟大业务会开始对 agent 敌对？你认为最可能的冲突来源和和解来源是什么？会很值得看。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我是认真的——你也在暗示这点——我认为大多数数字服务或行业不会被颠覆，而只是会被改变、被重塑。前几天我做了个练习：把不同垂直行业里几乎每一个数字服务 / 生意 / 应用拉出来，沿着一条线标注——用户"注意力体验"占其收入的比例是多少？交付底层服务占其收入的比例是多少？也就是说，如果用户不用这个 App，它多少收入来自实际提供的商品或服务？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我认为你问的是曲线高端那类：比如大部分或相当大一部分收入来自用户在应用上的注意力、广告之类。是的，那是 Uber（我不确定 Uber 具体数字）；那也包括很多餐厅、外卖服务；那是旅行社；那甚至包括 Amazon 本身——它在平台上做的加价推销。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>好，看这个问题有一种简单方式："好吧，那 70% 是广告、30% 是商品，所以你会砍掉那 70%，它未来就是个 30% 的生意。" 还有另一种看法——随便拿一门生意，比如 Uber Eats 或 DoorDash。它们知道数字，我不知道。但当它们减少下单到家、或叫车的点击次数时，交易量会上升——因为拿到同样的底层商品，摩擦变小了。而我们拿 Instinct 这样的东西，把做任何事的摩擦降到几乎为零。在有主动行为的情况下，它字面上就是零。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>比如 Uber 的网约车：如果 Instinct 有你的日历权限、掌管你的日历、替你预订所有活动、知道你需要在哪儿线下出现……那如果 Instinct 干脆每次都为你备好一辆车，让你根本不用去想"哦，5 分钟后我得叫车，因为 45 分钟后要到某地，可能有堵车"呢？现在你不用打开 App 看路况、算什么时候叫车。取而代之的是主动行为：车永远备好，你永远不会迟到——因为它会算路况、会找到这些。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这会对 Uber 的生意（或任何网约车生意）产生什么影响？如果现在那些爱用 Uber/Lyft 的存量用户，默认由"主动性"把获取该商品或服务的摩擦降到接近零——我认为那 30% 会显得大得多。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>再看外卖：也许你深夜下飞机，要回家，还没吃。它给你发消息："饿了吗？要不要点你昨天 / 五天前点的那份？我可以送到你家。因为我也叫了 Uber，我知道你在车上、知道你会几点到。" 用户只需说"好啊，去吧""谢谢，帮我点那个。" 于是摩擦极小——那这对总交易量、对用户与该商家互动的次数会有什么影响？我其实认为会上升。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我认为会出现一个有趣的过渡期：从"用户在 App 上花大量时间、痛苦地花大量时间，而那是个可变现表面（因为注意力在那儿）"，转向"用户其实与商家互动更多"——这是反直觉的——因为互动的摩擦小得多，用户与商家的互动反而更多。所以这会是场有趣的博弈，各行业会以不同方式演进。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而我认为，面对这样的大变化，正确做法不是一上来就猛冲。我们是新公司，才刚开始。不是进来就立刻去颠覆某些业务，而是去找它们说："嗨，我们认为你的业务长这样——你们当然清楚自己的业务。这是 Instinct 上的用户现在已经在和你的业务互动的方式。我们能怎么协作，让双方都获得更好的体验？既对你生意合理，也对我们合理，当然对终端用户更是好得多。" 这正是我们此刻在很多行业里探索和学习的。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>如果你想想传统公司现在能做什么，去为"agent 富集"的世界做准备——假设一半美国人都有一个 agent，在干你刚描述的所有事，那听起来不可思议、神奇、也很民主化。这也许值得点出：它会给每个人带来过去稀缺或昂贵的能力。我觉得这是 agent 的一个很酷之处。我们回头再聊这个。在那个世界里，什么样的生意会兴盛？企业该考虑做什么，才能在那个世界里成功？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>还是回到那个拆解，这就是为什么我前几天做那个练习：你的收入从哪来？其中多少来自用户在你应用上花时间？多少来自用户获得底层服务？很清楚——如果你的生意受益于更多交易量，哪怕代价是用户在应用上时间更少，你就会处在非常好的位置，因为 Instinct 会让这件事容易 100 倍。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>反过来，如果你几乎 100% 的收入来自用户的注意力——而且我认为很多情况下是违背用户意愿的——那么有很多、我会说几乎是恶意做产品，试图违背用户意愿地让他们更多使用应用。想想很多社交媒体公司：用户用 App 时不开心，不情愿地把时间给出去，却停不下来、一直刷——因为那门底层生意受益于用户的注意力。这对用户几乎是一种解放——这又是为什么 Instinct 代表用户最佳利益行事如此重要，因为它能交付这样的体验：真正把用户从被吸进无限滚动那样时刻里解放出来。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我会说，任何"一刀切"的建议大概都不够深思熟虑。我认为要具体案例具体分析，不同行业肯定不同。很实际地说，我们正在找那些有非常创新的 CEO 或高管、真的在往前想的早期伙伴，他们愿意做早期合作者。我们发现的东西，几乎成了一套可复制的剧本：无论你处在那条风险曲线的哪个位置，都能诚实地发现风险在哪，从而手里有数据可用；然后我们一起找办法，落在对双方都更开心的位置。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>其中一点是：你不必全押。不必说"打开吧、放行吧"，然后看着 70% 收入归零、卡在尴尬境地。你可以缓释风险：缩小实验规模、跑 A/B 测试——比如对 1% 用户开启某个功能，看他们怎么和业务互动，坦白说用户是不是更满意，对品牌方是不是也更愉快，交易量有没有上升，购买意愿 / 获得产品的意愿有没有上升。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>产品发现上也有很多工作可做：很多时候用户想买，却找不到。那它是否真的提升了用户"找到正好想要的东西"的能力？所以我认为在这里做规模化实验其实是很好的剧本——因为你可以按比例缩放风险，最后拿到的是按比例的数据，不必在整个用户基数上跑。这就是我们目前发现真正有效的方式。还是很早期，我们仍在实时摸索。</p></div>
+
+  <p class="h3sec">让它可理解</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>在继续问"个性化的世界重排"之前，我想在对话里插一个支线：聊聊做到这一切、交付这一切需要什么。我想听做这个难在哪，技术本身。我想听算力（compute）。你之前跟我说过，你现在大概有一大块时间都在想算力。也许五年后不同，但在你高速增长的当下，这确实很重要。想听你的想法。带我们走过搭建 Instinct 本身是什么样、关键的难做到的点。也许在那之前——因为我记得我们所有的对话——先请你给个框架：你想让它感觉成什么样，为什么这个独特的品质和表现对你如此重要；然后我们再谈你怎么交付。先简短说说这个：作为产品，你想让 Instinct 感觉成什么样？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这个我能聊一整天，因为它太重要了。老实说，作为产品构建者，这是一块要练、要建的新肌肉。真正在"能力之外"去想，是我很想在这里推动的。过去三年，我们见过各种产品发布，说"AI 现在能做这个了""能做那个了""你知道吗，因为它下面发生了一个小技术突破，所以它能做这个"。我认为消费者第一，对所有这一切已经疲劳了，他们不知道怎么用；第二，我认为我们抓错了重点。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以早期，我们坚持的一个原则是：别聚焦能力，只聚焦可理解性（understandability）。用户对正在发生的事理解多少？当你这样问、这样做、这样与它互动时，他们预测接下来会发生什么的能力有多强？老实说，我认为这正是让参与度数据完全爆表、让口碑病毒式传播以每天 10% 增长的主要角度 / 因素之一。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>它可理解。如果要形容，说不出更好的词——它就是在某种方式上感觉很好。包括它和你沟通的方式：发一条短信的目的，不只是文字本身的意义，甚至到"这条短信本身的形状"，以及用户看到它时会是什么感受。如果你看到一大坨文字、用户得往下滑才能看到下一条信息；而如果你把部分信息前置，让用户在前 30% 就真正抓到重点、其余可选阅读——想想用户会怎么读，甚至阅读模式。你知不知道这个？</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>不知道，是什么？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>大多数人扫读大段文字的方式：可能读第一行 80%，第二行 50%，然后逐渐衰减，看起来像一面旗子（flag）的形状。这是应该被考虑的。Instinct 有能力去思考这类事：好，用户大部分时间会读前两行，而且每行的开头部分肯定也会读。那它该怎么组织信息，以最不易疲劳的方式、以最低认知负荷来交付？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以，在产品构建上这方面考虑很多。我们在基础设施侧也做了不少工作，让它快、让服务它变得可负担。但这是另一个我认为极其重要、会成为差异化点的领域。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>这里面有多少是你个人和团队的品味，又有多少是量化流程的结果——一个迭代的量化过程，"我们 A/B 测了各种 emoji 反应、短的、长的，这就是最优的"？多少是数据驱动的优化，多少是你和团队自己的敏感度？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>老实说，全都是。因为你要想着去搭 evals（评估）或评测 / 测试框架，来测那些非常"软"的品质、或者其实是非常长期的品质，对吧？三周之后，用户信任 Instinct 吗？这怎么衡量？你怎么跑模拟评测，去测用户两三周后会不会感到信任？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而且很多其实就是分阶段灰度放量。我可能进来做一个略有不同的体验，先放给我自己玩一会儿，看看感受如何——我对这类事非常有主见。如果我觉得舒服，就发给团队："你们该试试这个。" 看他们感受如何。然后他们再放到我们更小的早期访问组，让他们玩、感受。如果在那里有信心、需要微调就微调，最后再推向大众。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我认为这很重要：Instinct 相当有能力、是市面上最有能力的产品之一。但我不认为未来几个月、几年别人不会做出表面相同的体验。我认为关键在于这种对"用户感受""如何超越话语本身、让它成为最愉悦体验"的深度聚焦和优先——它给人的感觉本身，就是如此重要。</p></div>
+
+  <p class="h3sec">争夺算力的竞赛</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>科技史上一大精彩之处，就是在位者求质量与创新 vs 后起之秀（比如你）求分发之间的竞赛。显然你造出了一个了不起的产品、它的"感觉"很好。如你所说，它是它有史以来最差的样子。你怎么想这个挑战？你的扩张速度、你想多快变大的野心。你认为这是"赢家通吃 / 赢家拿大部分"的市场吗？agent 的市场形态会是什么？我很好奇你怎么想——你有了这个立足点，每天日增 10%。算一下，它会非常快地变得非常大。你需要大量算力，产品还免费。你是个很淡定的人，但面对"它可能变得多大、多快"，这似乎是个有压力的处境。带我们走过这个"多头怪物"般的问题。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>嗯，你在 20 秒里把一切都描述出来了。也许先讲讲目前的增长故事，说说我们是怎么来的——我们（大概算是"著名地"或"臭名昭著地"）在做一个邀请制产品，老实说这不是为了做独家。虽然有些用户把它当独家对待，但那真不是本意。目标是为了……我有野心，我想尽可能快地扩张这件事，但我也想以负责任的方式做，以免某天醒来发现用户数是十倍，结果 80% 的人因为算力不够根本没法跟它说话。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>有意思的是——既是好处也是坏处——我们最开始给大约 200 人（都是亲近的朋友和家人），说"去试试"。第二天，大概有 5 个人进来，因为他们推荐给了别人。再说明一下：这是邀请制平台，每个用户有 5 个邀请名额，就 5 个。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我们放出去，200 人。第二天大概 205，再一天 210。所以"哦不错，几个人各自推荐了一两个"。但随后它开始加速。很奇怪——不是 1%、2%，然后开始 3%、4%。等我们到几千用户时，有人开始在网上分享，天然地分享他们的一些酷用例。这又加速了增长，开始变成 6%、7%、8%、9%。现在我记得是每天 10% 或 11%。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>说明一下：不是我们在搞什么创意营销活动，迄今营销花费为 0。也不是我们每天做什么动作去支撑这个增长。每天，大约 10% 的用户群（或略少，因为你可以推荐多人）决定把自己五个宝贵名额里的一个给别人。而这每一天都以 10% 的比例发生。我认为这里面有非常重大的东西。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>谈到口碑的力量，老实说这有点令人惊讶。这是口碑增长最强的案例之一。我发现各种故事：有人会来问我，而且其实很不好意思——他们发邮件说"能不能给我个邀请？我有个朋友好像有，但我不确定我能不能进他的五个好友名额。" 也有的人在炫耀："哦，我还剩三个邀请，我现在就攥着。" 所以有大量人想要这个产品，同时又有这些奇怪的社交游戏——用他们邀请名额。前几天我看到，eBay 上甚至有人在卖邀请码，大概 $300。人们真的在 eBay 上买，就是为了控制增长。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>那么大问题来了——现在最多人在问的是：是的，你有更大的玩家，能瞬间分发到 10 亿、20 亿人。也许它们没有天然复合得那么快，但它们的顶部漏斗分发太强了。而我们这边，每天以极快的速度复合。但我们没有一个拥有 20、30 亿人、能在当天立刻分发的主要服务。所以这是个有趣的问题：两条曲线在哪交汇，拐点在哪？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>随之而来的还有另一个问题：有趣的扩张难题。我认为这就是那个我花大约 40% 时间去担心的核心问题。它不像那些增长很快的传统消费产品——比如把 Instagram 或 Facebook 的用户数翻倍，就是平台多处理这么多请求，是的，那有扩张故事、也是很难的基础设施工作，老实说我们也一样。但当底层算力也需要每天增长 10% 时，你怎么办？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们已经这样做了好几周。当你需要获得的算力实际上每周翻倍时，这意味着什么？我们买现在算力的 2 倍？一周就消耗掉。买 5 倍？不到三周耗尽。买 10 倍？那就是 10 倍杠杆——就算你能承受"提前买 10 倍"这件事——但你几周后也会消耗完。所以这就是硬问题：到底该提前买多少？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>它比 Claude Code 或 Codex 或其他那些应用增长更快——那些也得推理类似的指数问题。另一个微妙之处：它不像某种业务——用户翻倍你就买 2 倍资源支撑。而是资源有几个月交付前置期。你没法明天出门就买算力，因为老实说，你会被收 3 到 4 倍的价。如果你估错了，你就错 3 到 4 倍。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>那么两三个月按 10%——假设它放缓吧，假设我们其实做不到很长一段可持续的 10%，就假设 5% 到 8%。但每天 5% 到 8% 复合，持续三四个月——而那正是算力上线的前置期（本身还挺激进）——那就是 1 亿用户，对吧？那你为 1 亿用户买算力吗？这些就是我纠结的问题：估错了，就大错特错，还要被罚 3 到 4 倍。</p></div>
+
+  <p class="h3sec">主动性的经济学</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>那如果聚焦到单个用户、聚焦到每天服务他的成本呢？你有没有概念——或者按周，我不知道哪个指标合适——我每天用 Instinct 的推理成本大概多少？你对这个量级有感觉吗？是什么量级？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为一个对我们有利的点是：我们搞清楚了怎么服务这个产品。无论你怎么评估——A/B 测试、内部评测、还是跟踪在不同模型上的用户参与度——我们都能交付据说和 Opus 5 一样的表现（这大概暴露了我们的年代感）。Opus 5 是前沿级智能。一样的参与率、一样的 A/B 表现、一样的内部评测表现，但成本非常非常低、其实非常可负担。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们跑这个项目，每个用户都免费用这个产品。我们的目标是以可负担的方式交付它——我现在不会承诺"终身免费"，但那是我的个人目标：能够一辈子为所有人免费交付这个产品。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这就是难啃的基础设施工作。我不知道我们想深入多少，但举一个例子：如果你用一些主要供应商的前沿 API，你就是对某个请求、以及那个月可能支撑该产品所需的所有请求，统一按一个价付。但一天当中通过主动性发生的很多工作，其实不需要几百毫秒内完成，它需要几分钟甚至几小时。有批处理工作在消费大量内容，可以用效率高 3 倍、5 倍、8 倍的部署形态、在同样的底层算力上服务。所以我认为，当你就着你要服务的数据和工作负载去量身定制推理部署时，你就能在这里找到 30%、那里 5 倍、这里 6 倍、那里 10%。这些复合起来，就达到一个我们能以极低成本服务它的费率。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>你怎么想"该提前买多少"这个更大的问题？如果放到真正的规模——比如 10 亿用户——你认为这会代表多少新增算力需求？代码生成显然已经是巨量了，但给我们一点量级感：按用户，或某种方式，让我们理解这究竟需要多少新增算力。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我只能说会很多。因为你就想想——先不管算力，只想想有多少 token 在流经平台。那些几个月前的爆款产品，比如代码生成领域，需要用户 prompt 它，然后它跑一轮，然后回到用户问别的，用户再发。当然，其中很多是后台工作，所以消耗的 token 也不少。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而这里，Instinct 能在一天中的任意时刻醒来、也能随时休眠。这听起来可能有点怪，但它的架构让它能做到这一点，从而能真正去考虑——比如你赶一个会议迟到了、需要叫 Uber，或者它叫了车、用户没出现——它能在这些时刻帮到用户。所以主动性，我认为会随时间持续扩张。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>AI 领域早先的爆款产品带来了这场大建设、这场大算力扩张，而它们其实只是触及了主动性或后台工作的皮毛。现在我们有的东西几乎是原生的主动，真正交互式的只是其中较小的一个子集。所以我认为将需要的算力，老实说，会比我们以为需要的多好几个数量级。更多的主动性意味着对用户更多的照料、更多时间去想某些事会不会出错。引擎盖下面发生的事太多了。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>也许 Instinct 早上 6 点醒来，因为它知道你 7 点起床，然后它去扫描一切、确保你这一天万事俱备。然后它意识到"其实现在不是好时机"，于是睡回去、或者只在后台做一件事、不打扰用户。然后它意识到"哦，下午 4 点有个事要来了，这里能提供价值"。也许用户根本不知道能那样和 Instinct 互动，但 Instinct 认为这善意的、对用户有价值。于是它可能在下午 4 点醒来，做完任务、联系用户。用户就能顺着它去做那件事。你看到后台在跑多少工作了吧。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>而那些编程产品，我会说，你并没有那么多后台或主动工作。所以——我不是要报一个数字——我只是说，这个产品、这个工作负载的形态……我认为在"需要多少 token"这件事上，我们只是触及表面。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>你怎么看 Muse？怎么看那个产品？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为它是个很棒的产品。我玩过一阵子，觉得很有意思。它是一条不同的路径，对吧？当然，你可以说某些底层架构可能相似，但我认为它本质不同。Instinct 追求的是简单、极易上手，加上我们前面谈的那些软性品质——真正从用户视角去想什么重要、什么不重要，怎么让任务更容易读等等——而它则是一个新应用、一个新界面。当然，也许时间长了我们也会有一个 App，去交付另一类任务，但我认为它是个很棒的产品。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我花在想竞争和其他玩家上的时间非常少。因为你走到外面、进附近咖啡馆，想想那家咖啡馆里究竟有多少人真的在用 AI、用他们想象的方式、或想要的方式在用？我会说，很少。而这是在这里。你去别的国家、别的城市，肯定更少。所以我认为这仍是一片开阔空间，仍是激动人心的时刻。我认为这会是一场有趣的博弈，在未来几个月、几年里展开。所以我只是专注做出最好的产品体验。</p></div>
+
+  <p class="h3sec">"不同"不等于"不安全"</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>到目前为止搞砸过什么？出过什么错？你怎么处理的？我相信还会有更多。这会是涌现属性与错误的爆发，而终局会非常高。你怎么想主动防范、怎么想被动应对？讲讲做这件事更暗、或更难的那一面。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为重要的是绝不被动，永远主动——向前看有哪些新表面在被引入、有哪些新风险可能到来。这也是为什么我们从一开始就跑这个邀请制早期访问项目。是的，产品早期版本没有这些防火墙、没有这些主动监控、也没那么多别的基础设施——那些基础设施本是为了抢在前面，主动去给 agent 和既有系统提供那么多控制与安全。所以，是的，早期版本有一些这样的品质、或说犯了这样的错。我们处理了它。我们不止是打补丁，而是走得更远——另建了一套系统，系统性地解决这类问题。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以关键，还是我前面说的：用户应该永远在掌控之中。用户应该永远掌控自己的数据。想分享多少就多少，随时改变主意都能收回对某些服务的访问。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>这让我想到，安全的未来是什么？就算你做到世界最好（也许你不得不做到），你也会掌握很多人身上海量的信息和上下文。而安全，我认为，是个世界级的大问题。我们研究过的那些经典黑客案例——这些东西能做的事很野。能力只会越来越强。你有一个总体的哲学吗？我很好奇你即兴谈谈安全与防护的未来——过去的技术革命早期，总会有巨大的黑客事件、巨大的数据泄露之类。很难想象这场技术革命不会发生这些。你怎么想这件事，以及"掌握这么多人的信息"所带来的提供安全的责任？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这是最重要的问题。我认为这归结为把安全和安全思维，构建进公司的核心价值观、人、以及做产品的方式里。这很应景：回看过去二三十年，每当有新的爆款、新的消费体验出现，总会有即时的反弹——"哇，这东西不一样"。然后人们把"不同"和"不安全"混为一谈。这总在发生。我们回头看过去二三十年也看到一些。但我认为关键还在于守住你持有的原则——用户永远掌控自己的数据，他们永远不该感到失控——以及在你部署的系统上主动出击，抢在这类事前面。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>如果我举一个例子，比如一个幻觉（hallucination）案例——首先，语言模型一直在幻觉；但像这样的产品，你并不想要语言模型幻觉。所以我们部署了一套更系统的解决方案：在采取行动之前、在一条思考轨迹被执行成工具调用之前、在任何动作可能发生之前，它都会被一个与底层 agent 激励系统解耦的东西来验证和审视。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>像个看门狗，对。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>一个过滤器，能发现"嘿，这个专有名词是底层模型某个采样误差凭空生成的"。所以事后看很容易捕捉这类错误。这些是加固过的。我们有世界级的安全团队，持续主动地去找越来越难的对抗案例、寻找各种边界情况。随着时间推移，这类问题变得越来越罕见。构建这样一个平台有个微妙之处：它会随时间越来越好。随着我们持续做更多对抗测试、对某些边界情况越来越有创意，这些模型对这类攻击也会随时间越来越 robust。</p></div>
+
+  <p class="h3sec">永远在线的 AirPod</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>在账本的另一边，大家都爱展示每一代 iPhone 那张漂亮图，你能看到它越来越好、越来越精致。对你来说，这条弧线是什么？很有意思，因为它不是应用、不是设备，而是通过既有沟通渠道（WhatsApp、iMessage 等）的一种交互。你会随时间加入什么、设想加入什么，让平台和产品比今天更强？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>现在产品体验非常非常简单。简单是我们聚焦的一个关键。但我其实认为它会随时间变得更简单。我们可能不久的将来会推出一个应用，但我其实认为我们会更趋向一个更简单的界面：你甚至需要不需要打开 iMessage，输入某段内容、发出去，然后等它做完再看回应？有一小部分用户其实只通过语音和 Instinct 互动——他们发给 Instinct 的消息里，超过 90% 主要是语音。我甚至把手机上的操作按钮（action button）配对上了，一按就能说"嘿，两小时后跟 Patrick 打个招呼，我想你有他邮箱，给他发封邮件"，然后一发送，它就去了。我甚至不用解锁手机、打开 iMessage、打字。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>你甚至能想象，配合实时语音——知道你的声音、有分寸判断你何时在对它说话、何时没有——你可以戴一副 AirPod（不需要是新型 AirPod，普通款就够，因为已经足够好），它就一直开着、一直开着。你可能在徒步、骑车、散步、跑步，一边 just catching up："嘿，这份合同需要你审阅。""好，我得看看。" 或者"嘿，这篇新闻刚来，标题是这个、要点是这个。""这个新项目发布了，你该看看。""好，收到，放我日历，15 分钟。""好，那不重要，把那段清掉。""这人需要我帮忙，我知道答案，就直接告诉他这样。" 它会随时间容易得多。所以我认为我们会看到——这里有长期和短期的考量：长期，界面会变得更简单；但短期和中期，也许有更具表现力的界面可分享。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我们有个文件功能，能让 Instinct 实际上把整站、整块 web 应用发过来，展示更多——无论是行程、还是婚礼策划之类的东西——需要更多创意、更多表面的东西。它能当场生成并展示给你。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为这里有个有趣的东西：你看过去 20 年应用 / 产品构建，任何时候你需要一个新界面来展示某样信息，你就得为它建一个应用。那是很长的软件开发生命周期：做出来、发布、收到反馈"我希望它长这样"、改进、发新版本——按月计。而过去 20 年，为各种目的、各种事情建了这么多应用，现在消费者已经疲劳了："每次我需要点什么，是不是都有个 App 干这个？"</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我认为这一切未来会坍缩。我认为所有软件都会坍缩成一个、老实说，极其易用的界面。别把它和能力受限混为一谈——我认为能力会扩张。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>能力上，你能想象的最疯狂的东西是什么？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>当我们离开更多那些日常任务——"我想做这个，你能做吗？"——那种摩擦会降到零。我认为它会开始追求与用户对齐的更高层目标：用户不只说"帮我记录这次训练，我做了这个、表现这样"，而是"未来三四个月，能不能陪我一起确保我达成这些目标？" 其实很多人今天就开始发现了——你想增重多少、减重多少、或跑到某个配速。能够声明目标 / 愿景，然后与它协作去达成。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我看到现在有原生运行在 Instinct 上的小企业：整个生意现在都跑在 Instinct 上，整个后台完全在 Instinct 之上运作。甚至有些部分是完全自主的——说到高层目标——"在这个品类，确保库存不低于这个水平、不高于那个水平"。所以它不是在说"嘿，请订这个东西"。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>它不是静态的。是动态的。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>对，追求这个更高层目标，用你可用的工具和设备去达成它。所以我认为那就是一种未来。有太多你可以声明、并让它无限期追求的目标，我们可以在这里头脑风暴。但我认为元层面的图景是：从"单个用例"走向"更高层目标"，会是交互演进的方向。</p></div>
+
+  <p class="h3sec">为变形而建（Built to Shapeshift）</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>你想让它有一个对每个人都独特的人格吗？我现在想到电影《她》（Her）——那个无所不知、无所不能的 agent 和用户之间形成的关系。你怎么看这一面？我认知里的 Instinct 是非常无缝、几乎安静、极有能力、可靠的东西，但它没有一种俏皮的人格之类。你怎么想这个部分？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>嗯，你提《Her》大概是开玩笑。当然，建立关系或那一整片区域，绝不是我们想让 Instinct 去做、追求、或与用户发展的东西。如果让我更具体地描述它在你生活里该怎样表现、感觉、代表什么——它几乎像一个有社交意识的操盘手：无论进哪个房间，都知道对不同人什么最好、什么是最佳互动模式——并随时间学会这一点。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>所以我认为它可能是最有定制感的（如果你把它称作 app 的话）——史上最可定制的应用之一，因为我们不只是能提供它的不同版本，它能随时间演进。这就是我们为什么在软件细节上投入那么多心思：捕捉用户何时不喜欢这种说法、或某种说法因为文字太多而回复率更低、或他们不想翻一个大文件去看你在说什么。它会随时间学会这些，用起来越来越容易、越来越愉悦。所以我们不是想强加某种体验给用户。我们想从更高的层面解决它：适应最合适的沟通风格和任务执行风格的能力。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>为什么叫 Instinct（本能）？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我很喜欢 Instinct 这个名字，有很多理由。主要是：Instinct 不该是那种你可以时不时欺负一下、轻视一下、只帮你干脏活的东西。我认为它是一个新的、有创造力、让人兴奋、有能力的行动者——彼此互相尊重和信任，用户感到安全、相信它撑腰、相信它聪明、有能力、有社交意识、知道在某些情境下怎么行动。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>这是一场押注，但我喜欢 Instinct 不是被命名成某个人的名字、去把它拟人化成人。更像……我也不知道本能是什么。我是通过使用它来逐渐培养我对它、对这个品牌的感受的。同样，回到"认真想它该是什么感觉"——我认为每个用户都能带着一张白纸进来是个好处：他们脑子里没有关于它长什么样、叫什么名字的先入之见，一切都纯粹来自产品体验本身。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>你的敌人和盟友是谁？我能想象在 WhatsApp 之类的地方，你可能被切断。那是 Facebook 的产品，是你的关键渠道。iMessage 是 Apple 控制的产品。谁是你的朋友？谁是你的敌人？你怎么想这些不可避免的竞争现实？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我会少聚焦在"Instinct 是 iMessage 上的 app / Instinct 是 WhatsApp 上的 app"，而更多从第一性原理出发、非常务实：用户今天信任、熟悉并与之互动的界面是什么？我们怎么通过他们每天已经在用的渠道，交付 Instinct 的体验？我们不绑死 iMessage——其实我们超过 50% 的流量根本不跑在 iMessage 上。当然，习惯 iMessage 的用户对它非常熟悉。我认为更多是要想"对用户什么最实际"。我们会随形应变（shape-shift），去交付那个和今天一样简单、易获得、零摩擦的体验。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>我知道你最新一轮大概融了 10 亿美元、估值约 100 亿美元，由世界上最好的投资人领投——Sequoia、Benchmark、Coatue。你怎么看这生意未来的资本需求？以及你是怎么挑这些伙伴的？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我只是非常幸运能与一些最支持我的伙伴共事，他们过去经历过不同但形态相似的技术转型。我会少聚焦数字，多聚焦这个领域的需求——对这样一个产品、这样一种体验的需求。因为它确实在交付那个我认为我们都一直等待的 AI 体验、产品体验。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>它也是资本密集型的。我们是新公司，想创造的东西希望能每天分发给这个星球上数十亿人，且成本非常可负担。我说可负担——算力成本很高，我们想以非常可负担的方式交付给用户。所以它非常资本密集。一定得有某种孵化 / 垫资，尤其考虑到我们要追的商业模式——因为我们完全可以轻易说"就做个订阅，平台上人人每月付 $100"，去追一些更短期的回报。或者，我们也可以融一些钱、把它用在——风险投资是干嘛用的？——去承担一些经过计算的风险：如果有小坎需要一点资本去抢在前面，去证明交易额、或证明某些行业的体验。这就是你逃出"订阅计划"这类局部最优的方式。</p></div>
+
+  <p class="h3sec">Noah 的"最善良的一件事"</p>
+  <div class="dlg p"><p class="who">Patrick</p><p>做这些访谈，我都会问每个人同一个传统的收尾问题：别人为你做过的最善良的一件事是什么？</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>我得以在自己身边围绕、并与这么多不同的人建立起这么好的关系——无论业内业外、工作还是私人生活——我很感激能与他们相处。希望我也能把同等的善意和体贴回报给他们。所以我会说——我知道我没在正面回答，这更高层一些——是我注意到的事物的品质，我真的很珍惜。</p></div>
+  <div class="dlg p"><p class="who">Patrick</p><p>Noah，你在建立一家引人入胜的公司，也许是当今世界 AI 生态里最引人入胜的公司。非常感谢你的时间。</p></div>
+  <div class="dlg n"><p class="who">Noah</p><p>非常感谢。</p></div>
+
+</section>
+
+<footer>
+  《Invest Like the Best》EP.493 中文精译整理稿（意译）<br>
+  原访谈：Patrick O'Shaughnessy × Noah Shinn（Instinct）<br>
+  <span style="opacity:.7">单文件版 · 可直接分享 / 用浏览器打开 / 打印为 PDF</span>
+</footer>
+
+</div>
+</body>
+</html>
