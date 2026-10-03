@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>肯·兰戈内：美国梦、罗斯·佩罗与「把橙色的血一直流到今天」 | The American Dream 访谈精译</title>
+<meta name="description" content="家得宝（Home Depot）联合创始人 Ken Langone 谈美国梦、诚信与忠诚、罗斯·佩罗、以及如何「把橙色的血一直流到今天」。">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231A1A1A'/%3E%3C/svg%3E">
+
+<style>
+  :root{ --paper:#F4F4F4; --ink:#1A1A1A; --ink2:#6B6B6B; --ink3:#A0A0A0; --ghost:#D0D0D0; --paper2:#E8E8E8; }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html,body{ background:var(--paper); color:var(--ink); overflow-x:hidden; margin:0; }
+  body{
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  a{ color:inherit; }
+  .ui-sans, .nav, .pill, .eyebrow, .meta-line, .other-card, .cta-h2, .article-h2 .num, .footer-text, .tbl, .lead-num{
+    font-family: system-ui, -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* ============ 顶部阅读进度 ============ */
+  .progress{ position:fixed; top:0; left:0; height:2px; background:var(--ink); width:0; z-index:60; transition: width .12s linear; }
+
+  /* ============ NAV ============ */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(244,244,244,0.85);
+    -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(26,26,26,0.06);
+  }
+  .nav-inner{ max-width:1100px; margin:0 auto; height:60px; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+  @media (min-width:768px){ .nav-inner{ padding:0 2.5rem; } }
+  .brand{ font-size:16px; font-weight:500; letter-spacing:-0.04em; text-decoration:none; }
+  .brand span{ color:#19B5DC; }
+  .pill{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding:.6rem 1.1rem; border:1px solid var(--ink); border-radius:999px;
+    font-size:13px; font-weight:500; color:var(--ink); background:transparent;
+    text-decoration:none; transition: background-color .25s ease, color .25s ease; cursor:pointer;
+  }
+  .pill:hover{ background:var(--ink); color:var(--paper); }
+
+  main{ padding-top:60px; }
+
+  /* ============ Hero ============ */
+  .hero{ padding:3rem 1.5rem 2rem; }
+  @media (min-width:768px){ .hero{ padding:5rem 1.5rem 3rem; } }
+  .hero-inner{ max-width:680px; margin:0 auto; }
+  .eyebrow{ font-size:12px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink2); }
+  .article-h1{ font-size:48px; font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin:1.5rem 0 0; }
+  @media (max-width:640px){ .article-h1{ font-size:32px; } }
+  .article-lead{ font-size:21px; line-height:1.7; color:var(--ink2); margin-top:1.5rem; max-width:640px; font-style:italic; }
+  @media (max-width:640px){ .article-lead{ font-size:17px; } }
+  .meta-line{ display:flex; align-items:center; gap:1.25rem; flex-wrap:wrap; font-size:13px; color:var(--ink3); margin-top:1.75rem; }
+  .meta-line .dot{ color:var(--ink3); }
+
+  /* ============ Cover · 排版封面 ============ */
+  .cover-wrap{ max-width:1100px; margin:0 auto; padding:0 1.5rem; }
+  .cover-block{
+    background:var(--paper2);
+    padding:4rem 2rem; text-align:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:280px;
+  }
+  .cover-block .cq{ font-size:26px; line-height:1.5; font-weight:500; max-width:720px; margin:0; }
+  @media (max-width:640px){ .cover-block{ padding:2.5rem 1.25rem; min-height:200px; } .cover-block .cq{ font-size:20px; } }
+  .cover-block .cq cite{ display:block; margin-top:1.25rem; font-size:13px; font-style:normal; color:var(--ink2); letter-spacing:0.05em; }
+
+  /* ============ 正文容器 ============ */
+  .article-shell{ position:relative; padding:5rem 1.5rem; max-width:1100px; margin:0 auto; }
+  @media (max-width:640px){ .article-shell{ padding:3rem 1.25rem; } }
+  .article-body{ max-width:680px; margin:0 auto; position:relative; }
+
+  /* ============ 章节 ============ */
+  .article-section{ position:relative; margin-bottom:4rem; }
+  @media (max-width:640px){ .article-section{ margin-bottom:2.5rem; } }
+
+  .h2-num-display{
+    position:absolute; left:-3rem; top:-2.5rem;
+    font-size:160px; font-weight:500; color:rgba(26,26,26,0.05);
+    letter-spacing:-0.05em; line-height:1;
+    font-variant-numeric: tabular-nums;
+    pointer-events:none; user-select:none;
+    transform:scale(0.85); opacity:0;
+    transition: transform 1s cubic-bezier(.16,1,.3,1), opacity 1s ease;
+    z-index:0;
+  }
+  .article-section.in .h2-num-display{ transform:scale(1); opacity:1; }
+  @media (max-width:900px){ .h2-num-display{ left:-1rem; top:-2rem; font-size:110px; } }
+  @media (max-width:640px){ .h2-num-display{ left:-.5rem; top:-1.5rem; font-size:80px; } }
+
+  .article-h2{ font-size:26px; font-weight:600; letter-spacing:-0.01em; line-height:1.3; margin:0 0 1.5rem; padding-top:1rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-h2{ font-size:22px; } }
+  .article-h2 .num{ display:block; font-size:11px; letter-spacing:0.2em; font-weight:500; color:var(--ink3); margin-bottom:.5rem; text-transform:uppercase; }
+
+  /* ============ 正文段落 ============ */
+  .article-body p{ font-size:18px; line-height:1.95; color:var(--ink); margin:0 0 1.4rem; position:relative; z-index:1; }
+  @media (max-width:640px){ .article-body p{ font-size:16.5px; line-height:1.85; } }
+  .article-body p.sub{ color:var(--ink2); }
+
+  .article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote,
+  .article-body .item, .article-body .tblwrap, .article-body .qa{
+    opacity:0; transform:translateY(12px); transition: opacity .7s ease, transform .7s ease;
+  }
+  .article-body p.in, .article-body ul.in, .article-body ol.in, .article-body .pull-quote.in, .article-body .inline-quote.in,
+  .article-body .item.in, .article-body .tblwrap.in, .article-body .qa.in{ opacity:1; transform:translateY(0); }
+
+  /* 首字下沉（仅章节第一段）*/
+  .article-body .lead-para::first-letter{
+    float:left; font-size:72px; font-weight:600; line-height:.9; margin:4px 12px 0 0; color:var(--ink);
+    font-family: ui-serif, "Songti SC", "Source Han Serif CN", "Noto Serif CJK SC", serif;
+  }
+  @media (max-width:640px){ .article-body .lead-para::first-letter{ font-size:54px; margin:2px 8px 0 0; } }
+
+  /* strong 滚动到位下划线 */
+  .article-body strong{
+    position:relative; font-weight:600; color:var(--ink);
+    background-image: linear-gradient(to right, var(--ink) 0, var(--ink) 0);
+    background-position:0 100%; background-size:0% 1.5px; background-repeat:no-repeat;
+    transition: background-size 1s cubic-bezier(.16,1,.3,1); padding-bottom:1px;
+  }
+  .article-body strong.in-strong{ background-size:100% 1.5px; }
+  .article-body em{ color:var(--ink); font-style:italic; }
+
+  /* 列表 */
+  .article-body ul, .article-body ol{ margin:.5rem 0 1.75rem; padding-left:1.4rem; }
+  .article-body li{ font-size:17px; line-height:1.9; color:var(--ink); margin-bottom:.85rem; padding-left:.25rem; }
+  @media (max-width:640px){ .article-body li{ font-size:16px; } }
+  .article-body li::marker{ color:var(--ink3); font-weight:500; }
+
+  /* 反共识观点 · 编号条目 */
+  .item{ position:relative; z-index:1; padding-left:3rem; margin:0 0 1.9rem; }
+  .item .lead-num{
+    position:absolute; left:0; top:.15rem;
+    font-size:13px; font-weight:600; letter-spacing:0.02em; color:var(--ink3);
+    font-variant-numeric: tabular-nums;
+  }
+  .item h3{ font-size:18px; font-weight:600; line-height:1.5; margin:0 0 .6rem; }
+  .item p{ font-size:16.5px; line-height:1.9; color:var(--ink); margin:0 0 .6rem; }
+  .item p.sub{ color:var(--ink2); font-size:15.5px; }
+
+  /* Pull Quote */
+  .pull-quote{
+    position:relative; margin:3rem -2rem; padding:2.5rem 3rem 2.5rem 4rem;
+    font-size:24px; line-height:1.55; color:var(--ink); font-weight:500;
+    border-top:1px solid var(--ink); border-bottom:1px solid var(--ink);
+    transform:scale(0.96); transform-origin:center;
+  }
+  .pull-quote.in{ transform:scale(1); }
+  .pull-quote::before{ content:"\201C"; position:absolute; left:1.25rem; top:1.5rem; font-size:64px; line-height:1; color:var(--ink); opacity:.5; font-family:ui-serif, serif; }
+  .pull-quote .cite{ display:block; margin-top:1rem; font-size:13px; color:var(--ink2); font-weight:400; }
+  @media (max-width:900px){ .pull-quote{ margin:2.5rem -1rem; padding:2rem 1.5rem 2rem 3rem; font-size:21px; } .pull-quote::before{ left:.5rem; top:1rem; font-size:48px; } }
+  @media (max-width:640px){ .pull-quote{ margin:2rem 0; padding:1.75rem 1.25rem 1.75rem 2.5rem; font-size:18px; } .pull-quote::before{ left:.35rem; top:.75rem; font-size:40px; } }
+
+  /* 小引用 */
+  .inline-quote{ padding:.25rem 0 .25rem 1.25rem; border-left:2px solid var(--ink3); color:var(--ink2); margin:1.5rem 0; font-size:16.5px; line-height:1.85; font-style:italic; }
+
+  /* 对话 */
+  .qa{ position:relative; z-index:1; margin:0 0 1.35rem; }
+  .qa .sp{ font-family:system-ui,"Helvetica Neue",Arial,sans-serif; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:.28rem; }
+  .qa .tx{ font-size:17px; line-height:1.92; }
+  @media (max-width:640px){ .qa .tx{ font-size:16px; } }
+
+  /* 表格 */
+  .tblwrap{ position:relative; z-index:1; overflow-x:auto; margin:0 0 2rem; }
+  .tbl{ width:100%; border-collapse:collapse; font-size:15px; }
+  .tbl th, .tbl td{ text-align:left; vertical-align:top; padding:.85rem .9rem; border-bottom:1px solid rgba(26,26,26,0.10); line-height:1.65; }
+  .tbl th{ font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink2); font-weight:600; border-bottom:1px solid var(--ink); }
+  .tbl td:first-child{ font-weight:600; color:var(--ink); white-space:nowrap; }
+  .tbl td{ color:var(--ink2); }
+
+  /* 文末注 */
+  .footnotes{ margin-top:3.5rem; padding-top:1.75rem; border-top:1px solid rgba(26,26,26,0.08); }
+  .article-body .footnotes p{ font-size:13px; line-height:1.85; color:var(--ink3); margin-bottom:1rem; font-style:italic; }
+
+  /* Reveal */
+  .reveal{ opacity:0; transform:translateY(8px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* 其它文章 */
+  .other-section{ padding:4rem 1.5rem 2rem; max-width:1100px; margin:0 auto; }
+  .other-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.5rem; margin-top:1.5rem; }
+  @media (max-width:768px){ .other-grid{ grid-template-columns:1fr; } }
+  .other-card{ display:block; padding:1.75rem 1.5rem; background:#fff; border:1px solid rgba(26,26,26,0.08); text-decoration:none; color:inherit; transition: border-color .25s ease, transform .25s ease, background-color .25s ease; }
+  .other-card:hover{ border-color:var(--ink); transform:translateY(-3px); background:#fcfcfc; }
+  .other-date{ font-size:11px; letter-spacing:0.15em; color:var(--ink3); text-transform:uppercase; margin-bottom:.65rem; }
+  .other-title{ font-size:17px; font-weight:600; line-height:1.4; }
+
+  /* More Articles CTA */
+  .more-cta{ background:var(--paper2); padding:4rem 1.5rem; }
+  @media (min-width:640px){ .more-cta{ padding:5rem 2rem; } }
+  .more-cta-inner{ max-width:820px; margin:0 auto; }
+  .cta-h2{ font-size:26px; font-weight:600; letter-spacing:-0.02em; margin:0 0 .75rem; }
+
+  .footer-text{ padding:3rem 1.5rem; }
+  .footer-inner{ max-width:1100px; margin:0 auto; text-align:center; }
+  .footer-inner .fm{ font-size:16px; font-weight:500; letter-spacing:-0.04em; }
+  .footer-inner .fc{ font-size:12px; color:var(--ink3); padding-top:.5rem; line-height:1.8; }
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#" class="brand ui-sans">THANK<span>*</span></a>
+    <span class="pill ui-sans">访谈精译 · EP.368</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner reveal">
+      <div class="eyebrow">Invest Like the Best · 访谈精译</div>
+      <h1 class="article-h1">美国梦、罗斯·佩罗，<br/>与「把橙色的血一直流到今天」</h1>
+      <p class="article-lead">Ken Langone（家得宝联合创始人、Ross Perot 的门徒）与 Patrick O'Shaughnessy 的一场对话。关于诚信、忠诚、「把桌上多留一点给别人」，以及人生为什么是一场重复博弈。</p>
+      <div class="meta-line">
+        <span>Ken Langone × Patrick O'Shaughnessy</span>
+        <span class="dot">·</span>
+        <span>EP.368 · Colossus</span>
+        <span class="dot">·</span>
+        <span id="read-time">阅读 — 分钟</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cover · 排版封面 -->
+  <section class="reveal">
+    <div class="cover-wrap">
+      <div class="cover-block">
+        <p class="cq">「人生和生意，都是一场重复博弈。你要做的就是忠实于你的承诺——那样的话，你会过得非常好。」<cite>Ken Langone</cite></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <article class="article-shell">
+    <div class="article-body" id="body">
+
+      <!-- 00 摘要 -->
+      <section class="article-section">
+        <div class="h2-num-display">00</div>
+        <h2 class="article-h2"><span class="num">00</span>摘要</h2>
+        <p class="lead-para">这是家得宝（Home Depot）联合创始人 Ken Langone 与 Patrick O'Shaughnessy 的一场对话——从他如何遇见 Ross Perot、把 EDS 推向 IPO 讲起，一路谈到诚信、忠诚、用人，以及他理解中的「美国梦」。</p>
+        <p>Langone 的起点是长岛的工人阶级家庭：父亲是水管工，母亲是学校食堂员工。他靠一份每天挣 1 美元的体力活念完大学，最终成为华尔街最富争议、也最受人敬重的人物之一。他的一生有两个「祖师爷」——<strong>把「说到做到」当作做生意最高准则的 Ross Perot，以及把「员工才是最重要的人」写进组织架构的 Bernie Marcus（家得宝另一位创始人）。</strong></p>
+        <p>他讲述的核心，是一条几乎没有例外的准则：<strong>「承诺就像怀孕，没有『稍微怀孕』这回事。」</strong>Perot 教他：<strong>「重要的不只是数字，而是你信守了诺言。」</strong>他也因此终身拒绝与「谈成了还要反悔」的人再做第二笔生意——<strong>「谈完了就是谈完了。」</strong></p>
+        <p>第二个大主题是<strong>用人与组织</strong>。家得宝把金字塔倒过来：<strong>最重要的人，是那个直接面对顾客的人</strong>。他讲了那个著名的故事——一位店员为了帮顾客找一个水龙头垫圈，最后谈出了一张十万美元的整体厨房订单；由此引申出他为什么坚持给一线员工加薪、为什么「三千个推购物车的员工如今成了百万富翁却还在上班」。<strong>他最大的错误，是让「成本压过文化」；纠正它的方式，是换掉领导层。</strong></p>
+        <p>第三个大主题是<strong>人生哲学</strong>。他把「人生和生意都是重复博弈」当作座右铭；他说自己这一生「下了注、押的是人」（bet on people）；他讲死囚行刑前的最后一餐、讲和妻子 68 年的婚姻、讲「可以有争吵，但不要记仇」。最后他用「一位屠夫、一沓装在信封里的钱」回答「别人为你做过的最善良的事」——<strong>「人是有善意的，这也是我相信上帝的原因之一。」</strong></p>
+        <p>四个最重要的判断：</p>
+        <ol>
+          <li><strong>诚信与忠诚，是当下最稀缺的美德。</strong>而它们的回报，往往要等上几十年才显现。</li>
+          <li><strong>做交易，要「在桌上多留一点给对面的人」。</strong>这是一种长线策略——因为博弈会重复。</li>
+          <li><strong>「我押的是人。」</strong>看一个人，先看韧性（resilience），再看履历。</li>
+          <li><strong>美国是唯一能让「水管工的儿子、食堂员工的儿子」成就一番事业的地方。</strong>——这就是他理解的「美国梦」。</li>
+        </ol>
+      </section>
+
+      <!-- 01 反共识观点 -->
+      <section class="article-section">
+        <div class="h2-num-display">01</div>
+        <h2 class="article-h2"><span class="num">01</span>反共识观点</h2>
+
+        <div class="item">
+          <span class="lead-num">01</span>
+          <h3>承诺是「怀孕」，没有「稍微怀孕」这回事。</h3>
+          <p><strong>你说出口的话，就是你签下的合同。</strong>「重要的不只是数字，而是你信守了诺言。」</p>
+          <p class="sub">他回忆第一次见 Ross Perot：Perot 约他在达拉斯见面，只聊了 30 分钟，开场就两条要求——<strong>「别迟到，别说脏话。」</strong>这就是他判断一个人是否可靠的方式。</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">02</span>
+          <h3>谈成了又反悔的人，永远没有第二笔生意。</h3>
+          <p><strong>「当你做完、你就做完了。」</strong>（When you're done, you're done.）</p>
+          <p class="sub">一个在最后一刻还想「再改一改条款」的谈判者，无论多聪明，他这辈子都不会再和这个人做生意。<strong>因为谈判是一次性的，但声誉是重复博弈。</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">03</span>
+          <h3>永远在桌上多留一点给对面的人。</h3>
+          <p><strong>不把最后一块钱榨干，反而是一种长期策略。</strong>把交易做得对方愿意再次握手，你得到的总回报会更大。</p>
+          <p class="sub">他讲 EDS 上市第一天股价从 16 涨到 24——<strong>「我们本可以把发行价定得更高、从市场多拿一点，但我们选择给买入的人留出空间。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">04</span>
+          <h3>忠诚，有时意味着「忠于真相」，而不是忠于人。</h3>
+          <p>他卷入了那场著名的、针对 Elliot Spitzer 与 Dick Grasso 的纽约证券交易所风波。<strong>他的立场不是「无条件站队」，而是「说出我看到的事实」。</strong></p>
+          <p class="sub">结果：官司打到法庭，法院判他一方全胜（7:0）。<strong>「我可能失去了一堆朋友，但我保住了我唯一不能失去的东西——我对真相的忠诚。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">05</span>
+          <h3>组织里最重要的人，是那个直接面对顾客的人。</h3>
+          <p><strong>家得宝的组织架构是一个倒金字塔——一线员工在最上面，管理层在最下面。</strong>「穿橙色围裙的人才是英雄。」</p>
+          <p class="sub">所以他坚持给一线涨薪、坚持让打工人也能持有股票。<strong>「一个只会抠成本、却破坏文化的公司，注定会输。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">06</span>
+          <h3>最大的错误，是让「成本」压过「文化」。</h3>
+          <p>家得宝在 Bob Nardelli 时代的头四年很好，之后渐渐偏离文化；<strong>直到 Frank Blake 接手，把「服务、谦虚、对一线好」找回来，公司才重回正轨。</strong></p>
+          <p class="sub">Langone 的总结是：<strong>「成本会被看见，文化不会被看见——所以要更用力地守护文化。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">07</span>
+          <h3>看人，先看韧性，而不是履历。</h3>
+          <p>他举 Wake Forest 的高尔夫教练 Jesse Haddock 为例：<strong>「我要的不是最有天赋的，是最能扛的。」</strong></p>
+          <p class="sub">他自己创业前的合伙人 Bernie Marcus 是 49 岁被解雇的人——<strong>「一个被解雇的人，身上有一种韧性，那是简历上看不到的。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">08</span>
+          <h3>「我押的是人。」</h3>
+          <p>持有家得宝 47 年、摩根大通 46 年、OptionsCare 6 年——<strong>他做投资决策的核心，永远是「人」，而不是模型。</strong></p>
+          <p class="sub">「你可以把财务报表做得再漂亮，如果那个『人』不对，一切都会散掉。」</p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">09</span>
+          <h3>人生的每一件事，都是一场重复博弈。</h3>
+          <p><strong>「如果你把每一次交往都当成最后一次，你会做出很多蠢事。把它当成一场还会继续的博弈，你就知道什么该做什么不该做。」</strong></p>
+          <p class="sub">与妻子 68 年的婚姻，也是同一条准则：<strong>「你可以有争吵，但不要记仇。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">10</span>
+          <h3>资本主义的伟大，在于它「对普通人做了什么」。</h3>
+          <p>他不谈抽象的「自由市场」——他谈具体的例子：一个家得宝员工如何变成百万富翁、一个水管工的儿子如何成就事业。</p>
+          <p class="sub"><strong>「我不是在为华尔街辩护，我是在为一个能让普通人向上流动的机制辩护。」</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">11</span>
+          <h3>死囚行刑前的最后一餐，是一个关于「尊重」的隐喻。</h3>
+          <p>他的版本里，那份最后一餐是：<strong>意面豆子汤、茄子帕玛森、炸辣椒配土豆，还有 DiMaggio 的甜点。</strong></p>
+          <p class="sub">这看似俏皮，实质是：<strong>即便面对最坏的处境，也要保留对「人」的基本尊重。</strong></p>
+        </div>
+
+        <div class="item">
+          <span class="lead-num">12</span>
+          <h3>最大的失败（Avon 模组房屋），是因为没有认真「看人」。</h3>
+          <p>他被《财富》杂志称为「史上最快的德州暴发户」，却在一笔交易里<strong>「没有认真去看那些人是谁」</strong>，最终团队集体跳槽去了美林，只留下一句「声誉」的教训。</p>
+          <p class="sub"><strong>教训：交易再诱人，如果你没看懂人，就不要下注。</strong></p>
+        </div>
+
+        <blockquote class="pull-quote">重要的不只是那个数字，而是你信守了你的诺言。<span class="cite">Ken Langone 转述 Ross Perot</span></blockquote>
+      </section>
+
+      <!-- 02 关键案例与对比 -->
+      <section class="article-section">
+        <div class="h2-num-display">02</div>
+        <h2 class="article-h2"><span class="num">02</span>关键案例与对比</h2>
+        <div class="tblwrap">
+          <table class="tbl">
+            <thead><tr><th>对象</th><th>Langone 的判断</th></tr></thead>
+            <tbody>
+              <tr><td>Ross Perot / EDS</td><td>他的「祖师爷」。第一次见面只聊 30 分钟，要求「别迟到、别说脏话」；把 EDS 推向 IPO：<strong>以 100 倍市盈率发行（后来被推到 115 倍）</strong>，上市首日股价从 <strong>16 涨到 24</strong>。Perot 的全部要义是一句话——<strong>「不只是数字，而是你信守了诺言。」</strong>他后来为 Perot 致了悼词。</td></tr>
+              <tr><td>「谈完又反悔」的谈判者</td><td>一次交易里对方在最后一刻想「再改条款」，从此<strong>终身不再合作</strong>。<strong>「当你做完、你就做完了。」</strong></td></tr>
+              <tr><td>家得宝 · 水龙头垫圈</td><td>一位店员为了帮顾客配一个小垫圈，耐心解决到底，最后<strong>谈出了一张 10 万美元的整体厨房订单</strong>。这成了他「一线员工才是英雄」哲学的活案例。</td></tr>
+              <tr><td>家得宝 · 一线员工</td><td>他坚持给一线加薪（总额约 <strong>10 亿美元</strong>）；<strong>三千名原本推购物车的员工，如今成了百万富翁，却仍在上班。</strong>组织架构被设计成<strong>倒金字塔——最重要的人是离顾客最近的那个。</strong></td></tr>
+              <tr><td>领导层更替</td><td>Bob Nardelli 头四年不错，之后偏离文化；<strong>Frank Blake 接手后把文化找回来——谦虚、无私、对一线好。</strong>教训：<strong>「成本压过文化」是最大的错误。</strong></td></tr>
+              <tr><td>NYU 医院</td><td>「两家糟糕的医院合并成一家巨大糟糕的医院」——他坚持<strong>文化占 100% 的专业</strong>，最终三家医院全部做到当地第一；连美国最穷邮编区的 Lutheran 医院，也做到了第一。</td></tr>
+              <tr><td>Eli Lilly</td><td>一场代理权之争：他把成本上限压在 150 万美元，Lilly 最终支付了 5000 万；他持有 150 万股（每股 37.50 美元），经历了 16:1 拆股。<strong>1977→2002 年股价从 37 涨到 109；此后 16 年横盘，仍靠股息实现约 15%/年的回报。</strong></td></tr>
+              <tr><td>Avon 模组房屋</td><td>他的<strong>最大败笔</strong>。被《财富》称作「史上最快的德州暴发户」，却因为<strong>没认真看人</strong>，团队跳槽去了美林，只留下「声誉」两个字。</td></tr>
+              <tr><td>Jesse Haddock / Bernie Marcus</td><td>Wake Forest 高尔夫教练 Haddock 只挑<strong>「最能扛的人」</strong>；Bernie Marcus 49 岁被解雇——<strong>韧性，是简历上看不见的资产。</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 03 全文翻译 -->
+      <section class="article-section">
+        <div class="h2-num-display">03</div>
+        <h2 class="article-h2"><span class="num">03</span>全文翻译</h2>
+        <p class="lead-para">以下为全文中译。说话人以「Patrick」（提问方）与「Ken」（回答方）标注；原逐字稿有口语重复与转写错漏，译文已做可读化处理。</p>
+
+        <div class="qa"><span class="sp">Patrick · 开场</span><span class="tx">大家好，欢迎回到 Invest Like the Best。我是 Patrick O'Shaughnessy。今天的嘉宾是 Ken Langone。他是家得宝的联合创始人，也曾在 Ross Perot 创立 EDS 时扮演关键角色，还深度参与过纽约证券交易所、纽约大学医院等机构。他已经 88 岁了，我近几年和他吃过几次饭，每次听他说起「怎么正确做人」，收获都远大于任何商业或投资话题。今天这场对话，就是他的人生哲学的一部分。请欣赏 Ken Langone。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">Ken，谢谢你抽时间。我想从你职业生涯里最重要的一段关系讲起——<strong>Ross Perot</strong>。你是怎么会认识他、又怎么会参与 EDS 的？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">那要回到 1960 年代。我在华尔街做事，一个叫 Jack Hight 的朋友——他和我一起入行——跟我提起 Perot，说「你该去见见这个人」。我们约在达拉斯见面。<strong>Jack 提前告诉我：『别迟到，别说脏话。』</strong>就这么两条。我心想，这算哪门子要求。后来我明白了——<strong>这两条，就是 Perot 判断一个人是否可靠的全部方式。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我们在达拉斯聊了大概 30 分钟。回来以后，我跟 Jack 说：<strong>「这是我这辈子见过的最厉害的一堆『垃圾』」</strong>——不是贬义，是我的表达方式。我接着说：<strong>「但这是我这辈子见过的最好的『垃圾』。」</strong>Perot 就是这样的人——他整个人散发出的能量、那种把事做成的决心，是压倒性的。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">那后来你们怎么把 EDS 做成上市公司的？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">EDS 那笔上市，是我做过的、难度最大、回报也最大的一笔。当时<strong>公司以大约 100 倍市盈率发行——这是前所未见的</strong>。后来市场的热情又把发行定价往上推，<strong>一度到 115 倍市盈率</strong>。你想想，这需要多大的信任。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">其中还发生过一件著名的事：上市流程里牵扯到新泽西的<strong>股票转让税</strong>，还有那座穿山隧道的问题。但最让我记住的，不是这些技术细节，而是 Perot 对我说的一句话。上市后，他把我叫过来说：<strong>「Ken，重要的不只是那个数字，而是你信守了你的诺言。」</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>这句话，成了我一辈子的准则。</strong>记住——<strong>承诺就像怀孕，没有『稍微怀孕』这回事。</strong>你说了，你就得做到。怎么做生意、怎么对待人，归根结底就是一回事。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">上市第一天，股价从 <strong>16 涨到 24</strong>。<strong>其实我们本可以把发行价定得更高，从市场里多拿一点。但我们的选择是——在桌上给买入的人多留一点。</strong>「在桌上多留一点给对面的人」，这是我从很早就坚持的事。你今天少赚一点，但你赢得了一个会再回来的伙伴。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">还有一件事必须说。我一辈子坚持一个原则：<strong>如果一个谈判者，谈成了以后还想『再改改条款』，那我这辈子不会再和他做第二笔生意。</strong><strong>「当你做完、你就做完了。」</strong>因为谈判或许是一次性的，<strong>但声誉是重复博弈。你可以骗我很聪明地骗我一次，然后你就再也没有下一次。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你说到「诚信」和「忠诚」，说这是现在最稀缺的东西。能不能展开讲讲？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">是的。<strong>我这辈子见过很多聪明人，但真正可靠的人不多。</strong>诚信是什么？就是你说的话、你签的字、你握的手，是一码事。<strong>忠诚呢——忠诚不是无脑站队。真正的忠诚，是忠诚于真相。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">你知道我和 Elliot Spitzer、还有 Dick Grasso、还有纽约证券交易所的那场风波。那是一个很艰难的局面。<strong>我的立场不是『无条件支持谁』，而是『说出我看到的事实』。</strong>最后事情打到了法庭，<strong>法院判我们这边全胜——7 比 0。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>我可能因此失去了一堆『朋友』。但我保住了我唯一不能失去的东西——我对真相的忠诚。</strong>如果你要我为了讨好谁而歪曲事实，那我宁可不要这个朋友。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你的父母对你影响很大。能不能谈谈他们？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>我父亲是水管工，我母亲在学校食堂做事。他们都是非常谦卑、非常体面的人。</strong>他们没给我留什么钱，但他们给了我一样更值钱的东西——<strong>他们让我知道，一个人可以靠诚实和勤劳活着，而且可以活得有尊严。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我靠一份每天挣 1 美元的体力活念完大学。<strong>我不是含着金汤匙出生的。我这一生的每一个机会，都是自己争取来的。</strong>这也是为什么我那么在意「一线员工」——因为我就是从那儿来的。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">还有我妻子，我们结婚 68 年了。<strong>婚姻的秘诀是什么？可以有争吵，但不要记仇。</strong>这和做生意是一样的道理——<strong>人生和生意，都是一场重复博弈。把它当成一场会继续下去的博弈，你就知道什么该做、什么不该做。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你从 18 岁起就在纽约证券交易所做文员，一路做到今天。<strong>那段经历教了你什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我从一份每周 82.50 美元的工会文员做起，一干就是 37 年——在交易所的各种岗位上。我看着挂牌的证券<strong>从 1,200 个涨到 2,800 个</strong>。后来我自己买了交易所的一个席位——<strong>花了 7 万 2 千美元，多年后这个席位市值涨到了 800 万美元。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">那段经历真正教会我的，是<strong>「市场是由人构成的」</strong>。你看到的每一个数字背后，都是一个人的贪婪、恐惧、希望。你不能只盯着图表，你得理解人。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">那我们就来说家得宝吧。<strong>「橙色的血」（orange blood）</strong>——这是你常说的一个词。它到底指什么？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>「橙色的血」，指的是家得宝这家公司的灵魂。</strong>它不是一句口号，它是一种文化——<strong>服务、谦虚、对一线好、对顾客好。</strong>穿橙色围裙的那个人，才是公司真正的英雄。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我给你讲个故事。有一次，一位顾客来店里，要找一个很小的东西——<strong>一个水龙头垫圈</strong>。这种小零件，很多店根本懒得管。<strong>但我们的店员没有敷衍他。他耐心地帮顾客把这个小问题解决到底。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>结果呢？这位顾客后来在我们这里谈出了一张 10 万美元的整体厨房订单。</strong>你看——<strong>一笔生意的起点，可能只是一个垫圈。</strong>这就是为什么我说「最重要的人，是那个直接面对顾客的人」。<strong>你永远不知道，一个今天来买小零件的顾客，明天会不会带来一张大单。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>所以家得宝的组织架构，是一个倒金字塔。</strong>在最上面的，是一线员工；越往下，才是管理层。<strong>我做了一个决定：给一线员工加薪。总共大概是 10 亿美元。</strong>为什么？因为<strong>你不可能靠亏待一线员工，去打造一家伟大的服务公司。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">到今天，<strong>那批原本推购物车的员工里，有三千人成了百万富翁——但他们还在上班。</strong>不是因为缺钱，而是因为<strong>他们为这家公司感到骄傲。</strong>这，才叫「橙色的血」。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你说过你犯过的最大错误，是让「成本」压过了「文化」。这是怎么回事？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">家得宝的成长过程中，有一段时间出了问题。<strong>Bob Nardelli 时代的头四年，做得是不错的。</strong>但之后，公司渐渐偏离了那条「以文化为中心」的路线。<strong>它开始过度关注成本、关注华尔街想要的数字，离一线员工越来越远。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">一个只会抠成本、却破坏了文化的公司，注定会输。<strong>因为成本会被看见、会被拍成表格；而文化是看不见的——所以你必须更用力地去守护它。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">后来是 <strong>Frank Blake 接手，把文化找回来了。</strong>他是个非常谦虚、非常无私的人——哈佛、哥伦比亚法学院的背景，却从一个书记员做起，跟过最高法院的 Stevens 大法官。<strong>他不搞个人英雄主义，他把「服务、谦虚、对一线好」重新放回了中心。</strong>公司才重新回到了正轨。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你还深度参与过纽约大学医院。那段经历里，你学到了什么？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">那也是一个关于「文化」的故事。当时是「两家糟糕的医院，要合并成一家巨大的、糟糕的医院」。我说：<strong>不行。</strong>因为如果只是把两家糟糕的东西拼在一起，你只会得到一个更大的糟糕。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>我的坚持是：文化占 100%。</strong>医院的使命是治病救人，一切都要围绕这个使命。结果是什么？<strong>三家医院最后都在各自的领域做到了第一。</strong>甚至连<strong>位于美国最贫穷邮编区的 Lutheran 医院，也做到了第一。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我常讲一家餐厅的故事——<strong>Gallaghers</strong>，那家牛排馆。<strong>我去的时候它一年的营收大概是 600 万美元，后来做到了 3300 到 3400 万美元。</strong>靠的是什么？不是花哨的营销，是<strong>把每一件小事、每一个细节做到底。</strong>这和家得宝、和医院，是同一个道理。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">还有一个我很喜欢的故事——<strong>「马桶搋子」（plunger）</strong>。有一次我去一家店，发现他们把马桶搋子放在一个很不起眼的地方。<strong>我说：这是个冲动购买商品啊，你得把它摆在顾客一眼就能看见、顺手就会拿的地方。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>「如果你不去看，你永远也找不到它们。」</strong>这句话既是字面意思，也是一个隐喻——<strong>生意的细节，你必须亲自去看、去发现，不能只听汇报。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你投资了很多公司，而且一持就是几十年。<strong>你的投资哲学是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>我押的是人（I bet on people）。</strong>你可以把财务报表做得再漂亮，但如果那个「人」不对，一切都会散掉。反过来，<strong>如果你找到对的人，哪怕起点很普通，他也能把事情做成。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我持有<strong>家得宝 47 年、摩根大通 46 年、OptionsCare 6 年。</strong>很少卖出，因为<strong>我相信那些经营它的人。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我最津津乐道的一笔，是 <strong>Eli Lilly（礼来）</strong>。那是 1977 年，一场代理权之争。我给自己设了一个成本上限——<strong>150 万美元</strong>。<strong>最后 Lilly 选择和解，支付了 5000 万美元，而我拿到了 150 万股，每股 37.50 美元。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">后来它经历了 <strong>16 比 1 的拆股</strong>。<strong>从 1977 到 2002 年，股价从 37 涨到了 109。</strong>再往后，2002 到 2018 年这 16 年，股价其实是横盘的。<strong>但即便横盘 16 年，靠着股息，我仍然实现了大约 15% 的年化回报。</strong>这就是复利的力量，也是「长期持有」的力量。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你也经历过失败。<strong>你印象最深的一次失败是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">是 <strong>Avon 的模组房屋生意</strong>。那时候我被《财富》杂志称为「史上最快的德州暴发户」（Fastest Richest Texan Ever）。那是个很诱人的交易。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>但我犯了一个根本的错误——我没有认真去看那些人是谁。</strong>我只看了交易本身，没看懂人。结果是，团队后来集体跳槽去了美林。<strong>那一笔，给我留下的只有两个字：声誉。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">1970 年对我是个糟糕的年份。<strong>但那次的教训很深刻：交易再诱人，如果你没看懂人，就不要下注。</strong>这和我一直讲的「我押的是人」是同一枚硬币的两面。</span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你说过，你选人、看人，有一个很具体的标准。<strong>那是什么？</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>95% 看人。</strong>具体看什么？<strong>看韧性（resilience）。</strong>我举两个例子。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">一个是 <strong>Jesse Haddock</strong>——Wake Forest 的高尔夫教练。他的选人标准很特别：<strong>「我要的不是最有天赋的人，是最能扛的人。」</strong>因为高尔夫是那种，你要独自面对压力、一次次从失败里爬起来的运动。<strong>韧性，比天赋更重要。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">另一个是 <strong>Bernie Marcus</strong>——我创业家得宝的搭档。<strong>他是 49 岁被解雇的人。</strong>很多人会觉得「49 岁被炒，这辈子完了」——<strong>但我看到的是另一面：一个被解雇的人，身上有一种韧性，那是简历上看不到的。他输过，所以他更懂得怎么赢。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你常说自己热爱资本主义。但你喜欢它的方式，和华尔街那套不太一样。<strong>能解释一下吗？</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我喜欢资本主义，<strong>不是因为抽象的意识形态，而是因为它对一个普通人做了什么。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">你看看委内瑞拉、古巴、阿根廷、巴西——那些地方曾经也很繁荣。<strong>但它们的普通人，没有向上流动的机会。</strong>在美国呢？<strong>一个家得宝的普通员工，可以变成百万富翁；一个水管工的儿子、一个食堂员工的儿子，可以成就一番事业。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>我不是在为华尔街辩护。我是在为一个能让普通人向上流动的机制辩护。</strong>这才是我理解的「美国梦」——<strong>不是每个人都能成功，而是每个人都应该有成功的可能。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">别人为你做过的最善良的事是什么？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>是那位屠夫。</strong>我年轻的时候，在一家肉店打工。老板叫 <strong>Lenny Ormond</strong>。<strong>那时候我每周挣 1 美元，他慢慢给我涨到 3、4 美元。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">最让我记住的，是我要上大学的时候。<strong>他给了我一个信封，里面装着钱。</strong>他本可以什么都不给——我只是个打工的孩子。<strong>但他给了。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx"><strong>这件事让我一辈子相信：人是善良的。这也是我相信上帝的原因之一——因为我见过，在一个普通的小肉店里，一个人可以毫无理由地对另一个人好。</strong></span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我写了一本书，叫《I Love Capitalism!》，副标题是《An American Story》。<strong>因为我的故事，只可能发生在美国。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">你希望人们怎么记住你？</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">我希望人们记住——<strong>一个水管工的儿子、一个食堂员工的儿子，靠诚实和努力，做成了一些事情，也帮了一些人。</strong>这就够了。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">所以我想留给年轻人的话很简单：<strong>信守你的承诺。把桌上多留一点给对面的人。押注在人身上。然后——把这份「橙色的血」，一直流到你生命里最后一天。</strong></span></div>
+
+        <div class="qa"><span class="sp">Patrick</span><span class="tx">Ken，谢谢你。这真是一场很棒的对话。</span></div>
+
+        <div class="qa"><span class="sp">Ken</span><span class="tx">谢谢你来。</span></div>
+
+        <div class="footnotes">
+          <p>本译文依据公开逐字稿意译整理，略去赞助商口播与开场白。逐字稿存在口语重复与转写错漏，译文已做可读化处理，个别明显错误按语义还原。</p>
+          <p>术语对照：orange blood（橙色的血 / 家得宝文化）、inverted pyramid（倒金字塔组织）、repeat game（重复博弈）、resilience（韧性）、bolt-on（外延并购）。</p>
+        </div>
+      </section>
+
+    </div>
+  </article>
+
+  <!-- 其它文章 -->
+  <section class="other-section">
+    <div class="eyebrow">Other Articles</div>
+    <h3 class="cta-h2" style="font-size:22px; margin-top:.5rem;">不妨再读一篇</h3>
+    <div class="other-grid">
+      <a href="https://pekxing-0.github.io/share/ai-founder-mode-chesky.html" class="other-card">
+        <div class="other-date">AI Founder Mode · Brian Chesky</div>
+        <div class="other-title">从「创始人模式」到「AI 创始人模式」</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/munger-collison.html" class="other-card">
+        <div class="other-date">Charlie Munger × John Collison</div>
+        <div class="other-title">一场关于「弄明白什么管用，然后去做」的对话</div>
+      </a>
+      <a href="https://pekxing-0.github.io/share/noah-shinn-instinct.html" class="other-card">
+        <div class="other-date">Noah Shinn · Instinct</div>
+        <div class="other-title">本能：关于 AI、研究与判断力的一场对话</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- More Articles CTA -->
+  <section class="more-cta">
+    <div class="more-cta-inner reveal">
+      <div class="eyebrow">More Articles</div>
+      <h2 class="cta-h2">更多访谈精译</h2>
+      <p style="font-size:15px; line-height:1.8; color:var(--ink2); margin-bottom:1.5rem; max-width:460px; font-family:system-ui,sans-serif;">
+        译自 Colossus《Invest Like the Best》系列。<br/>
+        仅供个人学习与交流，不构成任何投资建议。
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer-text ui-sans">
+    <div class="footer-inner">
+      <div class="fm">THANK<span style="color:#19B5DC">*</span></div>
+      <div class="fc">译自 Invest Like the Best（Colossus）· 仅供交流 · 版权归原作者所有</div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // 阅读进度
+  var bar = document.getElementById('progress');
+  function updateBar(){
+    var h = document.documentElement;
+    var total = h.scrollHeight - h.clientHeight;
+    var pct = total > 0 ? (h.scrollTop / total) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateBar, {passive:true});
+  updateBar();
+
+  // 阅读时长（按 280 字/分钟）
+  var body = document.getElementById('body');
+  if (body) {
+    var txt = body.innerText || body.textContent;
+    var mins = Math.max(1, Math.round(txt.length / 280));
+    document.getElementById('read-time').textContent = '阅读 ' + mins + ' 分钟';
+  }
+
+  // 通用 reveal
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  document.querySelectorAll('.article-section').forEach(function(el){ io.observe(el); });
+
+  // 段落 stagger
+  var paraIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in'); paraIO.unobserve(en.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.article-body p, .article-body ul, .article-body ol, .article-body .pull-quote, .article-body .inline-quote, .article-body .item, .article-body .tblwrap, .article-body .qa').forEach(function(el){ paraIO.observe(el); });
+
+  // strong 下划线
+  var strongIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if (en.isIntersecting){ en.target.classList.add('in-strong'); strongIO.unobserve(en.target); } });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.article-body strong').forEach(function(el){ strongIO.observe(el); });
+</script>
+
+</body>
+</html>
