@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知根底 阅卷单页与划线遥测演示</title>
+<style>
+  :root {
+    --desk-bg: #EAEEF2;
+    --sheet-bg: #FCFDFE;
+    --rail-bg: #F4F6F9;
+    --ink-main: #17212B;
+    --ink-body: #273444;
+    --ink-muted: #5F6F82;
+    --ink-faint: #8C9BAE;
+    --line-soft: #DCE3EC;
+    --line-strong: #BCC8D6;
+
+    --jade-ink: #0D654D;
+    --jade-bg: #E1F3EC;
+    --jade-line: #7BC7B0;
+
+    --verm-ink: #A62C22;
+    --verm-bg: #FBE9E7;
+    --verm-line: #E09B95;
+
+    --indigo-ink: #1F4B94;
+    --indigo-bg: #E7EFFC;
+    --indigo-line: #94B3E8;
+
+    --partner-a: #6B3FA0;
+    --partner-b: #9A5B13;
+
+    --font-serif: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", "Noto Serif SC", Georgia, serif;
+    --font-sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-num: "SF Pro Text", "Inter", "PingFang SC", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--desk-bg);
+    color: var(--ink-main);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--indigo-ink);
+    outline-offset: 2px;
+  }
+
+  .topbar {
+    background-color: #1A2430;
+    color: #F2F5F8;
+    padding: 10px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #2C3A4B;
+  }
+
+  .brand-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brand-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFFFFF;
+  }
+
+  .brand-note {
+    font-size: 12px;
+    color: #B2C0D0;
+  }
+
+  .scen-switch {
+    display: inline-flex;
+    background: #253242;
+    border: 1px solid #38495E;
+    border-radius: 4px;
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .scen-btn {
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #C3CFD9;
+    border-radius: 3px;
+  }
+
+  .scen-btn.is-active {
+    background: #FFFFFF;
+    color: #17212B;
+    font-weight: 600;
+  }
+
+  /* Compact sticky live-telemetry dock for narrow side-pane (<900px) */
+  .compact-dock {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 35;
+    background: #1E2B3A;
+    color: #EEF3F8;
+    padding: 7px 16px;
+    border-bottom: 1px solid #324459;
+    font-size: 12px;
+  }
+
+  .dock-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .dock-nums {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .dock-kv strong {
+    font-family: var(--font-num);
+    color: #7CE8C8;
+    margin-left: 3px;
+    font-weight: 600;
+  }
+
+  .dock-jump {
+    font-size: 11.5px;
+    color: #A9C7FF;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .dock-latest {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: #C9D6E4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 900px) {
+    .compact-dock { display: block; }
+  }
+
+  .desk {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 14px 16px 30px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.32fr) minmax(320px, 0.88fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .desk { grid-template-columns: 1fr; }
+  }
+
+  .packet-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 9px;
+    flex-wrap: wrap;
+  }
+
+  .packet-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pkt-tab {
+    padding: 5px 11px;
+    font-size: 12.5px;
+    background: #DFE6EE;
+    color: var(--ink-body);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pkt-tab.is-active {
+    background: var(--sheet-bg);
+    color: var(--ink-main);
+    border-color: var(--ink-main);
+    font-weight: 600;
+  }
+
+  .pkt-pill {
+    font-size: 11px;
+    padding: 0 5px;
+    border-radius: 2px;
+    background: var(--indigo-bg);
+    color: var(--indigo-ink);
+    font-weight: 500;
+  }
+
+  .pkt-pill.is-skipped {
+    background: #E8ECEF;
+    color: var(--ink-muted);
+  }
+
+  .paper-sheet {
+    background: var(--sheet-bg);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(23, 33, 43, 0.04);
+    position: relative;
+  }
+
+  .sheet-toolbar {
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--line-soft);
+    background: #F7F9FB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sheet-origin {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .sheet-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .act-btn {
+    padding: 4px 9px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid var(--line-strong);
+    background: #FFFFFF;
+    color: var(--ink-body);
+    font-weight: 500;
+  }
+
+  .act-btn:hover { border-color: var(--ink-main); }
+
+  .act-btn.is-on {
+    background: var(--indigo-bg);
+    border-color: var(--indigo-ink);
+    color: var(--indigo-ink);
+    font-weight: 600;
+  }
+
+  .act-btn.btn-skip:hover {
+    background: var(--verm-bg);
+    border-color: var(--verm-ink);
+    color: var(--verm-ink);
+  }
+
+  .guide-strip {
+    padding: 7px 18px;
+    background: var(--indigo-bg);
+    border-bottom: 1px solid var(--indigo-line);
+    color: var(--indigo-ink);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .guide-demo-btn {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--indigo-ink);
+    color: #FFFFFF;
+    font-weight: 500;
+  }
+
+  .sheet-inner {
+    padding: 20px 24px 26px 16px;
+  }
+
+  .cand-header {
+    padding-left: 52px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .cand-name {
+    font-family: var(--font-serif);
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--ink-main);
+  }
+
+  .cand-sub {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-top: 3px;
+  }
+
+  .auto-banner {
+    margin: 0 0 14px 52px;
+    padding: 9px 12px;
+    background: var(--jade-bg);
+    border-left: 3px solid var(--jade-ink);
+    color: var(--jade-ink);
+    font-size: 12.5px;
+  }
+
+  .skip-overlay {
+    margin: 0 0 14px 52px;
+    padding: 9px 12px;
+    background: #F1F4F7;
+    border-left: 3px solid var(--ink-muted);
+    color: var(--ink-body);
+    font-size: 12.5px;
+  }
+
+  .para-row {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 8px;
+    padding: 7px 8px 7px 0;
+    border-radius: 3px;
+    transition: background-color 0.18s ease;
+  }
+
+  .para-row + .para-row { margin-top: 4px; }
+  .para-row.is-reading { background-color: #F3F7FC; }
+  .para-row.is-skimmed .para-text { color: #7D8B9B; }
+
+  .dwell-gutter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 4px;
+    padding-right: 6px;
+    border-right: 2px solid var(--line-soft);
+    user-select: none;
+  }
+
+  .para-row.is-reading .dwell-gutter { border-right-color: var(--indigo-ink); }
+  .para-row.is-deep .dwell-gutter { border-right-color: var(--jade-ink); }
+
+  .dwell-sec {
+    font-family: var(--font-num);
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.2;
+  }
+
+  .para-row.is-reading .dwell-sec { color: var(--indigo-ink); font-weight: 600; }
+  .para-row.is-deep .dwell-sec { color: var(--jade-ink); font-weight: 600; }
+
+  .dwell-tag {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .para-row.is-deep .dwell-tag { color: var(--jade-ink); }
+
+  .para-content { max-width: 62ch; }
+
+  .para-sec-label {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    margin-bottom: 2px;
+    user-select: none;
+  }
+
+  .para-text {
+    font-family: var(--font-serif);
+    font-size: 15.5px;
+    line-height: 1.78;
+    color: var(--ink-main);
+    cursor: text;
+  }
+
+  .para-text::selection {
+    background: #CFE0FC;
+    color: var(--ink-main);
+  }
+
+  mark.hl {
+    padding: 1px 3px;
+    border-radius: 2px;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  mark.hl-solid { background: var(--jade-bg); border-bottom: 2px solid var(--jade-ink); }
+  mark.hl-doubt { background: var(--verm-bg); border-bottom: 2px wavy var(--verm-ink); }
+  mark.hl-rule { background: var(--indigo-bg); border-bottom: 2px solid var(--indigo-ink); }
+  mark.hl-raw { background: #EEF3FA; border-bottom: 1.5px solid var(--indigo-ink); }
+
+  .hl-badge {
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    padding: 0 4px;
+    margin-left: 3px;
+    border-radius: 2px;
+    vertical-align: middle;
+    user-select: none;
+    font-weight: 600;
+  }
+
+  .hl-solid .hl-badge { background: var(--jade-ink); color: #FFF; }
+  .hl-doubt .hl-badge { background: var(--verm-ink); color: #FFF; }
+  .hl-rule .hl-badge { background: var(--indigo-ink); color: #FFF; }
+  .hl-raw .hl-badge { background: #64768C; color: #FFF; }
+
+  .partner-notes {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    user-select: none;
+  }
+
+  .p-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    width: fit-content;
+  }
+
+  .p-chip-a { background: #F3ECFA; color: var(--partner-a); border-left: 2px solid var(--partner-a); }
+  .p-chip-b { background: #FDF3E7; color: var(--partner-b); border-left: 2px solid var(--partner-b); }
+
+  .pen-popover {
+    position: fixed;
+    z-index: 60;
+    background: #17212B;
+    color: #FFFFFF;
+    border-radius: 4px;
+    padding: 4px;
+    display: none;
+    align-items: center;
+    gap: 3px;
+    box-shadow: 0 6px 18px rgba(15, 23, 34, 0.24);
+  }
+
+  .pen-popover.is-open { display: inline-flex; }
+
+  .pen-btn {
+    padding: 5px 9px;
+    font-size: 12px;
+    border-radius: 3px;
+    color: #F1F5F9;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .pen-btn:hover { background: rgba(255, 255, 255, 0.14); }
+  .pen-btn.pen-jade { color: #7CE8C8; }
+  .pen-btn.pen-verm { color: #FFACA5; }
+  .pen-btn.pen-indigo { color: #A9C7FF; }
+  .pen-sep { width: 1px; height: 14px; background: #364658; }
+
+  .agent-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: sticky;
+    top: 14px;
+  }
+
+  .rail-box {
+    background: var(--sheet-bg);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 12px 14px;
+  }
+
+  .rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .rail-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-main);
+  }
+
+  .live-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--jade-ink);
+    font-weight: 500;
+  }
+
+  .live-dot::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--jade-ink);
+  }
+
+  .tele-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 9px;
+  }
+
+  .tele-item {
+    background: var(--rail-bg);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 6px 7px;
+  }
+
+  .tele-val {
+    font-family: var(--font-num);
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--ink-main);
+  }
+
+  .tele-lbl {
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 1px;
+  }
+
+  .signal-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 128px;
+    overflow-y: auto;
+  }
+
+  .sig-line {
+    font-size: 12px;
+    color: var(--ink-body);
+    padding: 4px 7px;
+    background: #F7F9FB;
+    border-left: 2px solid var(--line-strong);
+    border-radius: 2px;
+  }
+
+  .sig-line.sig-jade { border-left-color: var(--jade-ink); background: #F2FAF7; }
+  .sig-line.sig-verm { border-left-color: var(--verm-ink); background: #FDF5F4; }
+  .sig-line.sig-indigo { border-left-color: var(--indigo-ink); background: #F2F6FD; }
+
+  .taste-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .taste-item {
+    font-size: 12px;
+    padding: 6px 9px;
+    background: var(--rail-bg);
+    border-radius: 3px;
+    border: 1px solid var(--line-soft);
+  }
+
+  .taste-k {
+    font-weight: 600;
+    color: var(--indigo-ink);
+    margin-right: 6px;
+  }
+
+  .task-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .t-tab {
+    font-size: 11.5px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--rail-bg);
+    color: var(--ink-muted);
+    border: 1px solid var(--line-soft);
+  }
+
+  .t-tab.is-active {
+    background: var(--ink-main);
+    color: #FFF;
+    border-color: var(--ink-main);
+    font-weight: 500;
+  }
+
+  .task-output {
+    font-size: 12.5px;
+    color: var(--ink-body);
+    line-height: 1.6;
+    background: #F8FAFC;
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 9px 11px;
+  }
+
+  .task-output li {
+    margin-left: 16px;
+    margin-bottom: 4px;
+  }
+
+  .dual-note {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+
+  .note-priv {
+    padding: 7px 9px;
+    background: #F3FAF7;
+    border-left: 3px solid var(--jade-ink);
+    font-size: 12px;
+  }
+
+  .note-pub {
+    padding: 7px 9px;
+    background: #F4F6F8;
+    border-left: 3px solid var(--ink-muted);
+    font-size: 12px;
+  }
+
+  .rail-foot {
+    margin-top: 9px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .primary-send {
+    background: var(--indigo-ink);
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 3px;
+  }
+
+  .primary-send:hover { background: #173A75; }
+
+  .partner-verdict {
+    margin: 12px 0 0 52px;
+    padding: 9px 12px;
+    background: #F6F3FA;
+    border: 1px solid #D2C4E8;
+    border-radius: 3px;
+    font-size: 12.5px;
+    color: #3D235E;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .para-row { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-row">
+    <span class="brand-title">知根底 清朗阅卷单页</span>
+    <span class="brand-note">不建招聘后台。人事转来简历时只展开这张干净纸页，你的停留与划线就是给随身幕僚的指令。</span>
+  </div>
+  <div class="scen-switch" role="tablist" aria-label="切换业务一号位视角">
+    <button type="button" class="scen-btn is-active" id="btn-scen-ai" onclick="switchScen('ai')">林远（大模型推理一号位）</button>
+    <button type="button" class="scen-btn" id="btn-scen-robot" onclick="switchScen('robot')">沈拓（具身控制一号位）</button>
+  </div>
+</header>
+
+<div class="compact-dock" aria-live="polite">
+  <div class="dock-metrics">
+    <div class="dock-nums">
+      <span class="dock-kv">最长驻足<strong id="d-max">0.0s</strong></span>
+      <span class="dock-kv">手势划线<strong id="d-marks">0 处</strong></span>
+      <span class="dock-kv">回看<strong id="d-reread">0 次</strong></span>
+      <span class="dock-kv">秒关<strong id="d-skips">0 份</strong></span>
+    </div>
+    <button type="button" class="dock-jump" onclick="scrollToRail()">查看识人偏好与代办稿</button>
+  </div>
+  <div class="dock-latest" id="d-latest">正在感知阅读停留与划线手势…</div>
+</div>
+
+<main class="desk">
+  <section aria-label="去噪阅卷纸">
+    <div class="packet-bar">
+      <div class="packet-tabs" id="packet-tabs"></div>
+    </div>
+
+    <article class="paper-sheet" id="paper-sheet">
+      <div class="sheet-toolbar">
+        <span class="sheet-origin" id="sheet-origin"></span>
+        <div class="sheet-actions">
+          <button type="button" class="act-btn" id="btn-partner" onclick="togglePartner()">拉 2 位搭档同划比对</button>
+          <button type="button" class="act-btn btn-skip" id="btn-skip" onclick="quickSkip()">3 秒略过此份（记秒关）</button>
+          <button type="button" class="act-btn" onclick="resetCurrent()">清空本页划线</button>
+        </div>
+      </div>
+
+      <div class="guide-strip">
+        <span>鼠标悬停段落自动记驻足秒数，拖选任意正文词句即可划线批注</span>
+        <button type="button" class="guide-demo-btn" onclick="simulateStroke()">示范划一笔</button>
+      </div>
+
+      <div class="sheet-inner" id="sheet-inner"></div>
+    </article>
+  </section>
+
+  <aside class="agent-rail" id="agent-rail" aria-label="随身人才 Agent 实时响应">
+    <div class="rail-box">
+      <div class="rail-head">
+        <span class="rail-title">无感阅卷遥测（仅存你个人手记）</span>
+        <span class="live-dot" id="live-status">实时感知中</span>
+      </div>
+      <div class="tele-strip">
+        <div class="tele-item">
+          <div class="tele-val" id="t-max">0.0s</div>
+          <div class="tele-lbl">最长驻足</div>
+        </div>
+        <div class="tele-item">
+          <div class="tele-val" id="t-marks">0 处</div>
+          <div class="tele-lbl">手势划线</div>
+        </div>
+        <div class="tele-item">
+          <div class="tele-val" id="t-reread">0 次</div>
+          <div class="tele-lbl">回看重读</div>
+        </div>
+        <div class="tele-item">
+          <div class="tele-val" id="t-skips">0 份</div>
+          <div class="tele-lbl">秒关略过</div>
+        </div>
+      </div>
+      <div class="signal-feed" id="signal-feed"></div>
+    </div>
+
+    <div class="rail-box">
+      <div class="rail-head">
+        <span class="rail-title">从你刚才动作里读出的识人偏好</span>
+        <span style="font-size:11px;color:var(--ink-muted)" id="taste-ver">实时拟合中</span>
+      </div>
+      <div class="taste-list" id="taste-list"></div>
+    </div>
+
+    <div class="rail-box">
+      <div class="rail-head">
+        <span class="rail-title">读完即接手：已替你备好下一步</span>
+      </div>
+      <div class="task-tabs">
+        <button type="button" class="t-tab is-active" id="tt-0" onclick="setTaskTab(0)">面谈前 3 追问</button>
+        <button type="button" class="t-tab" id="tt-1" onclick="setTaskTab(1)">私藏真话与交人事公文</button>
+        <button type="button" class="t-tab" id="tt-2" onclick="setTaskTab(2)">熟人求证与惜败转荐</button>
+      </div>
+      <div id="task-body"></div>
+      <div class="rail-foot">
+        <span style="font-size:11.5px;color:var(--ink-muted)" id="handoff-hint">确认后由主助理直接代办</span>
+        <button type="button" class="primary-send" id="handoff-btn" onclick="confirmTask()">交给飞书助理执行</button>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div class="pen-popover" id="pen-popover" role="toolbar" aria-label="划线批注动作">
+  <button type="button" class="pen-btn pen-jade" onmousedown="applyHighlight('solid', event)">标实干亮点</button>
+  <span class="pen-sep"></span>
+  <button type="button" class="pen-btn pen-verm" onmousedown="applyHighlight('doubt', event)">标存疑待核</button>
+  <span class="pen-sep"></span>
+  <button type="button" class="pen-btn pen-indigo" onmousedown="applyHighlight('rule', event)">记入用人底线</button>
+</div>
+
+<script>
+const DATA = {
+  ai: {
+    hostLabel: "交给飞书助理执行",
+    tasteBase: {
+      l1: "对具体通信指标（重传率、尾延迟、卡数规模）驻足最久，空泛头衔自动滑过。",
+      l2: "历史判例锚点：今年 3 月曾婉拒同类包装型履历，当时留话「管过人和亲手调通是两码事」。",
+      l3: "当前阶段底线：急补跨机通信短板；非名校或无大厂光环可放行，挂名统筹不约。",
+      l4: "关联本周事项：周二刚复盘专家并行 all-to-all 拥塞重传，相关实干段落权重上调。"
+    },
+    resumes: [
+      {
+        id: "zhou",
+        name: "周砚",
+        badge: "待阅",
+        origin: "原件：猎头转来 12 页花哨 PDF，已去噪重排为 5 段纯正文",
+        role: "某头部云厂商 大模型训练平台核心研发（6 年经验）",
+        autoBanner: "",
+        partnerVerdict: "三人同划 3 分钟结论：你盯的是「重传率压到 3.5%」，搭档陈工盯顶会论文，搭档刘工卡非 985 本科。按你本轮救火底线，学历放行、直接约面核实压测拓扑，省掉半小时拉扯会。",
+        paras: [
+          {
+            sec: "项目概览",
+            text: "2023 至 2025 年负责千亿参数多模态大模型分布式训练平台整体架构演进，支撑集团内十余个业务团队日常预训练与微调任务。",
+            demoTarget: "负责千亿参数多模态大模型分布式训练平台整体架构演进",
+            demoType: "doubt",
+            partners: [{who: "a", text: "搭档陈工划了这句：看重集团级大平台履历"}]
+          },
+          {
+            sec: "核心攻坚（通信与调度）",
+            text: "针对跨机专家并行场景下的网卡拥塞，独立重写 all-to-all 通信调度器与退避逻辑，在 512 卡 RoCE 集群上将拥塞重传率从 12.4% 压降至 3.5%，端到端训练有效吞吐提升 41%。",
+            demoTarget: "独立重写 all-to-all 通信调度器与退避逻辑，在 512 卡 RoCE 集群上将拥塞重传率从 12.4% 压降至 3.5%",
+            demoType: "solid",
+            partners: [{who: "a", text: "搭档陈工未在此段停留"}]
+          },
+          {
+            sec: "团队协同与管理",
+            text: "主导 30 人跨部门虚拟攻坚小组，拉通算法、框架与网络运维团队按期交付年度重点里程碑，获部门年度技术突破奖。",
+            demoTarget: "主导 30 人跨部门虚拟攻坚小组",
+            demoType: "doubt",
+            partners: []
+          },
+          {
+            sec: "开源与工程细节",
+            text: "向 NCCL 与 vLLM 社区提交并合入 11 个通信死锁修复与显存碎片优化补丁，自研轻量级通信火焰图采样工具在内部推广。",
+            demoTarget: "向 NCCL 与 vLLM 社区提交并合入 11 个通信死锁修复与显存碎片优化补丁",
+            demoType: "solid",
+            partners: []
+          },
+          {
+            sec: "教育背景",
+            text: "某双非一本计算机科学与技术学士，毕业后一直在一线做高性能网络与内核态通信开发。",
+            demoTarget: "某双非一本计算机科学与技术学士",
+            demoType: "rule",
+            partners: [{who: "b", text: "搭档刘工标了存疑：本科院校背景偏弱"}]
+          }
+        ],
+        probes: [
+          "重传率从 12.4% 降到 3.5% 是在什么交换机拓扑和负载下测的？为什么改调度器而不是直接调 NCCL 环境变量？",
+          "「30 人跨部门小组」里你亲手写代码的模块占多少？哪一次线上通信死锁是你自己抓出来的？",
+          "自研火焰图采样工具是怎么绕开内核态观测开销的？"
+        ],
+        privNote: "all-to-all 这段有硬货，补丁可查；但「千亿平台整体演进 + 30人小组」明显有润色水分，面谈前 15 分钟重点核实本人动手边界。双非本科不卡。",
+        pubNote: "候选人分布式通信与开源社区经验契合岗位要求，建议安排一轮技术专业面，重点考察大规模集群调度实践。",
+        bridge: "熟人求证：算出来你前同事老周与他在同一部门共事过 14 个月（已自动避开候选人现东家关系链）。若面完拿不准，可让助理替你约老周通 5 分钟电话口头请教，不留纸面记录。"
+      },
+      {
+        id: "he",
+        name: "何湛",
+        badge: "包装型样本",
+        origin: "原件：猎头力推 8 页简历，已去噪重排为 4 段纯正文",
+        role: "某 AI 独角兽 大模型算法与架构总监（8 年经验）",
+        autoBanner: "",
+        partnerVerdict: "三人一致认为无具体工程落点，无需安排面谈。",
+        paras: [
+          {
+            sec: "职责概述",
+            text: "全面统筹 60 人大模型研发体系，制定公司级基座模型与推理加速中长期技术战略，向 CTO 汇报。",
+            demoTarget: "全面统筹 60 人大模型研发体系，制定公司级基座模型与推理加速中长期技术战略",
+            demoType: "doubt",
+            partners: []
+          },
+          {
+            sec: "学术与行业影响力",
+            text: "累计发表国际顶会论文 6 篇，多次受邀在行业峰会分享大模型工程化最佳实践，主导多项产学研联合课题。",
+            demoTarget: "",
+            demoType: "doubt",
+            partners: []
+          },
+          {
+            sec: "项目成果",
+            text: "带领团队完成推理引擎升级，整体性能大幅领先行业同类方案，赋能十余个商业化落地场景。",
+            demoTarget: "整体性能大幅领先行业同类方案",
+            demoType: "doubt",
+            partners: []
+          },
+          {
+            sec: "教育背景",
+            text: "知名 985 高校博士，曾任某大厂高级技术专家。",
+            demoTarget: "",
+            demoType: "rule",
+            partners: [{who: "b", text: "搭档刘工划了亮点：985 博士光环强"}]
+          }
+        ],
+        probes: [
+          "简历未见任何具体指标或本人亲手改动的模块，若仍需礼貌性沟通，仅问一句：最近半年你自己提交过代码的最后一个故障是什么？"
+        ],
+        privNote: "通篇「统筹、赋能、大幅领先」，零具体数字、零本人动作。典型汇报型管理者，直接略过。",
+        pubNote: "候选人偏宏观团队管理方向，与当前一线核心通信研发岗位的阶段性诉求匹配度有限，暂不安排面试。",
+        bridge: "同行转荐：不适用（未见实干验证，不消耗你在同行好友处的口碑信用）。"
+      },
+      {
+        id: "lu",
+        name: "陆铮",
+        badge: "新到 自动预标",
+        origin: "刚刚转入，已根据你在前两份的停留和划线自动预标",
+        role: "某自动驾驶公司 高性能计算与通信主程（5 年经验）",
+        autoBanner: "已按你刚刚养成的阅卷手感完成预划线：自动标出 2 处可核实通信实绩、1 处虚词待核，并按你的底线忽略了非名校项。",
+        partnerVerdict: "两位搭档尚未审阅；你可以把带预划线的单页发给搭档三分钟对齐。",
+        preMarks: [
+          {paraIdx: 1, phrase: "手写 RDMA 零拷贝环形缓冲与动态微批拼装，将跨节点 p99 通信尾延迟从 48ms 压到 14ms", type: "solid"},
+          {paraIdx: 2, phrase: "全面赋能车端与云端协同底座生态闭环", type: "doubt"},
+          {paraIdx: 3, phrase: "开源高性能通信测试集被 3 家头部训练框架直接引用", type: "solid"}
+        ],
+        paras: [
+          {
+            sec: "当前职责",
+            text: "负责自动驾驶千卡训练集群通信层维护与性能剖析，日常盯防跨机多卡同步瓶颈。",
+            partners: []
+          },
+          {
+            sec: "核心实绩",
+            text: "针对多机特征同步卡顿，手写 RDMA 零拷贝环形缓冲与动态微批拼装，将跨节点 p99 通信尾延迟从 48ms 压到 14ms，集群掉卡恢复时间缩短至 20 秒内。",
+            partners: []
+          },
+          {
+            sec: "跨团队项目",
+            text: "参与下一代数据平台建设，全面赋能车端与云端协同底座生态闭环。",
+            partners: []
+          },
+          {
+            sec: "开源记录与学历",
+            text: "开源高性能通信测试集被 3 家头部训练框架直接引用；省属重点高校软件工程学士。",
+            partners: []
+          }
+        ],
+        probes: [
+          "p99 尾延迟从 48ms 压到 14ms 时，遇到拥塞突刺你的零拷贝缓冲怎么防死锁？",
+          "掉卡 20 秒内恢复是怎么做状态快照切分的？",
+          "若本组编制只够招一人、他与周砚都过关，是否征得惜败者同意后附评语转荐给张江老友？"
+        ],
+        privNote: "预标很准，RDMA 零拷贝与掉卡恢复正好对上本周痛点；第三段那句场面话多半是猎头润色，当面问清即可。",
+        pubNote: "跨节点低延迟通信经验扎实，请优先协调本周四下午技术一面。",
+        bridge: "惜败转荐储备：若周砚与陆铮二选一后多出一位 90 分惜败人选，征得候选人本人同意后，可附你的划线评语转荐给同城信任的一号位好友。"
+      }
+    ]
+  },
+
+  robot: {
+    hostLabel: "交给企微 / WorkBuddy 执行",
+    tasteBase: {
+      l1: "对控制频率、量产良率、台架寿命数字高度敏感，纯仿真履历迅速滑过。",
+      l2: "历史判例锚点：去年婉拒过纯算法仿真背景人选，留话「没在真机上烧过板子的不算干过力控」。",
+      l3: "当前阶段底线：急攻灵巧手量产一致性；可接受传统工业伺服跨界，不收纯论文挂名。",
+      l4: "关联本周事项：产线谐波减速器温漂卡壳两周，硬件闭环实操权重调至最高。"
+    },
+    resumes: [
+      {
+        id: "cen",
+        name: "岑野",
+        badge: "待阅",
+        origin: "原件：猎头转来 10 页 PDF，已去噪重排为 4 段纯正文",
+        role: "某工业机器人大厂 伺服驱动与力控主程（7 年经验）",
+        autoBanner: "",
+        partnerVerdict: "三人同划结论：你划在「1kHz 力控闭环与 5000 台下线良率」，算法搭档嫌他没发过机器人顶会。按你量产救火底线，直接约面聊温漂补偿。",
+        paras: [
+          {
+            sec: "核心实绩（真机与量产）",
+            text: "独立负责七自由度协作臂关节模组底层电流环与力矩环整定，在 MCU 算力受限下跑通 1kHz 力控闭环，累计交付 5000 台下线良率稳定在 99.2%。",
+            demoTarget: "在 MCU 算力受限下跑通 1kHz 力控闭环，累计交付 5000 台下线良率稳定在 99.2%",
+            demoType: "solid",
+            partners: [{who: "a", text: "算法搭档未划此段"}]
+          },
+          {
+            sec: "故障攻坚",
+            text: "定位并解决谐波减速器连续运行两小时后的热膨胀零点漂移问题，设计低成本双温区查表补偿方案，单关节返修率下降三分之二。",
+            demoTarget: "解决谐波减速器连续运行两小时后的热膨胀零点漂移问题",
+            demoType: "solid",
+            partners: []
+          },
+          {
+            sec: "团队统筹",
+            text: "统筹具身智能前瞻预研小组 25 人，全面打通端到端大模型泛化抓取生态。",
+            demoTarget: "全面打通端到端大模型泛化抓取生态",
+            demoType: "doubt",
+            partners: [{who: "a", text: "算法搭档划了亮点：看重具身大模型关键词"}]
+          },
+          {
+            sec: "教育背景",
+            text: "华东某理工院校自动化硕士，无海外与顶会论文经历，七年全在工厂与台架一线。",
+            demoTarget: "七年全在工厂与台架一线",
+            demoType: "rule",
+            partners: [{who: "b", text: "人事伙伴担心：缺少具身名企背景"}]
+          }
+        ],
+        probes: [
+          "双温区查表补偿时，传感器贴在哪个位置才能跟上谐波柔轮的真实热惯性？",
+          "5000 台 99.2% 良率里，剩下 0.8% 下线不良最集中的失效模式是什么？",
+          "第三段写的「端到端泛化抓取」你自己动手做了哪部分，还是猎头加的词？"
+        ],
+        privNote: "前两段简直是给我们产线温漂量身定做的老手；第三段明显贴热点词汇，当面拆穿看看实诚度即可。",
+        pubNote: "伺服力控与批量工程化经验丰富，请尽快约线下面谈并参观台架实验室。",
+        bridge: "熟人求证：你苏州的前同事老谷与他在同一条产线搭档过一年（已避开现东家）。发 Offer 前可让助理牵线老谷通 5 分钟电话口头请教。"
+      },
+      {
+        id: "bai",
+        name: "白川",
+        badge: "纯仿真样本",
+        origin: "原件：9 页英文混排简历，已去噪重排为 3 段纯正文",
+        role: "某研究院 具身灵巧手算法研究员（3 年经验）",
+        autoBanner: "",
+        partnerVerdict: "算法搭档想留作储备，你 2 秒略过，归入远期观察池。",
+        paras: [
+          {
+            sec: "科研成果",
+            text: "在 Isaac Gym 仿真环境中训练灵巧手多指协同转笔策略，成功率达 94%，发表顶会一作论文两篇。",
+            demoTarget: "在 Isaac Gym 仿真环境中训练灵巧手多指协同转笔策略",
+            demoType: "doubt",
+            partners: [{who: "a", text: "算法搭档划了亮点：顶会一作"}]
+          },
+          {
+            sec: "硬件迁移",
+            text: "参与仿真到真机的策略迁移验证，主导跨团队技术路线规划。",
+            demoTarget: "主导跨团队技术路线规划",
+            demoType: "doubt",
+            partners: []
+          },
+          {
+            sec: "背景",
+            text: "海外名校计算机博士，擅长强化学习奖励函数设计。",
+            demoTarget: "",
+            demoType: "rule",
+            partners: []
+          }
+        ],
+        probes: [
+          "迁移到真机后，手指接触力突变的真实成功率剩多少？烧过几颗空心杯电机？"
+        ],
+        privNote: "全在仿真里转笔，没碰过硬件公差与热衰，现在招来救不了产线的火。",
+        pubNote: "学术背景优秀，但当前岗位侧重硬件量产力控整定，建议放入远期研究储备池。",
+        bridge: "惜败转荐：候选人若愿意看偏算法研究岗，征得本人同意后可转荐给做仿真平台的同行老友。"
+      },
+      {
+        id: "tang",
+        name: "唐峥",
+        badge: "新到 自动预标",
+        origin: "刚刚转入，已根据你前面停留和划线习惯自动预标",
+        role: "某精密传动企业 微型伺服与力矩传感器负责人（6 年经验）",
+        autoBanner: "已按你的阅卷手感完成预划线：标出 2 处台架与良率硬指标、1 处空泛表述，自动放行传统制造业背景。",
+        partnerVerdict: "可一键发给硬件搭档三分钟对齐。",
+        preMarks: [
+          {paraIdx: 0, phrase: "主导指端六维力传感器小型化与过载保护结构，连续冲击 20 万次零漂小于 0.6%", type: "solid"},
+          {paraIdx: 1, phrase: "赋能具身全场景智能进化生态", type: "doubt"},
+          {paraIdx: 2, phrase: "亲手搭建自动化标定工装，把单颗标定耗时从 18 分钟压到 90 秒", type: "solid"}
+        ],
+        paras: [
+          {
+            sec: "传感器与结构",
+            text: "主导指端六维力传感器小型化与过载保护结构，连续冲击 20 万次零漂小于 0.6%。",
+            partners: []
+          },
+          {
+            sec: "行业方案",
+            text: "配合市场团队输出行业白皮书，赋能具身全场景智能进化生态。",
+            partners: []
+          },
+          {
+            sec: "产线工装",
+            text: "亲手搭建自动化标定工装，把单颗标定耗时从 18 分钟压到 90 秒，直通率 98.7%。",
+            partners: []
+          }
+        ],
+        probes: [
+          "连续冲击 20 万次后零漂小于 0.6%，弹性体材料和贴片胶怎么选型的？",
+          "单颗标定从 18 分钟压到 90 秒，砍掉了哪几步静态蠕变等待？"
+        ],
+        privNote: "指端力传感器加自建标定工装，全是实打实的产线硬功夫，约本周面。",
+        pubNote: "微型传感器工程化与标定经验高度匹配，请安排本周内技术一面。",
+        bridge: "惜败转荐储备：与岑野形成双保险，确定录用一位后，另一位可在征得同意后转荐给同城做机械臂的老友。"
+      }
+    ]
+  }
+};
+
+const state = {
+  scen: "ai",
+  candIdx: 0,
+  partnerOn: false,
+  taskTab: 0,
+  skips: 0,
+  rereads: 0,
+  records: {},
+  activeHover: null,
+  pendingSel: null,
+  popTimer: null,
+  signals: []
+};
+
+function recKey(scen, idx) { return scen + "_" + idx; }
+
+function ensureRecord(scen, idx) {
+  const k = recKey(scen, idx);
+  if (!state.records[k]) {
+    const r = DATA[scen].resumes[idx];
+    const seedMarks = (r.preMarks || []).map(m => ({...m, auto: true}));
+    state.records[k] = { dwell: {}, visited: {}, marks: seedMarks, skipped: false };
+  }
+  return state.records[k];
+}
+
+function addSignal(text, tone) {
+  const now = new Date();
+  const ts = String(now.getMinutes()).padStart(2, "0") + ":" + String(now.getSeconds()).padStart(2, "0");
+  state.signals.unshift({ ts, text, tone: tone || "" });
+  if (state.signals.length > 14) state.signals.pop();
+  const dockEl = document.getElementById("d-latest");
+  if (dockEl) dockEl.textContent = "最新感知：" + text;
+  renderSignals();
+}
+
+function scrollToRail() {
+  const el = document.getElementById("agent-rail");
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function switchScen(sc) {
+  state.scen = sc;
+  state.candIdx = 0;
+  state.partnerOn = false;
+  state.taskTab = 0;
+  state.signals = [];
+  document.getElementById("btn-scen-ai").classList.toggle("is-active", sc === "ai");
+  document.getElementById("btn-scen-robot").classList.toggle("is-active", sc === "robot");
+  addSignal("已载入去噪阅卷单页，等待你自然阅读", "sig-indigo");
+  renderAll();
+}
+
+function selectResume(idx) {
+  state.candIdx = idx;
+  hidePopover();
+  const r = DATA[state.scen].resumes[idx];
+  addSignal("展开《" + r.name + "》去噪单页" + (r.preMarks ? "（已套用你的偏好预划线）" : ""), "sig-indigo");
+  renderAll();
+}
+
+function togglePartner() {
+  state.partnerOn = !state.partnerOn;
+  document.getElementById("btn-partner").classList.toggle("is-on", state.partnerOn);
+  if (state.partnerOn) {
+    addSignal("已叠加上两位面试搭档的 3 分钟划线，分歧点自动对齐", "sig-indigo");
+  }
+  renderSheet();
+}
+
+function quickSkip() {
+  const rec = ensureRecord(state.scen, state.candIdx);
+  if (!rec.skipped) {
+    rec.skipped = true;
+    state.skips += 1;
+  }
+  const r = DATA[state.scen].resumes[state.candIdx];
+  addSignal("3 秒略过《" + r.name + "》：已记入负向样本，后续同类包装履历自动降权", "sig-verm");
+  renderAll();
+}
+
+function resetCurrent() {
+  const k = recKey(state.scen, state.candIdx);
+  const r = DATA[state.scen].resumes[state.candIdx];
+  state.records[k] = {
+    dwell: {},
+    visited: {},
+    marks: (r.preMarks || []).map(m => ({...m, auto: true})),
+    skipped: false
+  };
+  addSignal("已重置《" + r.name + "》本页手势记录", "");
+  renderAll();
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, ch => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[ch]));
+}
+
+function removeMark(mIdx, ev) {
+  ev.stopPropagation();
+  const rec = ensureRecord(state.scen, state.candIdx);
+  rec.marks.splice(mIdx, 1);
+  renderAll();
+}
+
+function renderTabs() {
+  const list = DATA[state.scen].resumes;
+  const html = list.map((r, i) => {
+    const rec = ensureRecord(state.scen, i);
+    const markCount = rec.marks.length;
+    let pill = r.badge;
+    let pillCls = "pkt-pill";
+    if (rec.skipped) {
+      pill = "已秒关";
+      pillCls += " is-skipped";
+    } else if (markCount > 0 && !r.preMarks) {
+      pill = "已划 " + markCount + " 处";
+    }
+    return `<button type="button" class="pkt-tab ${state.candIdx === i ? "is-active" : ""}" onclick="selectResume(${i})">
+      <span>${r.name}</span>
+      <span class="${pillCls}">${pill}</span>
+    </button>`;
+  }).join("");
+  document.getElementById("packet-tabs").innerHTML = html;
+}
+
+function decorateWithGlobal(rawText, marksWithG) {
+  if (!marksWithG || !marksWithG.length) return escapeHTML(rawText);
+  const ranges = [];
+  marksWithG.forEach(m => {
+    if (!m.phrase) return;
+    const pos = rawText.indexOf(m.phrase);
+    if (pos === -1) return;
+    const end = pos + m.phrase.length;
+    if (ranges.some(x => !(end <= x.start || pos >= x.end))) return;
+    ranges.push({ start: pos, end, type: m.type, auto: m.auto, gIdx: m.gIdx });
+  });
+  ranges.sort((a, b) => a.start - b.start);
+
+  const labelMap = { solid: "实干", doubt: "存疑", rule: "底线", raw: "划线" };
+  let out = "";
+  let cur = 0;
+  for (const rg of ranges) {
+    out += escapeHTML(rawText.slice(cur, rg.start));
+    const slice = escapeHTML(rawText.slice(rg.start, rg.end));
+    const cls = "hl hl-" + (rg.type || "raw");
+    const tag = (rg.auto ? "预标 " : "") + (labelMap[rg.type] || "划线");
+    out += `<mark class="${cls}" title="点击移除此条划线" onclick="removeMark(${rg.gIdx}, event)">${slice}<span class="hl-badge">${tag}</span></mark>`;
+    cur = rg.end;
+  }
+  out += escapeHTML(rawText.slice(cur));
+  return out;
+}
+
+function renderSheet() {
+  const scenObj = DATA[state.scen];
+  const r = scenObj.resumes[state.candIdx];
+  const rec = ensureRecord(state.scen, state.candIdx);
+
+  document.getElementById("sheet-origin").textContent = r.origin;
+  document.getElementById("btn-partner").classList.toggle("is-on", state.partnerOn);
+
+  const autoHTML = r.autoBanner
+    ? `<div class="auto-banner">${escapeHTML(r.autoBanner)}</div>`
+    : "";
+
+  const skipHTML = rec.skipped
+    ? `<div class="skip-overlay">你已将此份简历标为「秒关略过」。它的空泛句式特征已记入防踩坑偏好，不排面试。</div>`
+    : "";
+
+  const parasHTML = r.paras.map((p, pIdx) => {
+    const secVal = rec.dwell[pIdx] || 0;
+    const isDeep = secVal >= 3.5;
+    const isSkimmed = !isDeep && secVal > 0 && secVal < 1.5 && state.activeHover !== pIdx;
+    const pMarksWithGlobal = rec.marks
+      .map((m, gIdx) => ({...m, gIdx}))
+      .filter(m => m.paraIdx === pIdx);
+
+    const decorated = decorateWithGlobal(p.text, pMarksWithGlobal);
+
+    let statusTag = "未读";
+    if (isDeep) statusTag = "驻足细读";
+    else if (secVal >= 1.5) statusTag = "已读";
+    else if (secVal > 0) statusTag = "扫过";
+
+    const partnerHTML = (state.partnerOn && p.partners && p.partners.length)
+      ? `<div class="partner-notes">${p.partners.map(pt =>
+          `<span class="p-chip ${pt.who === 'a' ? 'p-chip-a' : 'p-chip-b'}">${escapeHTML(pt.text)}</span>`
+        ).join("")}</div>`
+      : "";
+
+    return `
+      <div class="para-row ${state.activeHover === pIdx ? "is-reading" : ""} ${isDeep ? "is-deep" : ""} ${isSkimmed ? "is-skimmed" : ""}"
+           data-pidx="${pIdx}"
+           onmouseenter="enterPara(${pIdx})"
+           onmouseleave="leavePara(${pIdx})">
+        <div class="dwell-gutter">
+          <span class="dwell-sec" id="dwell-sec-${pIdx}">${secVal.toFixed(1)}s</span>
+          <span class="dwell-tag" id="dwell-tag-${pIdx}">${statusTag}</span>
+        </div>
+        <div class="para-content">
+          <div class="para-sec-label">${escapeHTML(p.sec)}</div>
+          <div class="para-text" data-pidx="${pIdx}">${decorated}</div>
+          ${partnerHTML}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const verdictHTML = state.partnerOn
+    ? `<div class="partner-verdict">${escapeHTML(r.partnerVerdict)}</div>`
+    : "";
+
+  document.getElementById("sheet-inner").innerHTML = `
+    <div class="cand-header">
+      <div class="cand-name">${escapeHTML(r.name)}</div>
+      <div class="cand-sub">${escapeHTML(r.role)}</div>
+    </div>
+    ${autoHTML}
+    ${skipHTML}
+    ${parasHTML}
+    ${verdictHTML}
+  `;
+}
+
+function enterPara(pIdx) {
+  const rec = ensureRecord(state.scen, state.candIdx);
+  state.activeHover = pIdx;
+  rec.visited[pIdx] = (rec.visited[pIdx] || 0) + 1;
+  if (rec.visited[pIdx] === 2 && (rec.dwell[pIdx] || 0) >= 1.2) {
+    state.rereads += 1;
+    const secName = DATA[state.scen].resumes[state.candIdx].paras[pIdx].sec;
+    addSignal("检测到回看重读「" + secName + "」段，权重自动上调", "sig-indigo");
+  }
+  const row = document.querySelector(`.para-row[data-pidx="${pIdx}"]`);
+  if (row) row.classList.add("is-reading");
+}
+
+function leavePara(pIdx) {
+  if (state.activeHover === pIdx) state.activeHover = null;
+  const row = document.querySelector(`.para-row[data-pidx="${pIdx}"]`);
+  if (row) row.classList.remove("is-reading");
+}
+
+setInterval(() => {
+  if (state.activeHover === null) return;
+  const pIdx = state.activeHover;
+  const rec = ensureRecord(state.scen, state.candIdx);
+  const prev = rec.dwell[pIdx] || 0;
+  const next = +(prev + 0.1).toFixed(1);
+  rec.dwell[pIdx] = next;
+
+  const secEl = document.getElementById("dwell-sec-" + pIdx);
+  const tagEl = document.getElementById("dwell-tag-" + pIdx);
+  const rowEl = document.querySelector(`.para-row[data-pidx="${pIdx}"]`);
+  if (secEl) secEl.textContent = next.toFixed(1) + "s";
+  if (next >= 3.5 && prev < 3.5) {
+    if (tagEl) tagEl.textContent = "驻足细读";
+    if (rowEl) rowEl.classList.add("is-deep");
+    const secName = DATA[state.scen].resumes[state.candIdx].paras[pIdx].sec;
+    addSignal("在「" + secName + "」驻足满 3.5 秒，已捕获关注焦点", "sig-jade");
+    renderTasteAndTasks();
+  } else if (next >= 1.5 && prev < 1.5) {
+    if (tagEl) tagEl.textContent = "已读";
+  }
+  updateTelemetryCounters();
+}, 100);
+
+document.addEventListener("mouseup", (ev) => {
+  const pop = document.getElementById("pen-popover");
+  if (pop.contains(ev.target)) return;
+
+  setTimeout(() => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) {
+      clearTimeout(state.popTimer);
+      state.pendingSel = null;
+      hidePopover();
+      return;
+    }
+    const phrase = sel.toString().trim();
+    if (phrase.length < 2) {
+      hidePopover();
+      return;
+    }
+    let node = sel.anchorNode;
+    if (node && node.nodeType === 3) node = node.parentElement;
+    const paraTextEl = node ? node.closest(".para-text") : null;
+    if (!paraTextEl) {
+      hidePopover();
+      return;
+    }
+    const pIdx = Number(paraTextEl.getAttribute("data-pidx"));
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    state.pendingSel = { pIdx, phrase };
+
+    const top = Math.max(10, rect.top - 42);
+    const left = Math.min(window.innerWidth - 290, Math.max(12, rect.left + rect.width / 2 - 135));
+    pop.style.top = top + "px";
+    pop.style.left = left + "px";
+    pop.classList.add("is-open");
+
+    clearTimeout(state.popTimer);
+    state.popTimer = setTimeout(() => {
+      if (state.pendingSel) {
+        commitHighlight(state.pendingSel.pIdx, state.pendingSel.phrase, "raw");
+        state.pendingSel = null;
+      }
+      hidePopover();
+    }, 4200);
+  }, 15);
+});
+
+function hidePopover() {
+  clearTimeout(state.popTimer);
+  document.getElementById("pen-popover").classList.remove("is-open");
+}
+
+function applyHighlight(type, ev) {
+  ev.preventDefault();
+  ev.stopPropagation();
+  if (!state.pendingSel) return;
+  const { pIdx, phrase } = state.pendingSel;
+  state.pendingSel = null;
+  const sel = window.getSelection();
+  if (sel) sel.removeAllRanges();
+  hidePopover();
+  commitHighlight(pIdx, phrase, type);
+}
+
+function commitHighlight(pIdx, phrase, type) {
+  const rec = ensureRecord(state.scen, state.candIdx);
+  rec.marks = rec.marks.filter(m => !(m.paraIdx === pIdx && (m.phrase.includes(phrase) || phrase.includes(m.phrase))));
+  rec.marks.push({ paraIdx: pIdx, phrase, type, auto: false });
+
+  const shortTxt = phrase.length > 18 ? phrase.slice(0, 18) + "…" : phrase;
+  if (type === "solid") {
+    addSignal("标实干亮点：「" + shortTxt + "」，已加入面谈核实锚点", "sig-jade");
+  } else if (type === "doubt") {
+    addSignal("标存疑待核：「" + shortTxt + "」，面谈前 15 分钟提醒追问边界", "sig-verm");
+  } else if (type === "rule") {
+    addSignal("记入用人底线：「" + shortTxt + "」，后续新简历自动照此预筛", "sig-indigo");
+  } else {
+    addSignal("自然划线（未点按钮自动消隐）：「" + shortTxt + "」，默认计入重点关注", "sig-indigo");
+  }
+  renderAll();
+}
+
+function simulateStroke() {
+  const r = DATA[state.scen].resumes[state.candIdx];
+  const rec = ensureRecord(state.scen, state.candIdx);
+  for (let i = 0; i < r.paras.length; i++) {
+    const dt = r.paras[i].demoTarget;
+    if (dt && !rec.marks.some(m => m.phrase === dt)) {
+      rec.dwell[i] = Math.max(rec.dwell[i] || 0, 4.6);
+      commitHighlight(i, dt, r.paras[i].demoType || "solid");
+      return;
+    }
+  }
+  const fallback = r.paras[0].text.slice(0, 16);
+  rec.dwell[0] = Math.max(rec.dwell[0] || 0, 4.2);
+  commitHighlight(0, fallback, "doubt");
+}
+
+function updateTelemetryCounters() {
+  const rec = ensureRecord(state.scen, state.candIdx);
+  const vals = Object.values(rec.dwell);
+  const maxD = vals.length ? Math.max(...vals) : 0;
+  let totalManual = 0;
+  DATA[state.scen].resumes.forEach((_, idx) => {
+    const rc = ensureRecord(state.scen, idx);
+    totalManual += rc.marks.filter(m => !m.auto).length;
+  });
+  const curMarks = rec.marks.length;
+
+  document.getElementById("t-max").textContent = maxD.toFixed(1) + "s";
+  document.getElementById("t-marks").textContent = curMarks + " 处";
+  document.getElementById("t-reread").textContent = state.rereads + " 次";
+  document.getElementById("t-skips").textContent = state.skips + " 份";
+
+  document.getElementById("d-max").textContent = maxD.toFixed(1) + "s";
+  document.getElementById("d-marks").textContent = curMarks + " 处";
+  document.getElementById("d-reread").textContent = state.rereads + " 次";
+  document.getElementById("d-skips").textContent = state.skips + " 份";
+
+  document.getElementById("taste-ver").textContent = totalManual > 0
+    ? "已吸收你 " + totalManual + " 处手势校准"
+    : "按过往判例初始拟合";
+}
+
+function renderSignals() {
+  const box = document.getElementById("signal-feed");
+  if (!state.signals.length) {
+    box.innerHTML = `<div class="sig-line">等待你在左侧纸页上停留或划线…</div>`;
+    return;
+  }
+  box.innerHTML = state.signals.map(s =>
+    `<div class="sig-line ${s.tone}"><span style="color:var(--ink-faint);margin-right:6px">${s.ts}</span>${escapeHTML(s.text)}</div>`
+  ).join("");
+}
+
+function renderTasteAndTasks() {
+  const scenObj = DATA[state.scen];
+  const r = scenObj.resumes[state.candIdx];
+  const rec = ensureRecord(state.scen, state.candIdx);
+
+  const solidMarks = rec.marks.filter(m => m.type === "solid" || m.type === "raw");
+  const doubtMarks = rec.marks.filter(m => m.type === "doubt");
+  const ruleMarks = rec.marks.filter(m => m.type === "rule");
+
+  const l1Dynamic = solidMarks.length
+    ? `本页你重点圈出「${solidMarks[solidMarks.length - 1].phrase.slice(0, 16)}…」，只认带数字的工程结果。`
+    : scenObj.tasteBase.l1;
+
+  const l2Dynamic = doubtMarks.length
+    ? `刚标存疑「${doubtMarks[doubtMarks.length - 1].phrase.slice(0, 16)}…」，与你过往反感挂名汇报的判例一致。`
+    : scenObj.tasteBase.l2;
+
+  const l3Dynamic = ruleMarks.length
+    ? `最新底线更新：「${ruleMarks[ruleMarks.length - 1].phrase.slice(0, 16)}…」已记入筛人规则，下一份自动套用。`
+    : scenObj.tasteBase.l3;
+
+  document.getElementById("taste-list").innerHTML = `
+    <div class="taste-item"><span class="taste-k">关注重心</span>${escapeHTML(l1Dynamic)}</div>
+    <div class="taste-item"><span class="taste-k">存疑雷区</span>${escapeHTML(l2Dynamic)}</div>
+    <div class="taste-item"><span class="taste-k">放行底线</span>${escapeHTML(l3Dynamic)}</div>
+    <div class="taste-item"><span class="taste-k">当下急务</span>${escapeHTML(scenObj.tasteBase.l4)}</div>
+  `;
+
+  [0, 1, 2].forEach(i => document.getElementById("tt-" + i).classList.toggle("is-active", state.taskTab === i));
+  document.getElementById("handoff-btn").textContent = scenObj.hostLabel;
+
+  const taskBox = document.getElementById("task-body");
+  if (state.taskTab === 0) {
+    const customProbes = [...r.probes];
+    doubtMarks.filter(m => !m.auto).forEach(m => {
+      customProbes.unshift(`针对你刚划的「${m.phrase.slice(0, 15)}…」追问：本人亲手做的边界在哪、验收指标怎么测的？`);
+    });
+    taskBox.innerHTML = `<ul class="task-output">${customProbes.slice(0, 4).map(q => `<li>${escapeHTML(q)}</li>`).join("")}</ul>`;
+  } else if (state.taskTab === 1) {
+    taskBox.innerHTML = `
+      <div class="dual-note">
+        <div class="note-priv"><strong>个人识人手记（随身带走，不进公司库）：</strong><br>${escapeHTML(r.privNote)}</div>
+        <div class="note-pub"><strong>交人事归档公文（得体合规，一键回传 ATS）：</strong><br>${escapeHTML(r.pubNote)}</div>
+      </div>`;
+  } else {
+    taskBox.innerHTML = `<div class="task-output">${escapeHTML(r.bridge)}</div>`;
+  }
+}
+
+function setTaskTab(idx) {
+  state.taskTab = idx;
+  renderTasteAndTasks();
+}
+
+function confirmTask() {
+  const btn = document.getElementById("handoff-btn");
+  const hint = document.getElementById("handoff-hint");
+  const r = DATA[state.scen].resumes[state.candIdx];
+  btn.textContent = "已交由主助理跟进";
+  hint.textContent = "面谈前 15 分钟将自动推送《" + r.name + "》备忘卡";
+  addSignal("已将《" + r.name + "》后续动作交由主助理代办（日历提醒加人事回执草稿）", "sig-jade");
+  setTimeout(() => {
+    btn.textContent = DATA[state.scen].hostLabel;
+  }, 1800);
+}
+
+function renderAll() {
+  renderTabs();
+  renderSheet();
+  updateTelemetryCounters();
+  renderSignals();
+  renderTasteAndTasks();
+}
+
+addSignal("去噪阅卷单页已就绪：鼠标悬停段落计驻足时长，拖选文字即可划线", "sig-indigo");
+renderAll();
+</script>
+</body>
+</html>
