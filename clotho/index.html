@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Clotho · 静态预览稿</title>
+  <style>
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/chinese-simplified-400-normal.woff2") format("woff2");unicode-range:U+4E00-9FFF,U+3400-4DBF,U+3000-303F,U+FF00-FFEF,U+2000-206F;}
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/latin-400-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2010-2027;}
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/chinese-simplified-500-normal.woff2") format("woff2");unicode-range:U+4E00-9FFF,U+3400-4DBF,U+3000-303F,U+FF00-FFEF,U+2000-206F;}
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/latin-500-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2010-2027;}
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/chinese-simplified-600-normal.woff2") format("woff2");unicode-range:U+4E00-9FFF,U+3400-4DBF,U+3000-303F,U+FF00-FFEF,U+2000-206F;}
+    @font-face{font-family:"Noto Sans SC";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/latin-600-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+2010-2027;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/inter-latin-400-normal.woff2") format("woff2");unicode-range:U+0000-00FF;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/inter-latin-ext-400-normal.woff2") format("woff2");unicode-range:U+0100-024F,U+20A0-20CF;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/inter-latin-500-normal.woff2") format("woff2");unicode-range:U+0000-00FF;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/inter-latin-600-normal.woff2") format("woff2");unicode-range:U+0000-00FF;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:800;font-display:swap;src:url("fonts/inter-latin-800-normal.woff2") format("woff2");unicode-range:U+0000-00FF;}
+    @font-face{font-family:"Inter";font-style:normal;font-weight:800;font-display:swap;src:url("fonts/inter-latin-ext-800-normal.woff2") format("woff2");unicode-range:U+0100-024F,U+20A0-20CF;}
+
+    :root{
+      --bg:#10171A;
+      --bg-raise:#161E22;
+      --text:#FFFFFF;
+      --text-2:#C9D3D6;
+      --text-3:#8B969A;
+      --accent:#2EE6A6;
+      --accent-2:#7ED9E8;
+      --action:#F3F7F6;
+      --action-ink:#10171A;
+      --ghost:#1E282C;
+      --border:rgba(255,255,255,.08);
+      --card:rgba(255,255,255,.045);
+      --team-1:#A8F0D1;
+      --team-2:#FFB7AB;
+      --team-3:#E6F47A;
+      --team-4:#BFDCF5;
+      --on-pastel:#102126;
+      --header-h:104px;
+      --page:1280px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:var(--header-h)}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Noto Sans SC","Source Han Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+      font-weight:400;
+      font-size:16px;
+      line-height:1.55;
+      -webkit-font-smoothing:antialiased;
+    }
+    button,input{font:inherit}
+    a{color:inherit;text-decoration:none}
+    img,svg{display:block;max-width:100%}
+
+    .latin{font-family:"Inter","Noto Sans SC",sans-serif}
+    .nowrap{white-space:nowrap}
+    .wrap{width:min(100%,var(--page));margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+    .site-head{position:sticky;top:0;z-index:80;background:var(--bg)}
+    .preview-mark{
+      text-align:center;
+      font-size:11px;
+      letter-spacing:.08em;
+      color:rgba(255,255,255,.32);
+      padding:6px 16px 5px;
+      border-bottom:1px solid var(--border);
+    }
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      height:76px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;color:inherit}
+    .brand-mark{height:40px;width:auto;display:block;flex:none}
+    .wordlock{display:flex;flex-direction:column;justify-content:center;gap:1px;line-height:1}
+    .wl-en,.wl-zh{display:flex;justify-content:space-between;width:100%;white-space:nowrap}
+    .wl-en i,.wl-zh i{font-style:normal;font-weight:inherit}
+    .wl-en{font-family:"Inter",sans-serif;font-weight:600;font-size:16px;letter-spacing:0;color:#fff}
+    .wl-zh{font-family:"Noto Sans SC",sans-serif;font-weight:500;font-size:12.5px;color:rgba(255,255,255,.86)}
+    .nav-pill{
+      display:flex;align-items:center;gap:1px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:4px;
+    }
+    .nav-pill a{
+      color:var(--text-2);
+      font-size:13.5px;font-weight:500;
+      padding:8px 12px;border-radius:999px;
+      white-space:nowrap;
+    }
+    .nav-pill a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+    .nav-end{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:48px;padding:0 20px;border-radius:999px;
+      border:1px solid transparent;
+      font-size:15px;font-weight:500;line-height:1;
+      cursor:pointer;background:none;color:inherit;
+    }
+    .btn-solid{background:var(--action);color:var(--action-ink);border-color:var(--action)}
+    .btn-solid:hover{filter:brightness(1.06)}
+    .btn-ghost{background:var(--ghost);color:var(--text);border-color:rgba(255,255,255,.14)}
+    .btn-ghost:hover{border-color:rgba(255,255,255,.28)}
+    .btn-nav{height:40px;padding:0 16px;font-size:13px}
+
+    /* Hero */
+    .hero{
+      position:relative;
+      text-align:center;
+      padding:80px 0 120px;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;inset:-10% -20% 20%;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(46,230,166,.16), transparent 58%),
+        repeating-linear-gradient(0deg, transparent 0 39px, rgba(46,230,166,.06) 39px 40px),
+        repeating-linear-gradient(90deg, transparent 0 39px, rgba(46,230,166,.06) 39px 40px);
+      mask-image:radial-gradient(ellipse at 50% 35%, #000 20%, transparent 72%);
+      pointer-events:none;
+    }
+    .hero-inner{position:relative}
+    .platform-pill{
+      display:inline-flex;align-items:center;gap:10px;
+      margin:0 auto 28px;
+      padding:5px 14px 5px 5px;
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      color:var(--text-2);
+      font-size:13px;
+      line-height:1.3;
+    }
+    .platform-new{
+      display:inline-flex;align-items:center;justify-content:center;
+      height:22px;padding:0 8px;border-radius:999px;
+      background:var(--accent);color:var(--action-ink);
+      font-size:11px;font-weight:600;letter-spacing:.04em;
+    }
+    .hero h1{
+      margin:0 auto 28px;
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+      font-weight:500;
+      font-size:clamp(3.4rem, 8.4vw, 7.2rem);
+      line-height:.92;
+      letter-spacing:-.05em;
+    }
+    .hero-en{
+      font-family:"Inter",sans-serif;
+      font-weight:600;
+      letter-spacing:-.06em;
+    }
+    .hero .lede{
+      margin:0 auto 36px;
+      max-width:760px;
+      color:var(--text-2);
+      font-size:clamp(17px,2vw,20px);
+      line-height:1.6;
+    }
+    .hero .lede strong{color:var(--text);font-weight:600}
+    .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+
+    /* Collab / network */
+    .collab{padding:80px 0 40px;text-align:center;position:relative;overflow:hidden}
+    .display{
+      margin:0 auto 18px;
+      font-weight:500;
+      font-size:clamp(38px,5vw,64px);
+      line-height:1.05;
+      letter-spacing:-.05em;
+    }
+    .sub{
+      margin:0 auto;
+      max-width:720px;
+      color:var(--text-2);
+      font-size:19px;
+      line-height:1.55;
+    }
+    .net{
+      position:relative;
+      width:100%;
+      padding:36px 0 28px;
+    }
+    .net-stage{
+      position:relative;
+      width:100%;
+      aspect-ratio:1120/460;
+    }
+    .net-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .node{
+      position:absolute;transform:translate(-50%,-50%);
+      border-radius:50%;overflow:hidden;background:#141C20;
+      box-shadow:0 10px 28px rgba(0,0,0,.42),0 0 0 3px rgba(243,247,246,.1),0 0 0 6px rgba(46,230,166,.14);
+      z-index:2;
+    }
+    .node img{width:100%;height:100%;object-fit:contain;padding:6%;display:block;box-sizing:border-box}
+    .node-lg{width:72px;height:72px}
+    .node-md{width:60px;height:60px}
+    .node-sm{width:48px;height:48px}
+    .node-xs{width:36px;height:36px}
+    .node-center{
+      width:96px;height:96px;
+      display:flex;align-items:center;justify-content:center;
+      background:#161E22;
+      box-shadow:0 14px 40px rgba(0,0,0,.5),0 0 0 4px rgba(196,85,45,.4),0 0 0 8px rgba(46,230,166,.16);
+      z-index:3;overflow:hidden;
+    }
+    .node-center img{width:70%;height:70%;object-fit:contain;padding:0}
+    .node-label,.hub-label{
+      position:absolute;
+      transform:translate(-50%,0);
+      background:#161E22;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:13px;
+      padding:4px 11px;
+      font-size:12px;
+      font-weight:600;
+      color:#F8FAFC;
+      white-space:nowrap;
+      z-index:4;
+      pointer-events:none;
+      line-height:1.4;
+    }
+    .node-label.is-muted{color:#C9D3D6;font-weight:500}
+    .hub-label{
+      border-color:rgba(46,230,166,.5);
+      background:#10171A;
+      font-weight:700;
+      font-size:12.5px;
+      color:#E8F7F2;
+    }
+    .net-legend{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;
+      margin-top:8px;color:var(--text-2);font-size:14px;
+    }
+    .legend-item{display:inline-flex;align-items:center;gap:8px}
+    .legend-dot{width:9px;height:9px;border-radius:3px;flex:none}
+
+    /* Bento */
+    .features{padding:80px 0 40px}
+    .features .display{text-align:left;margin:0 0 12px}
+    .features .sub{margin:0 0 40px;text-align:left;max-width:640px;font-size:18px}
+    .bento-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+    }
+    .bento-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:22px;
+      display:flex;flex-direction:column;gap:20px;
+    }
+    .bento-vis{
+      background:rgba(0,0,0,.28);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px;
+      min-height:164px;
+      display:flex;flex-direction:column;justify-content:center;gap:10px;
+    }
+    .bento-card h3{margin:0 0 6px;font-size:22px;font-weight:600;letter-spacing:-.03em}
+    .bento-card p{margin:0;color:var(--text-2);font-size:15px;line-height:1.65}
+    .chan-line{
+      display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;
+      font-size:13px;color:var(--text-2);
+    }
+    .chan-line strong{color:var(--text);font-weight:600}
+    .chan-line .ts{font-family:"Inter",sans-serif;font-size:11px;color:var(--text-3)}
+    .chan-diff{
+      padding:7px 11px;border-radius:8px;
+      background:rgba(46,230,166,.1);
+      border:1px solid rgba(46,230,166,.28);
+      color:var(--accent);
+      font-size:12px;font-weight:500;
+    }
+    .local-row{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:9px 12px;border-radius:9px;
+      background:rgba(255,255,255,.035);
+      border:1px solid var(--border);
+      font-size:13px;color:#E8EEEF;
+    }
+    .local-badge{font-size:11px;color:var(--accent);font-weight:600;white-space:nowrap}
+    .tools-wrap{display:flex;flex-wrap:wrap;gap:8px}
+    .tool-chip{
+      padding:6px 12px;border-radius:8px;
+      background:rgba(255,255,255,.045);
+      border:1px solid var(--border);
+      font-size:12.5px;color:#E8EEEF;font-weight:500;
+    }
+
+    /* Personal */
+    .personal{padding:120px 0 120px;text-align:center;position:relative;overflow:hidden}
+    .personal::before{
+      content:"";position:absolute;inset:20% 20%;
+      background:radial-gradient(circle, rgba(46,230,166,.12), transparent 70%);
+      pointer-events:none;
+    }
+    .personal-inner{position:relative}
+    .personal .eyebrow{margin:0 0 8px;color:var(--text-2);font-size:20px;font-weight:500}
+    .price{
+      margin:0 auto 8px;
+      font-family:"Inter",sans-serif;
+      font-weight:800;
+      font-size:clamp(8rem,28vw,20rem);
+      line-height:.82;
+      letter-spacing:-.08em;
+      background:linear-gradient(110deg,#5EE0C0 0%,#F5FFFB 32%,#8FD6EA 52%,#7AE0C8 78%,#D9FFF3 100%);
+      background-size:200% 100%;
+      -webkit-background-clip:text;background-clip:text;
+      color:transparent;
+      filter:drop-shadow(0 30px 80px rgba(46,230,166,.18));
+      animation:sheen 14s ease-in-out infinite;
+    }
+    @keyframes sheen{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+    .checks{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;margin:28px 0 32px;color:var(--text-2);font-size:16px}
+    .checks span{display:inline-flex;align-items:center;gap:8px}
+    .tick{width:16px;height:16px;border-radius:50%;background:var(--accent);color:var(--action-ink);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex:none}
+    .personal-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+
+    /* Teams */
+    .teams{padding:80px 0 120px}
+    .teams-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);align-items:start}
+    .teams-left{position:sticky;top:calc(var(--header-h) + 20px)}
+    .teams-left h2{margin:0 0 16px}
+    .teams-lead{margin:0 0 12px;font-size:20px;font-weight:500}
+    .teams-desc{margin:0 0 28px;max-width:42ch;color:var(--text-2);font-size:16px}
+    .teams-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px}
+    .team-nav{display:flex;flex-direction:column;border-left:1px solid var(--border);padding:0}
+    .team-nav button{
+      appearance:none;border:0;background:none;color:var(--text-3);
+      text-align:left;padding:11px 16px;cursor:pointer;
+      font-size:15px;font-weight:500;position:relative;
+    }
+    .team-nav button .num{font-family:"Inter",sans-serif;margin-right:8px;font-variant-numeric:tabular-nums}
+    .team-nav button.is-on{color:var(--text)}
+    .team-nav button.is-on::before{
+      content:"";position:absolute;left:-1px;top:8px;bottom:8px;width:2px;background:var(--bar,var(--accent));
+    }
+    .team-nav button[data-i="0"].is-on{color:var(--team-1)}
+    .team-nav button[data-i="0"].is-on::before{background:var(--team-1)}
+    .team-nav button[data-i="1"].is-on{color:var(--team-2)}
+    .team-nav button[data-i="1"].is-on::before{background:var(--team-2)}
+    .team-nav button[data-i="2"].is-on{color:var(--team-3)}
+    .team-nav button[data-i="2"].is-on::before{background:var(--team-3)}
+    .team-nav button[data-i="3"].is-on{color:var(--team-4)}
+    .team-nav button[data-i="3"].is-on::before{background:var(--team-4)}
+
+    .stack-card{
+      position:sticky;
+      min-height:400px;
+      border-radius:28px;
+      padding:28px 32px 32px;
+      color:var(--on-pastel);
+      margin-bottom:24px;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      overflow:hidden;
+      transform-origin:top center;
+      transition:transform .4s ease,filter .4s ease;
+      background-image:
+        linear-gradient(rgba(16,33,38,.04),rgba(16,33,38,.04)),
+        repeating-linear-gradient(0deg,transparent 0 31px,rgba(16,33,38,.08) 31px 32px),
+        repeating-linear-gradient(90deg,transparent 0 31px,rgba(16,33,38,.08) 31px 32px);
+    }
+    .stack-card:nth-child(1){top:calc(var(--header-h) + 16px);z-index:1;background-color:var(--team-1)}
+    .stack-card:nth-child(2){top:calc(var(--header-h) + 36px);z-index:2;background-color:var(--team-2)}
+    .stack-card:nth-child(3){top:calc(var(--header-h) + 56px);z-index:3;background-color:var(--team-3)}
+    .stack-card:nth-child(4){top:calc(var(--header-h) + 76px);z-index:4;background-color:var(--team-4);margin-bottom:320px}
+    .stack-card.is-covered{transform:scale(.95);filter:brightness(.78)}
+    .stack-top{position:absolute;top:22px;left:28px;right:32px;display:flex;justify-content:space-between;align-items:center}
+    .pill{display:inline-flex;align-items:center;height:28px;padding:0 10px;border-radius:999px;background:rgba(16,33,38,.1);font-size:12px;font-weight:500}
+    .frac{font-family:"Inter",sans-serif;font-size:13px;font-weight:500;font-variant-numeric:tabular-nums;opacity:.7}
+    .stack-icon{position:absolute;right:36px;top:88px;width:128px;height:128px}
+    .stack-card h3{margin:0 0 10px;font-weight:500;font-size:clamp(34px,4vw,56px);letter-spacing:-.05em;line-height:1.05;max-width:12em}
+    .stack-card p{margin:0;max-width:40ch;font-size:16px;line-height:1.5;opacity:.84}
+
+    /* FAQ */
+    .faq{padding:80px 0 80px}
+    .faq-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);align-items:start}
+    .faq-left{position:sticky;top:calc(var(--header-h) + 24px)}
+    .faq-left h2{margin:0 0 16px}
+    .faq-left p{margin:0 0 24px;color:var(--text-2);max-width:34ch}
+    .faq-item{border-bottom:1px solid var(--border)}
+    .faq-item button{
+      width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;
+      background:none;border:0;color:var(--text);text-align:left;
+      padding:22px 0;cursor:pointer;font-size:18px;font-weight:500;
+    }
+    .chev{width:18px;height:18px;flex:none;transition:transform .2s}
+    .faq-item.is-open .chev{transform:rotate(180deg)}
+    .faq-a{display:none;padding:0 36px 22px 0;color:var(--text-2);font-size:16px;line-height:1.6}
+    .faq-item.is-open .faq-a{display:block}
+
+    /* Footer */
+    footer{padding:48px 0 40px;border-top:1px solid var(--border)}
+    .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .foot-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .foot-copy{color:var(--text-3);font-size:14px}
+    .foot-links{display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--text-3);font-size:14px}
+    .foot-links a:hover{color:var(--text)}
+
+    @media (max-width:1080px){
+      .nav-pill a{padding:8px 9px;font-size:13px}
+    }
+    @media (max-width:900px){
+      :root{--header-h:132px}
+      .nav-pill{display:none}
+      .hero{padding-top:48px;padding-bottom:80px}
+      .bento-grid,.teams-grid,.faq-grid{grid-template-columns:1fr}
+      .teams-left,.faq-left{position:relative;top:auto}
+      .node-lg{width:58px;height:58px}
+      .node-md{width:50px;height:50px}
+      .node-sm{width:40px;height:40px}
+      .node-xs{width:30px;height:30px}
+      .node-center{width:76px;height:76px}
+      .node-label,.hub-label{font-size:10.5px;padding:3px 8px}
+    }
+  </style>
+</head>
+<body>
+  <header class="site-head">
+    <div class="preview-mark">静态预览稿 · 非正式上线</div>
+    <div class="wrap nav">
+      <a class="brand" href="#hero" aria-label="Clotho 克洛托">
+        <img class="brand-mark" src="images/logo-clotho.png" alt="">
+        <span class="wordlock" aria-hidden="true">
+          <span class="wl-en"><i>C</i><i>l</i><i>o</i><i>t</i><i>h</i><i>o</i></span>
+          <span class="wl-zh"><i>克</i><i>洛</i><i>托</i></span>
+        </span>
+      </a>
+      <nav class="nav-pill" aria-label="页面章节">
+        <a href="#network">助手协同</a>
+        <a href="#features">核心能力</a>
+        <a href="#personal">个人免费</a>
+        <a href="#team">团队版</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+      <div class="nav-end">
+        <a class="btn btn-ghost btn-nav" href="#personal">↓ 下载本地版</a>
+        <a class="btn btn-solid btn-nav" href="#team">企业版 →</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="wrap hero-inner">
+        <div class="platform-pill">
+          <span class="platform-new">新</span>
+          <span>支持本地运行 · macOS · Windows · 接入飞书 / 企微 / 现有 ATS</span>
+        </div>
+        <h1>
+          <span>认识</span>
+          <span class="hero-en">Clotho</span>
+        </h1>
+        <p class="lede"><strong>一个真实职位委托的持续协作工作区。</strong>企业招聘团队或猎头顾问团队各自运行专属 Bot，助手之间对齐标准、使用工具并推动真实队友之间协作。个人使用免费。</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#personal">↓ 下载本地个人版（免费）</a>
+          <a class="btn btn-ghost" href="#team">预约企业与团队版 →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="collab" id="network">
+      <div class="wrap">
+        <h2 class="display">你的助手协同工作。</h2>
+        <p class="sub">每位用人经理一位助手，每个岗位一个频道。它们各自记住职责、标准与私域关系，在获准的委托里同步改判、核验证据并推动真实队友之间协作。</p>
+        <div class="net" aria-hidden="false">
+          <div class="net-stage" role="img" aria-label="Clotho 助手围绕岗位频道协同网络图">
+            <svg class="net-lines" viewBox="0 0 1120 460" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <g stroke="rgba(126,217,232,0.22)" stroke-width="1.3" stroke-dasharray="3 6">
+                <line x1="560" y1="230" x2="360" y2="140"/>
+                <line x1="560" y1="230" x2="760" y2="140"/>
+                <line x1="560" y1="230" x2="350" y2="325"/>
+                <line x1="560" y1="230" x2="770" y2="325"/>
+                <line x1="560" y1="230" x2="560" y2="85"/>
+                <line x1="560" y1="230" x2="560" y2="380"/>
+                <line x1="360" y1="140" x2="180" y2="100"/>
+                <line x1="360" y1="140" x2="210" y2="220"/>
+                <line x1="360" y1="140" x2="430" y2="55"/>
+                <line x1="350" y1="325" x2="165" y2="335"/>
+                <line x1="350" y1="325" x2="250" y2="415"/>
+                <line x1="350" y1="325" x2="210" y2="220"/>
+                <line x1="760" y1="140" x2="940" y2="98"/>
+                <line x1="760" y1="140" x2="910" y2="225"/>
+                <line x1="760" y1="140" x2="690" y2="55"/>
+                <line x1="770" y1="325" x2="955" y2="338"/>
+                <line x1="770" y1="325" x2="865" y2="415"/>
+                <line x1="770" y1="325" x2="910" y2="225"/>
+                <line x1="180" y1="100" x2="88" y2="170"/>
+                <line x1="165" y1="335" x2="82" y2="270"/>
+                <line x1="940" y1="98" x2="1032" y2="172"/>
+                <line x1="955" y1="338" x2="1038" y2="268"/>
+              </g>
+              <g stroke="#2EE6A6" stroke-width="1.8" stroke-dasharray="4 6" opacity="0.7">
+                <line x1="360" y1="140" x2="560" y2="230"/>
+                <line x1="560" y1="230" x2="760" y2="140"/>
+              </g>
+            </svg>
+
+            <!-- labeled cores -->
+            <div class="node node-lg" style="left:32.143%;top:30.435%"><img src="images/avatars/muse.png" alt=""></div>
+            <div class="node-label" style="left:32.143%;top:calc(30.435% + 46px)">用人经理专属助手</div>
+
+            <div class="node node-lg" style="left:67.857%;top:30.435%"><img src="images/avatars/dot-triangle.png" alt=""></div>
+            <div class="node-label" style="left:67.857%;top:calc(30.435% + 46px)">猎头顾问专属助手</div>
+
+            <div class="node node-md" style="left:31.25%;top:70.652%"><img src="images/avatars/dot-beret.png" alt=""></div>
+            <div class="node-label is-muted" style="left:31.25%;top:calc(70.652% + 40px)">HR · 内推与权限</div>
+
+            <div class="node node-md" style="left:68.75%;top:70.652%"><img src="images/avatars/scarf.png" alt=""></div>
+            <div class="node-label is-muted" style="left:68.75%;top:calc(70.652% + 40px)">本地活人才私库</div>
+
+            <div class="node node-sm" style="left:50%;top:18.478%"><img src="images/avatars/dot-cloud.png" alt=""></div>
+            <div class="node-label is-muted" style="left:50%;top:calc(18.478% - 40px)">标准版本同步</div>
+
+            <div class="node node-sm" style="left:50%;top:82.609%"><img src="images/avatars/dot-heart.png" alt=""></div>
+            <div class="node-label is-muted" style="left:50%;top:calc(82.609% + 30px)">单次同意 · 实名回执</div>
+
+            <!-- outer nodes -->
+            <div class="node node-xs" style="left:38.393%;top:11.957%"><img src="images/avatars/dot-diamond.png" alt=""></div>
+            <div class="node node-xs" style="left:16.071%;top:21.739%"><img src="images/avatars/dot-monster.png" alt=""></div>
+            <div class="node node-xs" style="left:7.857%;top:36.957%"><img src="images/avatars/robot.png" alt=""></div>
+            <div class="node node-xs" style="left:18.75%;top:47.826%"><img src="images/avatars/dot-cloud.png" alt=""></div>
+            <div class="node node-xs" style="left:7.321%;top:58.696%"><img src="images/avatars/dot-diamond.png" alt=""></div>
+            <div class="node node-xs" style="left:14.732%;top:72.826%"><img src="images/avatars/dot-triangle.png" alt=""></div>
+            <div class="node node-xs" style="left:22.321%;top:90.217%"><img src="images/avatars/dot-heart.png" alt=""></div>
+            <div class="node node-xs" style="left:61.607%;top:11.957%"><img src="images/avatars/dot-beret.png" alt=""></div>
+            <div class="node node-xs" style="left:83.929%;top:21.304%"><img src="images/avatars/scarf.png" alt=""></div>
+            <div class="node node-xs" style="left:81.25%;top:48.913%"><img src="images/avatars/robot.png" alt=""></div>
+            <div class="node node-xs" style="left:85.268%;top:73.478%"><img src="images/avatars/dot-cloud.png" alt=""></div>
+            <div class="node node-xs" style="left:77.232%;top:90.217%"><img src="images/avatars/dot-monster.png" alt=""></div>
+            <div class="node node-xs" style="left:92.143%;top:37.391%"><img src="images/avatars/dot-diamond.png" alt=""></div>
+            <div class="node node-xs" style="left:92.679%;top:58.261%"><img src="images/avatars/dot-heart.png" alt=""></div>
+
+            <!-- center hub -->
+            <div class="node node-center" style="left:50%;top:50%"><img src="images/logo-clotho.png" alt=""></div>
+            <div class="hub-label" style="left:50%;top:calc(50% + 56px)"># 岗位委托频道</div>
+          </div>
+        </div>
+        <div class="net-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:#2EE6A6"></span>每位用人经理一位助手</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#7ED9E8"></span>每个岗位一个频道</span>
+          <span class="legend-item"><span class="legend-dot" style="background:#A8F0D1"></span>各自私库本地留存、获准后协作</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="wrap">
+        <h2 class="display"><span class="latin">Clotho</span> 做什么</h2>
+        <p class="sub">把失真的需求电话会和黑盒推进，变成清晰、持续运转的岗位频道协作。</p>
+        <div class="bento-grid">
+          <article class="bento-card">
+            <div class="bento-vis">
+              <div class="chan-line"><strong>经理助手</strong> <span class="ts">14:12</span> <span>已确认标准更新至 v3，重排在途人选。</span></div>
+              <div class="chan-diff">+ 新确认：能独立扛住客户验收争议（签字人可以是别人）</div>
+              <div class="chan-line"><strong>顾问助手</strong> <span class="ts">14:14</span> <span>已拦下 2 份仅参与执行的推荐，正在补核赵先生案例。</span></div>
+            </div>
+            <div>
+              <h3>每个岗位一个频道</h3>
+              <p>需求变更、在途复核与反馈回执都在同一频道里自然发生。标准不再在传话中<span class="nowrap">走样</span>，也不再陷入看不清进度的黑盒。</p>
+            </div>
+          </article>
+          <article class="bento-card">
+            <div class="bento-vis">
+              <div class="local-row"><span>产品研发总监 · 专属助手</span><span class="local-badge">记住历次面后偏好</span></div>
+              <div class="local-row"><span>交付实施负责人 · 专属助手</span><span class="local-badge">管理 3 个在招岗位</span></div>
+              <div class="local-row"><span>猎头合伙人 · 专属助手</span><span class="local-badge">唤醒私库沉睡关系</span></div>
+            </div>
+            <div>
+              <h3>每位用人经理一位助手</h3>
+              <p>不用填复杂表单。经理在熟悉的入口说一句真实反馈，专属助手立刻更新画像、准备下轮追问并同步协作方，只在关键处提醒拍板。</p>
+            </div>
+          </article>
+          <article class="bento-card">
+            <div class="bento-vis">
+              <div class="local-row"><span>个人私库与笔记</span><span class="local-badge">存储在你本地电脑</span></div>
+              <div class="local-row"><span>候选人联系方式与引荐路径</span><span class="local-badge">未获同意绝不披露</span></div>
+              <div class="local-row"><span>企业内部面评与定薪讨论</span><span class="local-badge">严守企业私域边界</span></div>
+            </div>
+            <div>
+              <h3>各自数据，留在各自掌控之中</h3>
+              <p>个人版在你的本地电脑运行，关系账本随时导出。共享的只是获准披露的<span class="nowrap">岗位标准</span>与证据回执，双方私密资料绝不串台。</p>
+            </div>
+          </article>
+          <article class="bento-card">
+            <div class="bento-vis">
+              <div class="tools-wrap">
+                <span class="tool-chip">飞书</span>
+                <span class="tool-chip">企业微信</span>
+                <span class="tool-chip">钉钉</span>
+                <span class="tool-chip">Slack</span>
+                <span class="tool-chip">现有 ATS / Moka</span>
+                <span class="tool-chip">Obsidian / Markdown</span>
+                <span class="tool-chip">内推与自有内库</span>
+                <span class="tool-chip">限时确认链接</span>
+              </div>
+            </div>
+            <div>
+              <h3>使用你已有的工具与渠道</h3>
+              <p>企业可独立先跑通内推与自有内库，顾问或猎企也可独立管理手头委托；<span class="nowrap">不替换现有系统</span>，按权限同步正式结果。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="personal" id="personal">
+      <div class="wrap personal-inner">
+        <p class="eyebrow">个人使用免费</p>
+        <div class="price">¥0</div>
+        <div class="checks">
+          <span><i class="tick" aria-hidden="true">✓</i> 全部核心功能</span>
+          <span><i class="tick" aria-hidden="true">✓</i> 在你自己的电脑本地运行</span>
+          <span><i class="tick" aria-hidden="true">✓</i> 猎头顾问永不收订阅费</span>
+        </div>
+        <div class="personal-actions">
+          <a class="btn btn-solid" href="#personal">↓ 下载本地个人版</a>
+          <a class="btn btn-ghost" href="#team">了解企业与团队版 →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="teams" id="team">
+      <div class="wrap teams-grid">
+        <div class="teams-left">
+          <h2 class="display"><span class="latin">Clotho</span> 团队版</h2>
+          <p class="teams-lead">为整个招聘团队配备专属协作助手。</p>
+          <p class="teams-desc">企业团队按「<span class="nowrap">基础订阅</span> + <span class="nowrap">结果付费</span>」，<span class="nowrap">猎企团队</span><span class="nowrap">免收订阅费</span>。围绕你们的真实岗位委托、内部渠道与现有工具完成配置。</p>
+          <div class="teams-actions">
+            <a class="btn btn-solid" href="#faq">联系我们</a>
+            <a class="btn btn-ghost" href="#faq-pricing">收费与规则 →</a>
+          </div>
+          <div class="team-nav" role="tablist" aria-label="团队版四项能力切换">
+            <button type="button" data-i="0" data-target="team-card-1"><span class="num">01</span>独立启用 · 本地或托管</button>
+            <button type="button" data-i="1" data-target="team-card-2"><span class="num">02</span>岗位频道 · 打破协作黑盒</button>
+            <button type="button" data-i="2" data-target="team-card-3"><span class="num">03</span>权限隔离 · 兼容现有系统</button>
+            <button type="button" data-i="3" data-target="team-card-4"><span class="num">04</span>订阅 + 结果付费 · 与你一起上线</button>
+          </div>
+        </div>
+        <div class="stack">
+          <article class="stack-card" id="team-card-1">
+            <div class="stack-top"><span class="pill">独立启用</span><span class="frac">01 / 04</span></div>
+            <svg class="stack-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+              <rect x="14" y="18" width="68" height="60" rx="12" stroke="currentColor" stroke-width="3.2"/>
+              <path d="M14 36H82" stroke="currentColor" stroke-width="3.2"/>
+              <circle cx="32" cy="57" r="7" stroke="currentColor" stroke-width="3.2"/>
+              <path d="M48 53H70M48 63H62" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+            <h3>先独立跑通一轮</h3>
+            <p>企业不依赖外部即可盘活内推与内库；小型猎企可让合伙人、研究员与顾问共用委托号分工协作，各自保留<span class="nowrap">私下笔记</span>。</p>
+          </article>
+          <article class="stack-card" id="team-card-2">
+            <div class="stack-top"><span class="pill">岗位频道</span><span class="frac">02 / 04</span></div>
+            <svg class="stack-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+              <path d="M28 20L22 76M68 20L62 76M16 38H80M14 60H78" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>
+            </svg>
+            <h3>标准同步，推进可见</h3>
+            <p>每位用人经理一位助手，每个岗位一个频道。面后标准改动立刻同步各方，告别需求电话会后的信息黑盒与盲目换<span class="nowrap">供应商</span>。</p>
+          </article>
+          <article class="stack-card" id="team-card-3">
+            <div class="stack-top"><span class="pill">集成与隔离</span><span class="frac">03 / 04</span></div>
+            <svg class="stack-icon" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+              <rect x="20" y="42" width="56" height="38" rx="10" stroke="currentColor" stroke-width="3.2"/>
+              <path d="M32 42V30C32 21.163 39.163 14 48 14C56.837 14 64 21.163 64 30V42" stroke="currentColor" stroke-width="3.2"/>
+              <circle cx="48" cy="61" r="5" fill="currentColor"/>
+            </svg>
+            <h3>兼容已有系统</h3>
+            <p>接入飞书、企微与企业现有 ATS。内部面评与定薪严守私域，猎头私库<span class="nowrap">资产归己</span>，候选人实名资料仅获本人单次同意后披露。</p>
+          </article>
+          <article class="stack-card" id="team-card-4">
+            <div class="stack-top"><span class="pill">实施与付费</span><span class="frac">04 / 04</span></div>
+            <svg class="stack-icon" viewBox="0 0 104 96" fill="none" aria-hidden="true">
+              <path d="M52 84C52 84 14 60.5 14 33.5C14 21.6 23.4 12 35 12C42.2 12 48.6 15.8 52 21.6C55.4 15.8 61.8 12 69 12C80.6 12 90 21.6 90 33.5C90 60.5 52 84 52 84Z" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round"/>
+            </svg>
+            <h3>与你一起上线</h3>
+            <p>企业按「基础订阅 + 真实结果」付费，不限岗位与经理人数；<span class="nowrap">猎企团队</span><span class="nowrap">免收订阅费</span>。从首岗校准、配置到持续推进<span class="nowrap">全程支持</span>。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq" id="faq">
+      <div class="wrap faq-grid">
+        <div class="faq-left">
+          <h2 class="display">常见问题</h2>
+          <p>关于本地个人免费版、企业订阅与<span class="nowrap">结果付费</span>、以及独立使用的直接回答。</p>
+          <a class="btn btn-ghost" href="#faq">联系我们 →</a>
+        </div>
+        <div>
+          <div class="faq-item" id="faq-free">
+            <button type="button" aria-expanded="false">个人版真的免费且运行在本地电脑吗？<svg class="chev" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="faq-a">是的。无论是独立的猎头顾问还是个人用人经理，都可以免费下载并在自己的<span class="nowrap">电脑本地运行</span> Clotho。你的关系私库、笔记与联系方式留在本地并支持随时导出，猎头侧<span class="nowrap">永不收取订阅费</span>。</div>
+          </div>
+          <div class="faq-item" id="faq-independent">
+            <button type="button" aria-expanded="false">企业和猎头，各自能独立使用吗？<svg class="chev" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="faq-a">都可以。企业无需邀请外部猎头，即可用 Clotho 完成经理需求校准、盘活内推与自有内库；独立顾问或小型猎企也能带着手头现有委托直接管理私库和团队分工。只有需要跨方推进时，再<span class="nowrap">一键拉入</span>同一岗位频道。</div>
+          </div>
+          <div class="faq-item" id="faq-pricing">
+            <button type="button" aria-expanded="false">企业版的「订阅 + 结果付费」具体怎么理解？<svg class="chev" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="faq-a">基础订阅用于支撑企业团队协作空间，不限岗位数量和<span class="nowrap">用人经理人数</span>；针对经核验的增量寻访交付与真实有效结果透明计费，过程消耗可设封顶，让支出直接对齐<span class="nowrap">有效面谈</span>。</div>
+          </div>
+          <div class="faq-item" id="faq-ats">
+            <button type="button" aria-expanded="false">和 Moka、谷露这类现有招聘系统冲突吗？<svg class="chev" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="faq-a">不冲突，也不需要<span class="nowrap">替换现有系统</span>。原系统继续负责审批与正式档案，Clotho 接入飞书、企微等日常入口，专注解决“标准持续对齐与真实推进”，正式状态按权限回写。</div>
+          </div>
+          <div class="faq-item" id="faq-privacy">
+            <button type="button" aria-expanded="false">企业内部面评和猎头私人人脉会不会泄露？<svg class="chev" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 7l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="faq-a">不会。企业内部面评、定薪讨论仅<span class="nowrap">企业内部可见</span>；猎头的私下笔记与人脉关系留在<span class="nowrap">自有私库</span>中。候选人实名资料仅在获得本人针对本岗位的<span class="nowrap">单次同意</span>后才会交付，平台严守中立、<span class="nowrap">绝不切单</span>。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="foot-meta">
+        <a class="brand" href="#hero" aria-label="Clotho 克洛托">
+          <img class="brand-mark" src="images/logo-clotho.png" alt="">
+          <span class="wordlock" aria-hidden="true">
+            <span class="wl-en"><i>C</i><i>l</i><i>o</i><i>t</i><i>h</i><i>o</i></span>
+            <span class="wl-zh"><i>克</i><i>洛</i><i>托</i></span>
+          </span>
+        </a>
+        <span class="foot-copy">© 2026 Clotho · 一个真实职位委托的持续协作工作区</span>
+      </div>
+      <nav class="foot-links">
+        <a href="#network">助手协同</a>
+        <a href="#personal">个人免费版</a>
+        <a href="#team">团队版</a>
+        <a href="#faq-privacy">隐私与中立</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      function lockWordmarks() {
+        document.querySelectorAll(".wordlock").forEach(function (el) {
+          var a = el.querySelector(".wl-en");
+          var b = el.querySelector(".wl-zh");
+          el.style.width = "auto";
+          a.style.width = b.style.width = "auto";
+          a.style.justifyContent = b.style.justifyContent = "flex-start";
+          var w = Math.max(a.getBoundingClientRect().width, b.getBoundingClientRect().width);
+          el.style.width = Math.ceil(w) + "px";
+          a.style.width = b.style.width = "100%";
+          a.style.justifyContent = b.style.justifyContent = "space-between";
+        });
+      }
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(lockWordmarks);
+      }
+      window.addEventListener("resize", lockWordmarks);
+      lockWordmarks();
+
+      const items = Array.prototype.slice.call(document.querySelectorAll(".faq-item"));
+      function closeAll() {
+        items.forEach(function (other) {
+          other.classList.remove("is-open");
+          var b = other.querySelector("button");
+          if (b) b.setAttribute("aria-expanded", "false");
+        });
+      }
+      function openItem(item) {
+        closeAll();
+        item.classList.add("is-open");
+        var b = item.querySelector("button");
+        if (b) b.setAttribute("aria-expanded", "true");
+      }
+      items.forEach(function (item) {
+        const btn = item.querySelector("button");
+        btn.addEventListener("click", function () {
+          const open = item.classList.contains("is-open");
+          if (open) closeAll();
+          else openItem(item);
+        });
+      });
+      function openFromHash() {
+        var id = (location.hash || "").slice(1);
+        if (!id) return;
+        var item = document.getElementById(id);
+        if (item && item.classList.contains("faq-item")) openItem(item);
+      }
+      window.addEventListener("hashchange", openFromHash);
+      openFromHash();
+
+      const cards = Array.prototype.slice.call(document.querySelectorAll(".stack-card"));
+      const navs = Array.prototype.slice.call(document.querySelectorAll(".team-nav button"));
+      const header = document.querySelector(".site-head");
+      function threshold() { return (header ? header.getBoundingClientRect().height : 104) + 92; }
+      function currentIndex() {
+        const t = threshold();
+        let idx = 0;
+        cards.forEach(function (card, i) {
+          if (card.getBoundingClientRect().top <= t) idx = i;
+        });
+        return idx;
+      }
+      function sync() {
+        const idx = currentIndex();
+        navs.forEach(function (b, i) { b.classList.toggle("is-on", i === idx); });
+        cards.forEach(function (c, i) { c.classList.toggle("is-covered", i < idx); });
+      }
+      navs.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const el = document.getElementById(btn.getAttribute("data-target"));
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      window.addEventListener("scroll", sync, { passive: true });
+      window.addEventListener("resize", sync);
+      sync();
+    })();
+  </script>
+</body>
+</html>
