@@ -146,16 +146,56 @@
     }
     .hero h1{
       margin:0 auto 28px;
-      display:flex;flex-direction:column;align-items:center;gap:4px;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:nowrap;
+      white-space:nowrap;
+      width:100%;
       font-weight:500;
-      font-size:clamp(3.4rem, 8.4vw, 7.2rem);
-      line-height:.92;
-      letter-spacing:-.05em;
+      font-size:clamp(2.6rem, 8.4vw, 7.2rem);
+      line-height:.96;
+      letter-spacing:-.065em;
     }
+    .hero-inner{text-align:center}
     .hero-en{
       font-family:"Inter",sans-serif;
       font-weight:600;
-      letter-spacing:-.06em;
+      letter-spacing:-.065em;
+    }
+    .hero-mark{
+      width:.82em;height:.82em;
+      margin-inline:.22em .14em;
+      transform:translateY(.03em);
+      flex:none;
+      display:block;
+      overflow:visible;
+    }
+    .hero-eye{
+      transform-box:fill-box;
+      transform-origin:50% 50%;
+    }
+    .hero-pupil-idle{
+      transform-box:fill-box;
+      transform-origin:50% 50%;
+      animation:clotho-gaze 8.5s ease-in-out infinite;
+    }
+    @keyframes clotho-gaze{
+      0%,16%{transform:translate(0,0)}
+      26%,38%{transform:translate(1.15px,.25px)}
+      48%,58%{transform:translate(.15px,.7px)}
+      68%,80%{transform:translate(-1.2px,-.15px)}
+      90%,100%{transform:translate(0,0)}
+    }
+    @keyframes clotho-blink{
+      0%{transform:scaleY(1)}
+      42%{transform:scaleY(.08)}
+      100%{transform:scaleY(1)}
+    }
+    .hero-eye.is-blink{animation:clotho-blink .2s ease-in-out}
+    @media (prefers-reduced-motion:reduce){
+      .hero-pupil-idle,.hero-eye,.hero-eye.is-blink{animation:none !important}
     }
     .hero .lede{
       margin:0 auto 36px;
@@ -411,6 +451,14 @@
     @media (max-width:1080px){
       .nav-pill a{padding:8px 9px;font-size:13px}
     }
+    @media (max-width:520px){
+      .hero h1{
+        flex-wrap:wrap;
+        white-space:normal;
+        letter-spacing:-.05em;
+        row-gap:.04em;
+      }
+    }
     @media (max-width:900px){
       :root{--header-h:132px}
       .nav-pill{display:none}
@@ -460,6 +508,34 @@
         </div>
         <h1>
           <span>认识</span>
+          <svg class="hero-mark" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <g transform="translate(1.5,3.2) scale(0.84)">
+              <path fill="#C4552D" d="M16 48 C10 56 13 80 40 81 C68 82 78 68 73 54 C69 45 58 44 40 48 C30 47 22 45 16 48Z"/>
+              <path fill="#C4552D" d="M35 56 C30 28 39 3 54 6 C67 9 64.5 31 51 58 C47 64 39 64 35 56Z"/>
+              <path fill="#C4552D" d="M29 55 C14 42 5 16 20 13 C33 10.5 40 32 37.5 55 C35.5 62 31.5 61 29 55Z"/>
+              <path fill="#C4552D" d="M22 64 C7 60 0 45 12 42 C26 39 34 54 32 67 C29 71 25 69 22 64Z"/>
+              <path fill="#C4552D" d="M52 49 C63 32 82 24 83.5 35 C85 46 66 57 49.5 57.5 C45.5 53.5 48 51 52 49Z"/>
+              <path fill="#C4552D" d="M54 57 C71 50 92 53 89.5 66 C87 79 63 78.5 47 68 C45 62 49.5 59 54 57Z"/>
+              <g class="hero-eye hero-eye-l">
+                <ellipse cx="33" cy="60.2" rx="7.8" ry="9.0" fill="#F8F3EE"/>
+                <g class="hero-pupil-follow">
+                  <g class="hero-pupil-idle">
+                    <ellipse cx="33" cy="60.9" rx="3.45" ry="4.05" fill="#10171A"/>
+                    <circle cx="34.5" cy="59.0" r="1.15" fill="#7ED9E8"/>
+                  </g>
+                </g>
+              </g>
+              <g class="hero-eye hero-eye-r">
+                <ellipse cx="51" cy="60.2" rx="7.8" ry="9.0" fill="#F8F3EE"/>
+                <g class="hero-pupil-follow">
+                  <g class="hero-pupil-idle">
+                    <ellipse cx="51" cy="60.9" rx="3.45" ry="4.05" fill="#10171A"/>
+                    <circle cx="52.5" cy="59.0" r="1.15" fill="#7ED9E8"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>
           <span class="hero-en">Clotho</span>
         </h1>
         <p class="lede"><strong>一个真实职位委托的持续协作工作区。</strong>企业招聘团队或猎头顾问团队各自运行专属 Bot，助手之间对齐标准、使用工具并推动真实队友之间协作。个人使用免费。</p>
@@ -746,6 +822,54 @@
 
   <script>
     (function () {
+      (function heroMark() {
+        var mark = document.querySelector(".hero-mark");
+        if (!mark) return;
+        var eyes = mark.querySelectorAll(".hero-eye");
+        var follows = mark.querySelectorAll(".hero-pupil-follow");
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var timer;
+        function blink() {
+          if (reduce.matches) return;
+          eyes.forEach(function (eye) {
+            eye.classList.remove("is-blink");
+            void eye.getBoundingClientRect();
+            eye.classList.add("is-blink");
+          });
+        }
+        function schedule() {
+          clearTimeout(timer);
+          if (reduce.matches) return;
+          timer = setTimeout(function () {
+            blink();
+            schedule();
+          }, 2800 + Math.random() * 4200);
+        }
+        function clearFollow() {
+          follows.forEach(function (g) { g.style.transform = ""; });
+        }
+        mark.addEventListener("pointermove", function (e) {
+          if (reduce.matches) return;
+          var r = mark.getBoundingClientRect();
+          var x = (e.clientX - (r.left + r.width / 2)) / r.width;
+          var y = (e.clientY - (r.top + r.height / 2)) / r.height;
+          var px = Math.max(-1, Math.min(1, x)) * 1.35;
+          var py = Math.max(-1, Math.min(1, y)) * 1.05;
+          follows.forEach(function (g) {
+            g.style.transform = "translate(" + px + "px," + py + "px)";
+          });
+        });
+        mark.addEventListener("pointerleave", clearFollow);
+        mark.addEventListener("click", function () { blink(); });
+        if (reduce.addEventListener) {
+          reduce.addEventListener("change", function () {
+            clearFollow();
+            schedule();
+          });
+        }
+        schedule();
+      })();
+
       function lockWordmarks() {
         document.querySelectorAll(".wordlock").forEach(function (el) {
           var a = el.querySelector(".wl-en");
